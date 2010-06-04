@@ -1,0 +1,42 @@
+00603b - nesoutezni hry nemaji panel s rekordama
+00603a - platform name a icon sloupce
+00603 - enum platforem a par ikonek
+00602 - knihovna Lombok + filtr na platformu 
+00601a - moznost vybirat sloupce v column control 
+00601 - SwingWorker na asynchronni stahovani a ukladani obrazku
+00530b - primitivni nacitani obrazku + odkaz na MAWS
+00530a - filtrovani podle vyhledavaciho policka
+00530 - refactoring: prechod z JTable na JXTable
+00524f - prvni pokus o customizaci sloupcu
+00524e - ikonky pro detail/preference/filtr
+00524d - fix ikonek medailovych pozic
+00524c - neaktivni select box pro update menicko
+00524b - drobny refactoring
+00524a - snizeni findbugs 14 -> 1
+00524 - refactoring properties
+00520 - bullet ikonky dostupnosti
+00519a - sloupec na mozny bodovy zisk
+00519 - filtr je samostatny a ma pripravene dostupnosti
+00518 - filtr na kategorie umi "vsechny"
+00517 - opraveno #10
+00516 - kazdy mod ma svoji vlastni mnozinu kategorii - podle toho, co najde importer
+00421b - rozvrtani a zakonzerovani pokusu o chat pomoc http clienta a cobry
+00421a - filtrovani podle kategorie
+00421 - panel pro chat
+00420 - ikonka pro vyber modu + combo na napovedu (pridano podekovani)
+00419c - sloupek s hernima bodama
+00419b - vylepseny vyber hrace
+00419a - fixni scrollbar pro rekordy
+00419 - pridani Nimbus L&F pro Java6u10+
+00416a - fix sloupcu v panelu rekordu
+00416 - primitivni podpora pro napoveda.chm
+00414b - refactoring modu - aplikace si ted drzi vsechny mody
+00414a - podpora pro ruzne jazyky pro lokalizaci
+00414 - vyber hrace je zase v toolbaru
+00403b - oprava razeni rekordu, pri stejnem skore se zohlednuje doba hrani
+00403a - fix zobrazeni spatneho radku po setrideni tabulky her
+00403 - jednoduchy sortovac sloupcu
+00402b - sloupec na porovnani pozice hracu
+00402a - vyhozeni zbytecnych generik
+00402 - refactoring domain package, listener na zmeny hracu se nevytvari s kazdym updatem tabulky
+00328 - pocatek verzovani
