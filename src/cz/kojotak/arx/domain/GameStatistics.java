@@ -56,12 +56,12 @@ public interface GameStatistics {
 	 * 
 	 * @return true/false if player has given game finished or null, if not played yet
 	 */
-	Boolean hasPlayerFinished();
+	Boolean getPlayerFinished();
 	
 	/**
 	 * @return true if some player has finished given game, false otherwise
 	 */
-	Boolean hasSomebodyFinished();
+	Boolean getSomebodyFinished();
 	
 	/**
 	 * @return best player's score

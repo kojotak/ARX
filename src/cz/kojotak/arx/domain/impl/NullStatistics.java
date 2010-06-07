@@ -122,7 +122,7 @@ public class NullStatistics implements GameStatistics {
 	 * @see cz.kojotak.arx.domain.GameStatistics#hasPlayerFinished()
 	 */
 	@Override
-	public Boolean hasPlayerFinished() {
+	public Boolean getPlayerFinished() {
 		return false;
 	}
 
@@ -130,7 +130,7 @@ public class NullStatistics implements GameStatistics {
 	 * @see cz.kojotak.arx.domain.GameStatistics#hasSomebodyFinished()
 	 */
 	@Override
-	public Boolean hasSomebodyFinished() {
+	public Boolean getSomebodyFinished() {
 		return false;
 	}
 

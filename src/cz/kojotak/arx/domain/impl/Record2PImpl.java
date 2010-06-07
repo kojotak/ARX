@@ -3,6 +3,8 @@
  */
 package cz.kojotak.arx.domain.impl;
 
+import lombok.Getter;
+import lombok.Setter;
 import cz.kojotak.arx.domain.Record2P;
 
 /**
@@ -10,21 +12,9 @@ import cz.kojotak.arx.domain.Record2P;
  * @author Kojotak 
  */
 public class Record2PImpl extends RecordImpl implements Record2P {
-	protected String secondUser;
-
 	
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.domain.Record2P#getSecondPlayer()
-	 */
-	@Override
-	public String getSecondPlayer() {
-		return secondUser;
-	}
+	@Getter
+	@Setter
+	protected String secondPlayer;
 
-	
-	public void setSecondUser(String secondUser) {
-		this.secondUser = secondUser;
-	}
-
-	
 }

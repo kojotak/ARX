@@ -132,7 +132,7 @@ public class Importer {
 			String[] players = record.getPlayer().split("\\s");
 			boolean reverse = players[0].compareTo(players[1]) > 0;
 			rec2p.setPlayer(players[reverse ? 1 : 0]);
-			rec2p.setSecondUser(players[reverse ? 0 : 1]);
+			rec2p.setSecondPlayer(players[reverse ? 0 : 1]);
 		}
 		
 		if("mame".equals(emulator)){

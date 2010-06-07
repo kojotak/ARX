@@ -5,6 +5,8 @@ package cz.kojotak.arx.domain.impl;
 
 import java.util.List;
 
+import lombok.Getter;
+
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Record;
@@ -17,21 +19,26 @@ import cz.kojotak.arx.domain.enums.FinishedStatus;
  */
 public class SingleGameStatistics implements GameStatistics {
 	
-	Integer playerPosition=null;
-	Float playerRating=null;
-	Float averageRating=null;
-	Float playerRelativePosition=null;
-	String playerSign=null;
-	String bestPlayerSign=null;
-	int recordsCount=0;
-	int ratingsCount=0;
-	Boolean playerFinished=null;
-	Boolean somebodyFinished=false;
-	Long highestScore=null;
-	Long playerScore=null;
-	Integer oponentDiff=null;
-	User oponent=null;
-	Integer points=null;
+	@Getter	Integer playerPosition=null;
+	@Getter	Float playerRating=null;
+	
+	@Getter	Float averageRating=null;
+	@Getter	Float playerRelativePosition=null;
+	@Getter	String playerSign=null;
+	
+	@Getter String bestPlayer=null;
+	@Getter	int recordsCount=0;
+	@Getter	int ratingsCount=0;
+	@Getter Boolean playerFinished=null;
+	@Getter Boolean somebodyFinished=false;
+	
+	@Getter	Long highestScore=null;
+	@Getter	Long userScore=null;
+	
+	@Getter Integer oponentDiff=null;
+	
+	@Getter User oponent=null;
+	@Getter	Integer points=null;
 		
 	public SingleGameStatistics(Competetive<Record> game,User user,User oponent) {
 		super();
@@ -40,14 +47,6 @@ public class SingleGameStatistics implements GameStatistics {
 		if(records!=null && records.size()>0){
 			init(records,user,oponent);
 		}
-	}
-	
-	public Integer getOponentDiff() {
-		return oponentDiff;
-	}
-	
-	public User getOponent() {
-		return oponent;
 	}
 
 	private void init(List<Record> records,User user,User oponent){
@@ -64,11 +63,11 @@ public class SingleGameStatistics implements GameStatistics {
 				playerPosition=i+1;
 				playerRating = record.getRating();
 				playerFinished = record.isFinished();
-				playerScore = score;
+				userScore = score;
 			}
 			if(score>highest){
 				highest=score;
-				bestPlayerSign=sign;
+				bestPlayer=sign;
 			}
 			if(record.isFinished()){
 				somebodyFinished=true;
@@ -93,80 +92,8 @@ public class SingleGameStatistics implements GameStatistics {
 			if(oponentPosition!=null){
 				this.oponentDiff=oponentPosition-playerPosition;
 			}
-			points=(recordsCount-playerPosition)*10 + (int)((float)playerScore*100/highestScore);
+			points=(recordsCount-playerPosition)*10 + (int)((float)userScore*100/highestScore);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.domain.GameStatistics#getPlayerPosition()
-	 */
-	@Override
-	public Integer getPlayerPosition() {
-		return playerPosition;
-	}
-
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.domain.GameStatistics#getPlayerRating()
-	 */
-	@Override
-	public Float getPlayerRating() {
-		return playerRating;
-	}
-
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.domain.GameStatistics#getPlayerRelativePosition()
-	 */
-	@Override
-	public Float getPlayerRelativePosition() {
-		return playerRelativePosition;
-	}
-
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.domain.GameStatistics#getPlayerSign()
-	 */
-	@Override
-	public String getPlayerSign() {
-		return playerSign;
-	}
-
-	@Override
-	public Float getAverageRating() {
-		return averageRating;
-	}
-
-	@Override
-	public int getRecordsCount() {
-		return recordsCount;
-	}
-
-	@Override
-	public int getRatingsCount() {
-		return ratingsCount;
-	}
-
-	@Override
-	public Boolean hasPlayerFinished() {
-		return playerFinished;
-	}
-
-	@Override
-	public Boolean hasSomebodyFinished() {
-		return somebodyFinished;
-	}
-
-	@Override
-	public Long getHighestScore() {
-		return highestScore;
-	}
-
-	@Override
-	public Long getUserScore() {
-		return playerScore;
-	}
-
-	@Override
-	public String getBestPlayer() {
-		return bestPlayerSign;
 	}
 
 	@Override
@@ -178,10 +105,5 @@ public class SingleGameStatistics implements GameStatistics {
 		}else{
 			return null;
 		}
-	}
-
-	@Override
-	public Integer getPoints() {
-		return points;
 	}
 }

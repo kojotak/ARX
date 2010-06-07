@@ -3,6 +3,7 @@
  */
 package cz.kojotak.arx.domain.impl;
 
+import lombok.Getter;
 import cz.kojotak.arx.domain.User;
 
 /**
@@ -11,28 +12,17 @@ import cz.kojotak.arx.domain.User;
  */
 public class SimpleUser implements User {
 	
-	private String sign;
+	@Getter
+	private String id;
 
 	public SimpleUser(String sign) {
 		super();
-		this.sign = sign;
+		this.id = sign;
 	}
-
-
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.domain.Identifiable#getId()
-	 */
-	@Override
-	public String getId() {
-		return sign;
-	}
-
 
 	@Override
 	public String toString() {
 		return getClass().getSimpleName()+":"+getId();
 	}
 	
-	
-
 }
