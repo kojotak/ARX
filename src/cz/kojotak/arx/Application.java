@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
 
-import org.apache.http.client.HttpClient;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -40,22 +42,49 @@ public final class Application {
 	public static String currentDir = System.getProperty("user.dir");
 
 	protected Logger log;
-	private Properties props;
-	private Localization l10n;
+	
+	@Getter
+	private Properties properties;
+	
+	@Getter
+	private Localization localization;
+	
+	@Getter
 	private Icons icons;
 	private ImporterFactory ifa;
+	
+	@Getter
 	private Importer importer;
+	
+	@Getter
 	private Language language;
+	
+	@Getter
 	private IconLoader iconLoader;
-	private AmigaMode amiga;
-	private ArcadeMode arcade;
-	private TwoPlayerMode arcade2;
-	private NoncompetetiveMode noncompetetive;
+	
+	@Getter
+	private AmigaMode amigaMode;
+	
+	@Getter
+	private ArcadeMode arcadeMode;
+	
+	@Getter
+	private TwoPlayerMode arcadeTwoPlayerMode;
+	
+	@Getter
+	private NoncompetetiveMode noncompetetiveMode;
+	
+	@Getter
+	@Setter
 	private Mode<?> currentMode;
-	private List<Mode<?>> all;
+	
+	@Getter
+	private List<Mode<?>> modes;
 	private DefaultHttpClient client;
 	List<User> players = new ArrayList<User>();
-	User player = null;
+	
+	@Getter
+	User currentUser = null;
 
 	private static Application app = new Application();
 
@@ -71,8 +100,8 @@ public final class Application {
 		String imgPath = Application.currentDir + File.separator
 		+ "tmp" + File.separator + "images" + File.separator;
 		iconLoader = new IconLoader(icoPath,imgPath,this);
-		props = new Properties(language);
-		l10n = new Localization(language);
+		properties = new Properties(language);
+		localization = new Localization(language);
 		icons = new Icons(language);
 
 		this.initImporter();
@@ -86,16 +115,16 @@ public final class Application {
 	}
 
 	private void initModes() {
-		this.arcade = new ArcadeMode(importer);
-		this.arcade2 = new TwoPlayerMode(importer);
-		this.amiga = new AmigaMode(importer);
-		this.noncompetetive = new NoncompetetiveMode(importer);
-		this.currentMode = arcade;// FIXME
-		this.all = new ArrayList<Mode<?>>();
-		this.all.add(arcade);
-		this.all.add(arcade2);
-		this.all.add(amiga);
-		this.all.add(noncompetetive);
+		this.arcadeMode = new ArcadeMode(importer);
+		this.arcadeTwoPlayerMode = new TwoPlayerMode(importer);
+		this.amigaMode = new AmigaMode(importer);
+		this.noncompetetiveMode = new NoncompetetiveMode(importer);
+		this.currentMode = arcadeMode;// FIXME
+		this.modes = new ArrayList<Mode<?>>();
+		this.modes.add(arcadeMode);
+		this.modes.add(arcadeTwoPlayerMode);
+		this.modes.add(amigaMode);
+		this.modes.add(noncompetetiveMode);
 	}
 
 	private void initImporter() {
@@ -123,11 +152,7 @@ public final class Application {
 		}
 	}
 */
-	//FIXME
-	private String chatStr="";
-	public String getChatStr() {
-		return chatStr;
-	}
+
 /*
 	private void initHttpClient() {
 		client = new DefaultHttpClient();
@@ -248,21 +273,9 @@ public final class Application {
 		}
 	}
 
-	public User getCurrentUser() {
-		return player;
-	}
-
-	public Mode<?> getCurrentMode() {
-		return currentMode;
-	}
-
-	public void setMode(Mode<?> mode) {
-		this.currentMode = mode;
-	}
-
 	public void setPlayer(String name) {
 		User user = new SimpleUser(name);
-		this.player = user;
+		this.currentUser = user;
 		this.players.add(user);
 	}
 
@@ -275,14 +288,6 @@ public final class Application {
 		return names;
 	}
 
-	public Importer getImporter() {
-		return importer;
-	}
-
-	public Language getLanguage() {
-		return language;
-	}
-
 	public Logger getLogger(Object whoCalls) {
 		return Logger.getLogger(whoCalls.getClass());
 	}
@@ -291,45 +296,9 @@ public final class Application {
 		return Logger.getLogger(whoCalls);
 	}
 
-	public IconLoader getIconLoader() {
-		return iconLoader;
-	}
-
-	public Properties getProperties() {
-		return props;
-	}
-	
-	public Localization getLocalization(){
-		return l10n;
-	}
-	
-	public Icons getIcons(){
-		return icons;
-	}
-
-	public AmigaMode getAmigaMode() {
-		return amiga;
-	}
-
-	public ArcadeMode getArcadeMode() {
-		return arcade;
-	}
-
-	public TwoPlayerMode getArcadeTwoPlayerMode() {
-		return arcade2;
-	}
-
-	public NoncompetetiveMode getNoncompetetiveMode() {
-		return noncompetetive;
-	}
-
-	public List<Mode<?>> getModes() {
-		return all;
-	}
-
 	public Mode<?> resolveMode(String str) {
-		Mode<?> mode = arcade;// default
-		for (Mode<?> m : all) {
+		Mode<?> mode = arcadeMode;// default
+		for (Mode<?> m : modes) {
 			if (m.getName().equals(str)) {
 				mode = m;
 				break;
@@ -365,10 +334,6 @@ public final class Application {
 			}
 		}
 		return string;
-	}
-
-	public HttpClient getHttpClient() {
-		return client;
 	}
 
 }

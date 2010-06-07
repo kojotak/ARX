@@ -35,7 +35,7 @@ public class ModeChangeListener implements ActionListener {
 		String name = (String) cb.getSelectedItem();
 		Application app = Application.getInstance();
 		Mode<?> mode = app.resolveMode(name);
-		Application.getInstance().setMode(mode);
+		Application.getInstance().setCurrentMode(mode);
 		window.changeTable();//getGameTable().updateTableModel();
 		FilterTaskPane filter = window.getSidebar().getFilter();
 		filter.getCategoryComboBox().updateCategoryListModel();
