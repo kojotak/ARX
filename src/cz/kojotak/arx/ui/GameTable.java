@@ -3,6 +3,7 @@
  */
 package cz.kojotak.arx.ui;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -24,6 +25,7 @@ import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.impl.SimpleUser;
 import cz.kojotak.arx.domain.impl.SingleGameStatistics;
+import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.listener.GameTableSelectListener;
 import cz.kojotak.arx.ui.model.FilterModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
@@ -137,4 +139,11 @@ public class GameTable extends JXTable {
 		this.setModel(model);
 		this.filterChanged();//have to apply filter on update table model
 	}
+
+	@Override
+	protected JComponent createDefaultColumnControl() {
+		return new CustomColumnControlButton(this,null);
+	}
+	
+	
 }

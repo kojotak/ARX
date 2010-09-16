@@ -3,21 +3,13 @@
  */
 package cz.kojotak.arx.ui;
 
-import java.util.List;
-
 import javax.swing.GroupLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 
 import org.jdesktop.swingx.JXTaskPane;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
 /**
@@ -49,30 +41,30 @@ public class PreferencesTaskPane extends JXTaskPane {
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 		
-		Mode<?> mode = app.getCurrentMode();
-		List<? extends BaseColumn<?, ?>> cols = mode.getColumns();
+//		Mode<?> mode = app.getCurrentMode();
+//		List<? extends BaseColumn<?, ?>> cols = mode.getColumns();
 		
 		ParallelGroup firstColumn= layout.createParallelGroup();
 		ParallelGroup secondColumn= layout.createParallelGroup();
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
 		
-		for(BaseColumn<?,?> c:cols){
-//			if(!c.isSwitchable()){
-//				continue;
-//			}
-			
-			JCheckBox left = new JCheckBox();
-//			JComponent right = c.getCustomized();
-			JComponent right = new JLabel(c.getClass().getSimpleName());
-			right.setAlignmentX(0.5f);
-			firstColumn.addComponent(left);
-			secondColumn.addComponent(right);
-			
-			vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-					.addComponent(left)
-					.addComponent(right)
-					);
-		}
+//		for(BaseColumn<?,?> c:cols){
+////			if(!c.isSwitchable()){
+////				continue;
+////			}
+//			
+//			JCheckBox left = new JCheckBox();
+////			JComponent right = c.getCustomized();
+//			JComponent right = new JLabel(c.getClass().getSimpleName());
+//			right.setAlignmentX(0.5f);
+//			firstColumn.addComponent(left);
+//			secondColumn.addComponent(right);
+//			
+//			vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+//					.addComponent(left)
+//					.addComponent(right)
+//					);
+//		}
 
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup()
 			.addGroup(firstColumn).addGroup(secondColumn);

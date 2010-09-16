@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cz.kojotak.arx.ui;
+package cz.kojotak.arx.common;
 
 /**
  * Simple type safe provider contract

@@ -8,8 +8,8 @@ import javax.swing.Icon;
 import org.jdesktop.swingx.table.TableColumnExt;
 
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.common.Valuable;
 import cz.kojotak.arx.properties.Localization;
-import cz.kojotak.arx.ui.Valuable;
 
 /**
  * Base column supports localization and fills column header
@@ -21,11 +21,10 @@ public abstract class BaseColumn<T, V> extends TableColumnExt implements
 		Valuable<T, V> {
 
 	private static final long serialVersionUID = -5766438589532953454L;
-	private String colName = null;
-	
+	private String colName = null;	
 	
 	public static enum PROPS {
-		NAME, WIDTH, WIDTH_MAX, WIDTH_MIN, TOOLTIP, PROTOTYPE
+		NAME, WIDTH, WIDTH_MAX, WIDTH_MIN, TOOLTIP, PROTOTYPE, DESCRIPTION
 	}
 
 	protected Icon getHeaderIcon() {
@@ -64,4 +63,5 @@ public abstract class BaseColumn<T, V> extends TableColumnExt implements
 	public String getColumnName() {
 		return colName;
 	}
+	
 }
