@@ -1,3 +1,4 @@
+00916a - odkaz na MAWS ma ikonku
 00916 - sloupce tabulky her maji popisky, ktere se pouziji v ovladaci sloupcu
 00603b - nesoutezni hry nemaji panel s rekordama
 00603a - platform name a icon sloupce
@@ -22,7 +23,8 @@
 00517 - opraveno #10
 00516 - kazdy mod ma svoji vlastni mnozinu kategorii - podle toho, co najde importer
 00421b - rozvrtani a zakonzerovani pokusu o chat pomoc http clienta a cobry
-00421a - filtrovani podle kategorie
+00421a - filtrovCan't connect to any repository: 
+ani podle kategorie
 00421 - panel pro chat
 00420 - ikonka pro vyber modu + combo na napovedu (pridano podekovani)
 00419c - sloupek s hernima bodama

@@ -33,10 +33,11 @@ public class DetailTaskPane extends JXTaskPane implements ListSelectionListener{
 	private GameTable table;
 	private JXImagePanel ipanel;
 	private JXHyperlink link;
+	private Application app;
 	public DetailTaskPane(final GameTable table) {
 		super();
 		this.table=table;
-		Application app = Application.getInstance();
+		app = Application.getInstance();
 		String label = app.getLocalization().getString(this, "LABEL");
 		this.setTitle(label);
 		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.DETAIL));
@@ -52,6 +53,7 @@ public class DetailTaskPane extends JXTaskPane implements ListSelectionListener{
 	private void setHyperlink(){
 		link.setText("MAWS");
 		link.setToolTipText("otevre MAWS pro danou hru");
+		link.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.EXTERNAL_LINK));
 	}
 	
 	private void setImage(Image image){
