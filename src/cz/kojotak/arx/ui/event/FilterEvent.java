@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cz.kojotak.arx.ui.model;
+package cz.kojotak.arx.ui.event;
 
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.enums.Availibility;
@@ -13,7 +13,7 @@ import lombok.Data;
  * @author Kojotak 
  */
 @Data
-public class FilterModel {
+public class FilterEvent {
 	
 	private Category category;
 	private Platform platform;

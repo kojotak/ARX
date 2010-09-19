@@ -13,7 +13,10 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.bushe.swing.event.EventBus;
+
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.ui.event.RebuiltGameTable;
 import cz.kojotak.arx.ui.renderer.PlayerListRenderer;
 
 /**
@@ -25,7 +28,7 @@ public class PlayerComboBox extends JComboBox {
 	private static final long serialVersionUID = -8481423043530284950L;
 	public static final String ADD_NEW="_NEW";
 
-	public PlayerComboBox(final GameTable table) {
+	public PlayerComboBox() {
 		super();
 		this.setModel(getUsersComboBox());
 		this.setEditable(false);
@@ -40,7 +43,7 @@ public class PlayerComboBox extends JComboBox {
 					usrName = null;
 				}
 				Application.getInstance().setPlayer(usrName);
-				table.modeOrPlayerChanged();
+				EventBus.publish(new RebuiltGameTable());
 				Application.getInstance().getLogger(this).info(
 						"selected user " + usrName);
 

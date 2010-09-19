@@ -35,7 +35,7 @@ public class Toolbar extends JPanel {
 		vyberModu.setRenderer(rndr);
 		vyberModu.addActionListener(new ModeChangeListener(window));
 		vyberModu.setPreferredSize(new Dimension(120,28));
-		vyberHrace = new PlayerComboBox(window.getGameTable());
+		vyberHrace = new PlayerComboBox();
 
 		//initialize holder panels
 		JPanel leftPart = new JPanel();

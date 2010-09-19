@@ -18,5 +18,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/devel/lombok.jar"/>
+	<classpathentry kind="lib" path="lib/runtime/eventbus-1.4.jar" sourcepath="lib/devel/eventbus-1.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ARX/lib/devel/eventbus-1.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

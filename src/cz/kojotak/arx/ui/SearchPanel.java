@@ -14,8 +14,8 @@ import javax.swing.event.DocumentListener;
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.Searchable;
+import cz.kojotak.arx.ui.event.FilterEvent;
 import cz.kojotak.arx.ui.icon.GUIIcons;
-import cz.kojotak.arx.ui.model.FilterModel;
 
 /**
  * @date 28.3.2010
@@ -41,7 +41,7 @@ public class SearchPanel extends JPanel {
 				Mode<?> mode = app.getCurrentMode();
 				if(mode instanceof Searchable){
 					Searchable s = Searchable.class.cast(mode);
-					FilterModel fm = s.getFilter();
+					FilterEvent fm = s.getFilter();
 					fm.setSearch(str);
 					table.filterChanged();
 				}

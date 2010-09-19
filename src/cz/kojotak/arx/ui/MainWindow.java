@@ -14,11 +14,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.bushe.swing.event.EventBus;
+
 import lombok.Getter;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
+import cz.kojotak.arx.ui.event.RebuiltGameTable;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
@@ -150,7 +153,6 @@ public class MainWindow extends JFrame {
 		}else{
 			table = new GameTable(tm,cm,records.table);
 		}
-		table.modeOrPlayerChanged();
-
+		EventBus.publish(new RebuiltGameTable());
 	}
 }

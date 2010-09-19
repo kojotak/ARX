@@ -11,6 +11,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
 
 import cz.kojotak.arx.Application;
@@ -26,8 +29,9 @@ import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.impl.SimpleUser;
 import cz.kojotak.arx.domain.impl.SingleGameStatistics;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
+import cz.kojotak.arx.ui.event.FilterEvent;
+import cz.kojotak.arx.ui.event.RebuiltGameTable;
 import cz.kojotak.arx.ui.listener.GameTableSelectListener;
-import cz.kojotak.arx.ui.model.FilterModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
 /**
@@ -40,12 +44,13 @@ public class GameTable extends JXTable {
 			
 	public GameTable(GenericTableModel<?> dm, TableColumnModel cm,RecordTable rec) {
 		super(dm, cm);
+		AnnotationProcessor.process(this);
 		GameTableSelectListener gameSelectListener = new GameTableSelectListener(
 				this, rec);
 		this.getSelectionModel().addListSelectionListener(gameSelectListener);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		modeOrPlayerChanged();		
+		EventBus.publish(new RebuiltGameTable());
 		this.getSelectionModel().setSelectionInterval(0, 0);
 		this.setColumnControlVisible(true);
 	}
@@ -74,7 +79,7 @@ public class GameTable extends JXTable {
 				Mode<?> mode = app.getCurrentMode();
 				if(mode instanceof Searchable){
 					Searchable searchable = Searchable.class.cast(mode);
-					FilterModel model = searchable.getFilter();
+					FilterEvent model = searchable.getFilter();
 					Category filterCat = model.getCategory();
 					Platform platform = model.getPlatform();
 					GenericTableModel<?> m = entry.getModel();
@@ -111,7 +116,8 @@ public class GameTable extends JXTable {
 	/**
 	 * helper method to set new table model
 	 */
-	public void modeOrPlayerChanged() {
+	@EventSubscriber(eventClass=RebuiltGameTable.class)
+	public void modeOrPlayerChanged(RebuiltGameTable event) {
 		final Application app = Application.getInstance();
 		Mode<?> mode = app.getCurrentMode();
 		User user = app.getCurrentUser();
