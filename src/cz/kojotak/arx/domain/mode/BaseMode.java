@@ -15,7 +15,7 @@ import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.Searchable;
 import cz.kojotak.arx.properties.Localization;
-import cz.kojotak.arx.ui.event.FilterEvent;
+import cz.kojotak.arx.ui.event.FilterModel;
 
 /**
  * Base localized mode predecessor with some common behavior
@@ -30,7 +30,7 @@ public abstract class BaseMode<T extends Game> implements Mode<T>,Searchable {
 	
 	@Getter
 	@Setter
-	protected FilterEvent filter;
+	protected FilterModel filter;
 	
 	/**
 	 * Each subclass should initialize {@link #cats}
@@ -41,7 +41,7 @@ public abstract class BaseMode<T extends Game> implements Mode<T>,Searchable {
 		Localization loc = Application.getInstance().getLocalization();
 		this.desc = loc.getString(this, "DESC");
 		this.name = loc.getString(this, "NAME");
-		this.filter = new FilterEvent();
+		this.filter = new FilterModel();
 	}
 
 	@Override

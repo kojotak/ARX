@@ -48,10 +48,12 @@ public class RecordTable extends JTable {
 		if(game instanceof WithStatistics){
 			WithStatistics ws = WithStatistics.class.cast(game);
 			GameStatistics gs = ws.getStatistics();
-			Integer position = gs.getPlayerPosition();
-			if(position!=null){
-				int pos=--position;
-				this.getSelectionModel().setSelectionInterval(pos, pos);
+			if(gs!=null){
+				Integer position = gs.getPlayerPosition();
+				if(position!=null){
+					int pos=--position;
+					this.getSelectionModel().setSelectionInterval(pos, pos);
+				}
 			}
 		}
 	}

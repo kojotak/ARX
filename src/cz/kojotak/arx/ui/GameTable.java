@@ -11,7 +11,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
@@ -22,14 +21,13 @@ import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.Record;
-import cz.kojotak.arx.domain.Searchable;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.impl.SimpleUser;
 import cz.kojotak.arx.domain.impl.SingleGameStatistics;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
-import cz.kojotak.arx.ui.event.FilterEvent;
+import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.event.RebuiltGameTable;
 import cz.kojotak.arx.ui.listener.GameTableSelectListener;
 import cz.kojotak.arx.ui.model.GenericTableModel;
@@ -50,9 +48,9 @@ public class GameTable extends JXTable {
 		this.getSelectionModel().addListSelectionListener(gameSelectListener);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		EventBus.publish(new RebuiltGameTable());
 		this.getSelectionModel().setSelectionInterval(0, 0);
 		this.setColumnControlVisible(true);
+		this.modeOrPlayerChanged(null);
 	}
 	
 	/**
@@ -67,7 +65,13 @@ public class GameTable extends JXTable {
 		}
 	}
 	
-	public void filterChanged(){
+	private FilterModel filterModel=new FilterModel();
+	
+	
+	@EventSubscriber(eventClass=FilterModel.class)
+	public void updateGameFilter(FilterModel update){
+		this.filterModel = FilterModel.updateWith(this.filterModel, update);
+		
 		final Application app = Application.getInstance();
 		app.getLogger(this).debug("setting game table filter");
 		GenericTableModel<?> model = this.getGenericTableModel();
@@ -76,16 +80,16 @@ public class GameTable extends JXTable {
 			@Override
 			public boolean include(
 					Entry<? extends GenericTableModel<?>, ? extends Integer> entry) {
-				Mode<?> mode = app.getCurrentMode();
-				if(mode instanceof Searchable){
-					Searchable searchable = Searchable.class.cast(mode);
-					FilterEvent model = searchable.getFilter();
-					Category filterCat = model.getCategory();
-					Platform platform = model.getPlatform();
+			
+					Category filterCat = filterModel.getCategory();
+					if (Category.VSECHNY.equals(filterCat)) {
+						filterCat = null;
+					}
+					Platform platform = filterModel.getPlatform();
 					GenericTableModel<?> m = entry.getModel();
 					Integer id = entry.getIdentifier();
 					Game o = (Game)m.getItem(id);
-					String searchStr = model.getSearch();
+					String searchStr = filterModel.getSearch();
 					boolean nameOk=true;
 					boolean platformOk =true;
 					boolean catOk=true;
@@ -100,11 +104,7 @@ public class GameTable extends JXTable {
 						}
 					}
 					
-					return catOk && nameOk && platformOk;
-				}else{
-					return true;
-				}
-				
+					return catOk && nameOk && platformOk;				
 			}
 			  
 		};
@@ -143,7 +143,7 @@ public class GameTable extends JXTable {
 			}
 		}
 		this.setModel(model);
-		this.filterChanged();//have to apply filter on update table model
+		this.updateGameFilter(null);//have to apply filter on update table model
 	}
 
 	@Override

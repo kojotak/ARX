@@ -12,9 +12,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.Searchable;
-import cz.kojotak.arx.ui.event.FilterEvent;
+import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
 /**
@@ -26,42 +24,44 @@ public class SearchPanel extends JPanel {
 	private static final long serialVersionUID = 946035265025633452L;
 
 	final JTextField input;
+
 	public SearchPanel(final GameTable table) {
 		super();
-		JLabel label= new JLabel();
-		label.setText(Application.getInstance().getLocalization().getString(this, "LABEL"));
+		JLabel label = new JLabel();
+		label.setText(Application.getInstance().getLocalization().getString(
+				this, "LABEL"));
 		input = new JTextField();
 		input.setColumns(10);
-		input.setText("");	
+		input.setText("");
 		input.getDocument().addDocumentListener(new DocumentListener() {
-			private void onChange(DocumentEvent e){
+			private void onChange(DocumentEvent e) {
 				String str = SearchPanel.this.input.getText();
+				FilterModel filterModel = new FilterModel();
+				filterModel.setSearch(str);
 				Application app = Application.getInstance();
-				app.getLogger(this).info("filtering by search string: "+str);
-				Mode<?> mode = app.getCurrentMode();
-				if(mode instanceof Searchable){
-					Searchable s = Searchable.class.cast(mode);
-					FilterEvent fm = s.getFilter();
-					fm.setSearch(str);
-					table.filterChanged();
-				}
+				app.getLogger(this).info("filtering by search string: " + str);
+				table.updateGameFilter(filterModel);
 			}
+
 			public void changedUpdate(DocumentEvent e) {
 				onChange(e);
 			}
+
 			public void removeUpdate(DocumentEvent e) {
 				onChange(e);
 			}
+
 			public void insertUpdate(DocumentEvent e) {
 				onChange(e);
 			}
-			});
-		
-		JLabel icon = new JLabel(Application.getInstance().getIconLoader().tryLoadIcon(GUIIcons.SEARCH));
+		});
+
+		JLabel icon = new JLabel(Application.getInstance().getIconLoader()
+				.tryLoadIcon(GUIIcons.SEARCH));
 		this.setLayout(new BorderLayout());
-		//this.add(label, BorderLayout.WEST);//bez popisku je to hezci
-		this.add(input,BorderLayout.CENTER);
-		this.add(icon,BorderLayout.EAST);
+		// this.add(label, BorderLayout.WEST);//bez popisku je to hezci
+		this.add(input, BorderLayout.CENTER);
+		this.add(icon, BorderLayout.EAST);
 	}
 
 }

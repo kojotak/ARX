@@ -17,8 +17,7 @@ import javax.swing.JComboBox;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.Searchable;
+import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
 import cz.kojotak.arx.util.GenericEnumComparator;
 
@@ -34,32 +33,30 @@ public class CategoryComboBox extends JComboBox {
 		super();
 		updateCategoryListModel();
 		this.setMaximumRowCount(20);
-		this.setRenderer(new GenericEnumListRenderer<Category>(null,Category.class));
-		this.addActionListener(new ActionListener(){
+		this.setRenderer(new GenericEnumListRenderer<Category>(null,
+				Category.class));
+		this.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CategoryComboBox box = (CategoryComboBox)e.getSource();
-				Category selected = (Category)box.getSelectedItem();
-				if(Category.VSECHNY.equals(selected)){
-					selected=null;
-				}
-				Application app=Application.getInstance();
-				app.getLogger(CategoryComboBox.this).info("filtering by "+selected);
-				Mode<?> mode = app.getCurrentMode();
-				if(mode instanceof Searchable){
-					Searchable s = Searchable.class.cast(mode);
-					s.getFilter().setCategory(selected);
-					table.filterChanged();
-				}
+				CategoryComboBox box = (CategoryComboBox) e.getSource();
+				Category selected = (Category) box.getSelectedItem();
+				FilterModel filterModel = new FilterModel();
+				filterModel.setCategory(selected);
+				Application app = Application.getInstance();
+				app.getLogger(CategoryComboBox.this).info(
+						"filtering by " + selected);
+
+				table.updateGameFilter(filterModel);
+
 			}
-			
+
 		});
-		}
+	}
 
 	public void updateCategoryListModel() {
 		Application app = Application.getInstance();
-		Set<Category> catSet= app.getCurrentMode().getCategories();
+		Set<Category> catSet = app.getCurrentMode().getCategories();
 		Vector<Category> v = new Vector<Category>();
 		v.add(Category.VSECHNY);
 		List<Category> sorted = new ArrayList<Category>(catSet);
