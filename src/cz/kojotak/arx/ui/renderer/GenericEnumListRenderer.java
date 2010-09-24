@@ -48,6 +48,9 @@ public class GenericEnumListRenderer<T extends Enum<?>> extends JLabel implement
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
 		Application app = Application.getInstance();
+		if(value==null || !enumType.isAssignableFrom(value.getClass())){
+			return new JLabel();//avoid class cast exception
+		}
 		T item = enumType.cast(value);
 
 		if (isSelected) {

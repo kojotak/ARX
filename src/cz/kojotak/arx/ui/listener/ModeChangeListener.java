@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
+import org.bushe.swing.event.EventBus;
+
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.ui.FilterTaskPane;
@@ -38,10 +40,11 @@ public class ModeChangeListener implements ActionListener {
 		Application.getInstance().setCurrentMode(mode);
 		window.changeTable();//getGameTable().updateTableModel();
 		FilterTaskPane filter = window.getSidebar().getFilter();
-		filter.getCategoryComboBox().updateCategoryListModel();
-		filter.getPlatformComboBox().updateListModel();
+		//filter.getCategoryComboBox().updateCategoryListModel();
+		//filter.getPlatformComboBox().updateListModel();
 		filter.arrangeFilter();
 		window.switchRecordPanel();
+		EventBus.publish(mode);
 		Application.getInstance().getLogger(this).info("selected mode " + name);
 	}
 

@@ -15,8 +15,12 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
+
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
+import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
 import cz.kojotak.arx.util.GenericEnumComparator;
@@ -31,7 +35,7 @@ public class CategoryComboBox extends JComboBox {
 
 	public CategoryComboBox(final GameTable table) {
 		super();
-		updateCategoryListModel();
+		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(20);
 		this.setRenderer(new GenericEnumListRenderer<Category>(null,
 				Category.class));
@@ -52,11 +56,13 @@ public class CategoryComboBox extends JComboBox {
 			}
 
 		});
+		updateCategoryListModel(Application.getInstance().getCurrentMode());//XXX delete this and fire mode changed after GUI initialization
 	}
 
-	public void updateCategoryListModel() {
+	@EventSubscriber
+	public void updateCategoryListModel(Mode<?> mode) {
 		Application app = Application.getInstance();
-		Set<Category> catSet = app.getCurrentMode().getCategories();
+		Set<Category> catSet = mode.getCategories();
 		Vector<Category> v = new Vector<Category>();
 		v.add(Category.VSECHNY);
 		List<Category> sorted = new ArrayList<Category>(catSet);

@@ -15,7 +15,11 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
+
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
@@ -31,7 +35,7 @@ public class PlatfromComboBox extends JComboBox {
 
 	public PlatfromComboBox(final GameTable table) {
 		super();
-		updateListModel();
+		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(Platform.values().length);
 		this.setRenderer(new GenericEnumListRenderer<Platform>(null,
 				Platform.class));
@@ -54,11 +58,14 @@ public class PlatfromComboBox extends JComboBox {
 			}
 
 		});
+		
+		updateListModel(Application.getInstance().getCurrentMode());//XXX delete this and fire mode changed after GUI initialization
 	}
 
-	public void updateListModel() {
+	@EventSubscriber
+	public void updateListModel(Mode<?> mode) {
 		Application app = Application.getInstance();
-		Set<Platform> platforms = app.getCurrentMode().getPlatforms();
+		Set<Platform> platforms = mode.getPlatforms();
 		Vector<Platform> v = new Vector<Platform>();
 		List<Platform> sorted = new ArrayList<Platform>(platforms);
 		Collections.sort(sorted, new GenericEnumComparator(app.getLanguage()));
