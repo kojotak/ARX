@@ -21,7 +21,7 @@ public class PreferencesTaskPane extends JXTaskPane {
 	private static final long serialVersionUID = -1612142402940438020L;
 	protected transient Application app;
 	
-	public PreferencesTaskPane(final GameTable table) {
+	public PreferencesTaskPane() {
 		super();
 		app = Application.getInstance();
 		String title = app.getLocalization().getString(this, "TITLE");

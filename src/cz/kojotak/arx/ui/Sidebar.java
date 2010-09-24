@@ -26,7 +26,7 @@ public class Sidebar extends JPanel {
 	private FilterTaskPane filter;
 	private PreferencesTaskPane preferences;
 	
-	public Sidebar(final GameTable table) {
+	public Sidebar() {
 		super();
 
 		this
@@ -41,11 +41,11 @@ public class Sidebar extends JPanel {
 		taskpanecontainer.setBorder(new EmptyBorder(0,0,0,0));
 		taskpanecontainer.setAutoscrolls(true);
 
-		this.preferences = new PreferencesTaskPane(table);
-		this.filter = new FilterTaskPane(table);
+		this.preferences = new PreferencesTaskPane();
+		this.filter = new FilterTaskPane();
 	
 
-		JXTaskPane details = new DetailTaskPane(table);
+		JXTaskPane details = new DetailTaskPane();
 
 		taskpanecontainer.add(preferences);
 		taskpanecontainer.add(filter);

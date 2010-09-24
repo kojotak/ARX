@@ -32,7 +32,7 @@ public class DetailTaskPane extends JXTaskPane{
 	private JXImagePanel ipanel;
 	private JXHyperlink link;
 	private Application app;
-	public DetailTaskPane(final GameTable table) {
+	public DetailTaskPane() {
 		super();
 		AnnotationProcessor.process(this);
 		app = Application.getInstance();

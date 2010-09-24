@@ -110,7 +110,7 @@ public class MainWindow extends JFrame {
 		upper.add(centerHolder, BorderLayout.CENTER);
 		upper.add(records, BorderLayout.EAST);
 
-		sidebar = new Sidebar(table);
+		sidebar = new Sidebar();
 		toolbar = new Toolbar(this,sidebar.getFilter().getCategoryComboBox());
 		upper.add(sidebar,BorderLayout.WEST);
 		container.add(toolbar, BorderLayout.NORTH);

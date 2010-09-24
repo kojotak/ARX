@@ -36,7 +36,7 @@ public class FilterTaskPane extends JXTaskPane {
 	JLabel avaLab;
 	JLabel platLab;
 
-	public FilterTaskPane(final GameTable table) {
+	public FilterTaskPane() {
 		super();
 		Application app = Application.getInstance();
 		String title = app.getLocalization().getString(this, "TITLE");
@@ -56,7 +56,7 @@ public class FilterTaskPane extends JXTaskPane {
 		platLab.setHorizontalAlignment(JLabel.RIGHT);
 
 		categoryComboBox = new CategoryComboBox();
-		availibilityComboBox = new AvailibilityComboBox(table);
+		availibilityComboBox = new AvailibilityComboBox();
 		platformComboBox=new PlatfromComboBox();
 		arrangeFilter();
 	}
