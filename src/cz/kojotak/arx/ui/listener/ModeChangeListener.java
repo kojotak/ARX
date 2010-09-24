@@ -43,7 +43,7 @@ public class ModeChangeListener implements ActionListener {
 		//filter.getCategoryComboBox().updateCategoryListModel();
 		//filter.getPlatformComboBox().updateListModel();
 		filter.arrangeFilter();
-		window.switchRecordPanel();
+		//window.switchRecordPanel();
 		EventBus.publish(mode);
 		Application.getInstance().getLogger(this).info("selected mode " + name);
 	}

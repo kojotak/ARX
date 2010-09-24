@@ -15,6 +15,8 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.bushe.swing.event.EventBus;
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
 
 import lombok.Getter;
 
@@ -80,11 +82,13 @@ public class MainWindow extends JFrame {
 
 	public MainWindow() {
 		super();
+		AnnotationProcessor.process(this);
 		this.setMinimumSize(new Dimension(640,480));
-		String title = Application.getInstance().getLocalization().getString(this, "TITLE");
+		Application app = Application.getInstance();
+		String title = app.getLocalization().getString(this, "TITLE");
 		setTitle(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Image ico = Application.getInstance().getIconLoader().loadIcoAsImage("mamu"+File.separator+"39in1.ico");
+		Image ico = app.getIconLoader().loadIcoAsImage("mamu"+File.separator+"39in1.ico");
 		this.setIconImage(ico);
 		this.setLayout(new BorderLayout());
 		Container container = this.getContentPane();
@@ -122,12 +126,12 @@ public class MainWindow extends JFrame {
 		chat.setMinimumSize(new Dimension(0,0));
 		lower.add(chat,BorderLayout.CENTER);
 		splitter.setDividerLocation(1.0);
-		switchRecordPanel();
+		switchRecordPanel(app.getCurrentMode());
 		this.pack();
 	}
 	
-	public void switchRecordPanel(){
-		Mode<?> mode = Application.getInstance().getCurrentMode();
+	@EventSubscriber
+	public void switchRecordPanel(Mode<?> mode){
 		boolean showRecords = !(mode instanceof NoncompetetiveMode);
 		boolean added=false;
 		for(Component c:upper.getComponents()){
