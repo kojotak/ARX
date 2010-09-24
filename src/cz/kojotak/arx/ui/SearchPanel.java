@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.bushe.swing.event.EventBus;
+
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.icon.GUIIcons;
@@ -25,7 +27,7 @@ public class SearchPanel extends JPanel {
 
 	final JTextField input;
 
-	public SearchPanel(final GameTable table) {
+	public SearchPanel() {
 		super();
 		JLabel label = new JLabel();
 		label.setText(Application.getInstance().getLocalization().getString(
@@ -40,7 +42,7 @@ public class SearchPanel extends JPanel {
 				filterModel.setSearch(str);
 				Application app = Application.getInstance();
 				app.getLogger(this).info("filtering by search string: " + str);
-				table.updateGameFilter(filterModel);
+				EventBus.publish(filterModel);
 			}
 
 			public void changedUpdate(DocumentEvent e) {

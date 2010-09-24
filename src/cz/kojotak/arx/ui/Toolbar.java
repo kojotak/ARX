@@ -53,7 +53,7 @@ public class Toolbar extends JPanel {
 		middlePart.add(new ChatButton(window.getSplitter()));
 		middlePart.add(new SettingsButton());
 		middlePart.add(new HelpComboBox());
-		rightPart.add(new SearchPanel(window.getGameTable()));
+		rightPart.add(new SearchPanel());
 
 		//add components
 		this.setLayout(new BorderLayout());
