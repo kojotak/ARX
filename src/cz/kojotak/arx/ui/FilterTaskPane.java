@@ -57,7 +57,7 @@ public class FilterTaskPane extends JXTaskPane {
 
 		categoryComboBox = new CategoryComboBox(table);
 		availibilityComboBox = new AvailibilityComboBox(table);
-		platformComboBox=new PlatfromComboBox(table);
+		platformComboBox=new PlatfromComboBox();
 		arrangeFilter();
 	}
 	

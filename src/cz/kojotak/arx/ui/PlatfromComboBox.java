@@ -15,6 +15,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -33,7 +34,7 @@ public class PlatfromComboBox extends JComboBox {
 
 	private static final long serialVersionUID = 4089373502308114318L;
 
-	public PlatfromComboBox(final GameTable table) {
+	public PlatfromComboBox() {
 		super();
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(Platform.values().length);
@@ -45,16 +46,12 @@ public class PlatfromComboBox extends JComboBox {
 			public void actionPerformed(ActionEvent e) {
 				PlatfromComboBox box = (PlatfromComboBox) e.getSource();
 				Platform selected = (Platform) box.getSelectedItem();
-				if (Platform.ALL.equals(selected)) {
-					selected = null;
-				}
 				FilterModel filterModel = new FilterModel();
 				filterModel.setPlatform(selected);
 				Application app = Application.getInstance();
 				app.getLogger(PlatfromComboBox.this).info(
 						"filtering by " + selected);
-
-				table.updateGameFilter(filterModel);
+				EventBus.publish(filterModel);
 			}
 
 		});

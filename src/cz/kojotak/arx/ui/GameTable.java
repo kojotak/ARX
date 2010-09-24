@@ -86,6 +86,9 @@ public class GameTable extends JXTable {
 					filterCat = null;
 				}
 				Platform platform = filterModel.getPlatform();
+				if (Platform.ALL.equals(platform)) {
+					platform = null;
+				}
 				GenericTableModel<?> m = entry.getModel();
 				Integer id = entry.getIdentifier();
 				Game o = (Game) m.getItem(id);
