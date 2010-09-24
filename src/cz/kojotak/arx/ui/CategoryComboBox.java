@@ -15,6 +15,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -33,7 +34,7 @@ public class CategoryComboBox extends JComboBox {
 
 	private static final long serialVersionUID = 8070450403361850796L;
 
-	public CategoryComboBox(final GameTable table) {
+	public CategoryComboBox() {
 		super();
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(20);
@@ -50,9 +51,7 @@ public class CategoryComboBox extends JComboBox {
 				Application app = Application.getInstance();
 				app.getLogger(CategoryComboBox.this).info(
 						"filtering by " + selected);
-
-				table.updateGameFilter(filterModel);
-
+				EventBus.publish(filterModel);
 			}
 
 		});

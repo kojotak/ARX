@@ -55,7 +55,7 @@ public class FilterTaskPane extends JXTaskPane {
 		avaLab.setHorizontalAlignment(JLabel.RIGHT);
 		platLab.setHorizontalAlignment(JLabel.RIGHT);
 
-		categoryComboBox = new CategoryComboBox(table);
+		categoryComboBox = new CategoryComboBox();
 		availibilityComboBox = new AvailibilityComboBox(table);
 		platformComboBox=new PlatfromComboBox();
 		arrangeFilter();
