@@ -30,7 +30,7 @@ import cz.kojotak.arx.domain.impl.SimpleUser;
 import cz.kojotak.arx.domain.impl.SingleGameStatistics;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.event.FilterModel;
-import cz.kojotak.arx.ui.event.RebuiltGameTable;
+import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
 /**
@@ -49,7 +49,11 @@ public class GameTable extends JXTable {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.getSelectionModel().setSelectionInterval(0, 0);
 		this.setColumnControlVisible(true);
-		this.modeOrPlayerChanged(null);
+		this.user=Application.getInstance().getCurrentUser();
+		this.mode=Application.getInstance().getCurrentMode();
+		this.modeOrPlayerChanged();
+		
+		
 	}
 
 	/**
@@ -120,14 +124,28 @@ public class GameTable extends JXTable {
 		this.setRowSorter(sorter);
 	}
 
+	private Mode<?> mode=null;
+	private User user=null;
+	
+	@EventSubscriber
+	public void updateMode(Mode<?> mode){
+		this.mode=mode;
+		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
+		this.setColumnModel(cm);//got new column model
+		this.modeOrPlayerChanged();
+	}
+	
+	@EventSubscriber
+	public void updateUser(User user){
+		this.user=user;
+		this.modeOrPlayerChanged();
+	}
+	
 	/**
 	 * helper method to set new table model
 	 */
-	@EventSubscriber(eventClass = RebuiltGameTable.class)
-	public void modeOrPlayerChanged(RebuiltGameTable event) {
+	private void modeOrPlayerChanged() {
 		final Application app = Application.getInstance();
-		Mode<?> mode = app.getCurrentMode();
-		User user = app.getCurrentUser();
 		app.getLogger(this).debug(
 				"setting new game table model for " + user + " and " + mode);
 

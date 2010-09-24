@@ -16,7 +16,6 @@ import javax.swing.JComboBox;
 import org.bushe.swing.event.EventBus;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.ui.event.RebuiltGameTable;
 import cz.kojotak.arx.ui.renderer.PlayerListRenderer;
 
 /**
@@ -43,7 +42,7 @@ public class PlayerComboBox extends JComboBox {
 					usrName = null;
 				}
 				Application.getInstance().setPlayer(usrName);
-				EventBus.publish(new RebuiltGameTable());
+				EventBus.publish(Application.getInstance().getCurrentUser());
 				Application.getInstance().getLogger(this).info(
 						"selected user " + usrName);
 

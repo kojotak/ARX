@@ -14,16 +14,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.bushe.swing.event.EventBus;
+import lombok.Getter;
+
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
-
-import lombok.Getter;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
-import cz.kojotak.arx.ui.event.RebuiltGameTable;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
@@ -102,7 +100,11 @@ public class MainWindow extends JFrame {
 		container.add(splitter,BorderLayout.CENTER);
 
 		records = new RecordPanel(this);
-		changeTable();
+		//changeTable();
+		Mode<?> mode = app.getCurrentMode();
+		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
+		@SuppressWarnings("unchecked")GenericTableModel<?> tm = new GenericTableModel(mode.getGames(),mode.getColumns());
+		table = new GameTable(tm,cm,records.table);
 
 		JScrollPane scrollbars = new JScrollPane();
 		scrollbars.setViewportView(table);
@@ -126,7 +128,8 @@ public class MainWindow extends JFrame {
 		chat.setMinimumSize(new Dimension(0,0));
 		lower.add(chat,BorderLayout.CENTER);
 		splitter.setDividerLocation(1.0);
-		switchRecordPanel(app.getCurrentMode());
+		switchRecordPanel(mode);
+				
 		this.pack();
 	}
 	
@@ -147,16 +150,14 @@ public class MainWindow extends JFrame {
 		}
 	}
 
-	public void changeTable(){
-
-		Mode<?> mode = Application.getInstance().getCurrentMode();
-		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
-		@SuppressWarnings("unchecked")GenericTableModel<?> tm = new GenericTableModel(mode.getGames(),mode.getColumns());
-		if(table!=null){
-			table.setColumnModel(cm);
-		}else{
-			table = new GameTable(tm,cm,records.table);
-		}
-		EventBus.publish(new RebuiltGameTable());
-	}
+//	@EventSubscriber
+//	public void changeTable(Mode<?> mode){
+//		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
+//		@SuppressWarnings("unchecked")GenericTableModel<?> tm = new GenericTableModel(mode.getGames(),mode.getColumns());
+//		if(table!=null){
+//			table.setColumnModel(cm);
+//		}else{
+//			table = new GameTable(tm,cm,records.table);
+//		}
+//	}
 }
