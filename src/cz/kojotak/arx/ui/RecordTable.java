@@ -9,7 +9,11 @@ import java.util.List;
 
 import javax.swing.JTable;
 
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
+
 import cz.kojotak.arx.domain.Competetive;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.ui.column.BaseColumn;
@@ -36,10 +40,16 @@ public class RecordTable extends JTable {
 	@SuppressWarnings("unchecked")
 	public RecordTable() {
 		super(new GenericTableModel(Collections.emptyList(),COLS),new GenericTableColumnModel(COLS));
+		AnnotationProcessor.process(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 
-	public void updateTableModel(Competetive<?> game){
+	@EventSubscriber
+	public void updateTableModel(Game event){
+		if(!(event instanceof Competetive<?>)){
+			return;
+		}
+		Competetive<?> game = Competetive.class.cast(event); 
 		List<?> records = game!=null?game.getRecords():Collections.emptyList();
 		@SuppressWarnings("unchecked")GenericTableModel<?> model = new GenericTableModel(records,COLS);
 		this.setModel(model);
