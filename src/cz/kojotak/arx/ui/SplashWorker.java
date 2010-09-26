@@ -4,7 +4,6 @@
 package cz.kojotak.arx.ui;
 
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -88,15 +87,6 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 		return null;
 	}
 	
-	
-	
-	@Override
-	protected void done() {
-		splash.setScreenVisible(false);
-	}
-
-
-
 	@Override
 	protected void process(List<Progress> chunks) {
 		Progress progress = chunks.get(chunks.size() - 1);

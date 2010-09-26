@@ -6,14 +6,10 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import lombok.Getter;
 
@@ -34,48 +30,6 @@ import cz.kojotak.arx.ui.model.GenericTableModel;
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = -4442291784760181286L;
-
-	/**
-	* Auto-generated main method to display this JFrame
-	*/
-	public static void main(String[] args) throws Exception {
-		final Application app = Application.getInstance();
-		app.init();
-		
-		Image image = app.getIconLoader().loadImage("logo.jpg");
-		ImageIcon myImage = new ImageIcon(image);
-		SplashScreen splash = new SplashScreen(myImage);
-		splash.setLocationRelativeTo(null);
-		splash.setProgressMax(100);
-		splash.setScreenVisible(true);		
-		System.err.println("working on...");
-		SplashWorker postInit = new SplashWorker(splash, app.getJobs());
-		postInit.execute();//run in separate thread
-		postInit.get();//wait until the result is available
-		app.finishInitialization();
-		System.err.println("working on... done");
-				
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-
-				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				        if ("Nimbus".equals(info.getName())) {
-				            try{
-				            	UIManager.setLookAndFeel(info.getClassName());
-				            }catch(Exception ex){
-				            	app.getLogger(MainWindow.class).warn("failed to load Nimbus L&F",ex);
-				            }
-				            app.getLogger(MainWindow.class).info("L&F switched to Nimbus");
-				            break;
-				        }
-				    }
-
-				MainWindow inst = new MainWindow();
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
-			}
-		});
-	}
 
 	private RecordPanel records;
 	private GameTable table;
