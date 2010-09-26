@@ -201,8 +201,13 @@ public class GameTable extends JXTable {
 		}
 
 		GenericTableModel<?> ggtm = getGenericTableModel();
-		Game game = (Game)ggtm.getItem(convertRowIndexToModel(idx));
-		EventBus.publish(game);
+		try{
+			Game game = (Game)ggtm.getItem(convertRowIndexToModel(idx));
+			EventBus.publish(game);
+		}catch(Exception ex){//dirty and ugly
+			Application.getInstance().getLogger(this).warn("invalid row index in game table model",ex);
+		}
+		
 	}
 
 }

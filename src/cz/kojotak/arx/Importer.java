@@ -16,6 +16,7 @@ import lombok.Getter;
 
 import org.apache.log4j.Logger;
 
+import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
@@ -31,7 +32,12 @@ import cz.kojotak.arx.domain.impl.RecordImpl;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
 
-public class Importer {	
+/**
+ * Needs refactoring!
+ * @date 26.9.2010
+ * @author Kojotak
+ */
+public class Importer implements RunnableWithProgress{	
 	private Map<String, MameGameSingle> gamesSingle;
 	private Map<String, MameGameDouble> gamesDouble;
 	private Map<String, AmigaGame> gamesAmiga;
@@ -249,61 +255,27 @@ public class Importer {
 		game.setAverageRatings(hodnoceni);
 	}
 	
-	Importer(BufferedReader reader) {
+	public Importer(){}
+	
+	private int countLines=-1;
+	
+	Importer(BufferedReader reader,int countLines) {
 		super();
 		log = Application.getInstance().getLogger(this);
-		log.debug("creating importer...");
 		gamesSingle = new HashMap<String, MameGameSingle>(2000);
 		gamesDouble = new HashMap<String, MameGameDouble>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
 		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
-		try {
-			String line = null;
-			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0;
-			while ((line = reader.readLine()) != null) {
-				int start = line.indexOf("('");
-				int end = line.indexOf("')");
-				if (start < 0 || end < 0) {
-					if(line.startsWith("UPDATE info SET cas_aktualizace")){
-						start=line.indexOf("'");
-						end=line.indexOf("'",start+1);
-						if(start>0 && end > start){
-							String sub = line.substring(start+1, end);
-							Long l = Long.parseLong(sub);
-							l*=1000;//php asi neumi millisekundy
-							lastUpdate = new Date(l);
-							log.info("database version: "+lastUpdate);
-						}
-						continue;
-					}else{
-						continue;
-					}
-				}
-				String data = line.substring(start + 2, end);
-				String[] parts = data.split("','");
-				if (line.startsWith("INSERT INTO hry_mame")) {
-					importMameGame(parts);
-					mameGames++;// both single and double mode
-				} else if (line.startsWith("INSERT INTO hry_amiga")) {
-					importAmigaGame(parts);
-					amigaGames++;
-				} else if (line.startsWith("INSERT INTO hry")) {
-					importNoncompetitiveGame(parts);
-					noncompetitiveGames++;
-				} else if (line.startsWith("INSERT INTO rekordy")) {
-					importRecord(parts);
-					records++;
-				} 
-			}
-			log.info("done..., mame games=" + mameGames
-					+ ", amiga games=" + amigaGames + ", noncompetitive games="
-					+ noncompetitiveGames + ", records=" + records);
-		} catch (IOException x) {
-			x.printStackTrace();
-		}
+		this.countLines=countLines;
+		this.reader=reader;
 	}
+	
+	BufferedReader reader=null;
 
 	<T extends Game> List<T> prepareGames(Map<String, T> map,Class<T> clz) {
+		if(map==null || map.isEmpty()){
+			return Collections.emptyList();
+		}
 		Collection<T> collection = map.values();
 		List<T> list = new ArrayList<T>(collection);
 		log.trace("sorting "+clz.getSimpleName()+" ...");
@@ -344,4 +316,66 @@ public class Importer {
 		return prepareGames(this.gamesNoncompetetive,NoncompetitiveGame.class);
 	}
 
+	
+	@Override
+	public int max(){
+		return countLines;
+	};
+	
+	private int readLines=0;
+	
+	@Override
+	public int current(){
+		return readLines;
+	}
+	
+	public void run(){
+		log.debug("running importer...");
+		try {
+			String line = null;
+			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0;
+			while ((line = reader.readLine()) != null) {
+				this.readLines++;
+				int start = line.indexOf("('");
+				int end = line.indexOf("')");
+				if (start < 0 || end < 0) {
+					if(line.startsWith("UPDATE info SET cas_aktualizace")){
+						start=line.indexOf("'");
+						end=line.indexOf("'",start+1);
+						if(start>0 && end > start){
+							String sub = line.substring(start+1, end);
+							Long l = Long.parseLong(sub);
+							l*=1000;//php asi neumi millisekundy
+							lastUpdate = new Date(l);
+							log.info("database version: "+lastUpdate);
+						}
+						continue;
+					}else{
+						continue;
+					}
+				}
+				String data = line.substring(start + 2, end);
+				String[] parts = data.split("','");
+				if (line.startsWith("INSERT INTO hry_mame")) {
+					importMameGame(parts);
+					mameGames++;// both single and double mode
+				} else if (line.startsWith("INSERT INTO hry_amiga")) {
+					importAmigaGame(parts);
+					amigaGames++;
+				} else if (line.startsWith("INSERT INTO hry")) {
+					importNoncompetitiveGame(parts);
+					noncompetitiveGames++;
+				} else if (line.startsWith("INSERT INTO rekordy")) {
+					importRecord(parts);
+					records++;
+				} 
+			}
+			log.info("done..., mame games=" + mameGames
+					+ ", amiga games=" + amigaGames + ", noncompetitive games="
+					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
+		} catch (IOException x) {
+			x.printStackTrace();
+		}
+		
+	}
 }

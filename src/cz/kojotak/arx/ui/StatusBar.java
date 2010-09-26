@@ -51,8 +51,8 @@ public class StatusBar extends JPanel {
 			.append(" ").append(props.getString(this,"VERSION")).toString();
 		
 		Date updated = app.getImporter().getLastUpdate();
-		String dbversion = new StringBuilder(loc.getString(this, "DB_VERSION"))
-			.append(" ").append(DB_VERSION.format(updated)).toString();
+		String dbversion = updated!=null?new StringBuilder(loc.getString(this, "DB_VERSION"))
+			.append(" ").append(DB_VERSION.format(updated)).toString():"?";
 		
 		contentPanel = new JPanel();
 		Mode<?> mode = app.getCurrentMode();

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,9 +38,23 @@ public class MainWindow extends JFrame {
 	/**
 	* Auto-generated main method to display this JFrame
 	*/
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		final Application app = Application.getInstance();
 		app.init();
+		
+		Image image = app.getIconLoader().loadImage("logo.jpg");
+		ImageIcon myImage = new ImageIcon(image);
+		SplashScreen splash = new SplashScreen(myImage);
+		splash.setLocationRelativeTo(null);
+		splash.setProgressMax(100);
+		splash.setScreenVisible(true);		
+		System.err.println("working on...");
+		SplashWorker postInit = new SplashWorker(splash, app.getJobs());
+		postInit.execute();//run in separate thread
+		postInit.get();//wait until the result is available
+		app.finishInitialization();
+		System.err.println("working on... done");
+				
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 

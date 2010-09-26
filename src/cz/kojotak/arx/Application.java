@@ -16,11 +16,13 @@ import java.util.logging.LogManager;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Language;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.User;
@@ -31,15 +33,16 @@ import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.properties.Icons;
 import cz.kojotak.arx.properties.Localization;
+import cz.kojotak.arx.util.Downloader;
+import cz.kojotak.arx.util.LineCounter;
 
 /**
  * @date 25.10.2009
  * @author Kojotak
  */
 public final class Application {
-
-	// FIXME onload?
-	public static String currentDir = System.getProperty("user.dir");
+	
+	private String currentDir;
 
 	protected Logger log;
 	
@@ -51,7 +54,9 @@ public final class Application {
 	
 	@Getter
 	private Icons icons;
-	private ImporterFactory ifa;
+	
+	@Getter
+	private ImporterFactory importerFactory;
 	
 	@Getter
 	private Importer importer;
@@ -93,19 +98,11 @@ public final class Application {
 	}
 
 	public void init() {
-		language = Language.CZECH;
-		ifa = new ImporterFactory();
-		String icoPath = Application.currentDir + File.separator
-		+ "res" + File.separator + "icons" + File.separator;
-		String imgPath = Application.currentDir + File.separator
-		+ "tmp" + File.separator + "images" + File.separator;
-		iconLoader = new IconLoader(icoPath,imgPath,this);
-		properties = new Properties(language);
-		localization = new Localization(language);
-		icons = new Icons(language);
-
-		this.initImporter();
-		this.initModes();
+		importerFactory = new ImporterFactory();
+		
+		//this.importer = new Importer();//delete me
+//		this.doImport();
+//		this.postInit();
 		//this.initHttpClient();
 		this.initPlayers();
 	}
@@ -114,7 +111,7 @@ public final class Application {
 		client.getConnectionManager().shutdown();
 	}
 
-	private void initModes() {
+	public void finishInitialization() {
 		this.arcadeMode = new ArcadeMode(importer);
 		this.arcadeTwoPlayerMode = new TwoPlayerMode(importer);
 		this.amigaMode = new AmigaMode(importer);
@@ -127,13 +124,13 @@ public final class Application {
 		this.modes.add(noncompetetiveMode);
 	}
 
-	private void initImporter() {
+	private void doImport() {
 		long startTime = System.currentTimeMillis();
 		long startMem = Runtime.getRuntime().freeMemory();
 
 		// importer = ifa.createFromGziped(currentDir + File.separator +
 		// "tmp"+File.separator+"rotaxmame_databaze.gz");
-		importer = ifa.createFromWeb();
+		importer = importerFactory.createFromWeb();
 		long endTime = System.currentTimeMillis();
 		long endMem = Runtime.getRuntime().freeMemory();
 		log.info("import done in " + (double)(endTime - startTime) / 1000
@@ -255,6 +252,7 @@ public final class Application {
 	}
 
 	private Application() {
+		currentDir = System.getProperty("user.dir");
 		String etcDirPath = currentDir + File.separator + "etc"
 				+ File.separator;
 
@@ -271,6 +269,20 @@ public final class Application {
 		} catch (Exception ex) {
 			log.error("cannot reconfigure java.util.LogManager", ex);
 		}
+		
+		language = Language.CZECH;
+		String icoPath = currentDir + File.separator
+		+ "res" + File.separator + "icons" + File.separator;
+		String imgPath = currentDir + File.separator
+		+ "tmp" + File.separator + "images" + File.separator;
+		iconLoader = new IconLoader(icoPath,imgPath,this);
+		properties = new Properties(language);
+		localization = new Localization(language);
+		icons = new Icons(language);
+	}
+	
+	public String getTmpDir(){
+		return currentDir+File.separator+"tmp";
 	}
 
 	public void setPlayer(String name) {
@@ -334,6 +346,41 @@ public final class Application {
 			}
 		}
 		return string;
+	}
+	
+	public File getZipedDatabaseFile(){
+		String filename = getTmpDir() + File.separator + "rm_db.gz";
+		return new File(filename);
+	}
+	
+	public List<Job> getJobs(){
+		List<Job> list = new ArrayList<Job>();
+		Downloader downloader = new Downloader(this,RM_DB_URL,getZipedDatabaseFile());
+		Job downloaderJob = new Job(downloader,100,"stahov·nÌ datab·ze rotaxmame");
+		LineCounter counter = new LineCounter(getZipedDatabaseFile(),this);
+		Job counterJob = new Job(counter,5,"zjiöùov·nÌ velikosti datab·ze");
+		this.importer = this.importerFactory.createFromGziped(getZipedDatabaseFile());
+		Job importerJob = new Job(importer,100,"importov·nÌ datab·ze");
+		//list.add(new DummyJob(50));
+		list.add(downloaderJob);
+		list.add(counterJob);
+		list.add(importerJob);
+		return list;
+	}
+	
+	public static final String RM_DB_URL="http://rotaxmame.cz/php/download3.php?co=kompletni_databaze";
+	
+	@ToString
+	public static class Job{
+		public final RunnableWithProgress runnable;
+		public final int weight;
+		public final String description;
+		public Job(RunnableWithProgress runnable, int weight, String description) {
+			super();
+			this.runnable = runnable;
+			this.weight = weight;
+			this.description = description;
+		}
 	}
 
 }

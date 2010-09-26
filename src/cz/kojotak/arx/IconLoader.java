@@ -93,7 +93,8 @@ public class IconLoader {
 	}
 
 	public Image loadImage(String path){
-		return loadImageInt(imgPrefix, path,true);
+		boolean appendExtension=!path.contains(".");
+		return loadImageInt(imgPrefix, path,appendExtension);
 	}
 	
 	//FIXME this ugly code!!!

@@ -78,8 +78,8 @@ public class HelpComboBox extends JComboBox {
 
 	protected void selectRotaxmame(){
 		JFrame jf = getHelpFrame();
-		String cd = Application.currentDir;
-		cd+=File.separator+"tmp"+File.separator+"napoveda.chm";
+		String cd = Application.getInstance().getTmpDir();
+		cd+=File.separator+"napoveda.chm";
 		JPanel panel = null;
 		try{
 			panel=new CHMPane(cd);

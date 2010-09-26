@@ -4,6 +4,7 @@
 package cz.kojotak.arx;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +15,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -22,6 +26,14 @@ import org.apache.log4j.Logger;
  */
 public class ImporterFactory {
 	protected Logger log;
+	
+	/**
+	 * number of lines in import file
+	 * FIXME refactor me!
+	 */
+	@Setter
+	@Getter
+	private int lines=0;
 
 	public ImporterFactory() {
 		super();
@@ -36,7 +48,7 @@ public class ImporterFactory {
 			in = new FileInputStream(fileName);
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
-			importer = new Importer(reader);
+			importer = new Importer(reader,this.lines);
 		} catch (FileNotFoundException ex) {
 			log.error("there is no such file " + fileName);
 			throw new RuntimeException("there is no such a file "+fileName,ex);
@@ -53,7 +65,7 @@ public class ImporterFactory {
 	}
 	
 	public Importer createFromWeb(){
-		final String URL="http://rotaxmame.cz/php/download3.php?co=kompletni_databaze";
+		final String URL = Application.RM_DB_URL;
 		log.debug("opening "+URL+" ... ");
 		URL url = null;
 		try{
@@ -81,27 +93,27 @@ public class ImporterFactory {
 		try{
 			GZIPInputStream gzip = new GZIPInputStream(stream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-			importer = new Importer(br);
+			importer = new Importer(br,this.lines);
 		}catch(IOException ioex){
 			ioex.printStackTrace();
 		}
 		return importer;
 	}
 	
-	public Importer createFromGziped(String filename){
-		log.info("processing " + filename + " ...");
+	public Importer createFromGziped(File file){
+		log.info("processing " + file + " ...");
 		InputStream in=null;
 		Importer importer = null;
 		try{
-			in = new FileInputStream(filename);
+			in = new FileInputStream(file);
 			GZIPInputStream gzip = new GZIPInputStream(in);
 			BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-			importer = new Importer(br);
+			importer = new Importer(br,this.lines);
 		}catch(FileNotFoundException ex){
-			log.error("there is no such file " + filename);
-			throw new RuntimeException("there is no such a file "+filename,ex);
+			log.error("there is no such file " + file);
+			throw new RuntimeException("there is no such a file "+file,ex);
 		}catch(IOException ioex){
-			log.error("Cannot import data using "+filename);
+			log.error("Cannot import data using "+file);
 			throw new RuntimeException("Error during import",ioex);
 		}
 		return importer;
