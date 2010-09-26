@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
-import java.awt.Image;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -18,7 +17,6 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import lombok.Getter;
-import cz.kojotak.arx.Application;
 
 /**
  * Splash screen
@@ -32,28 +30,6 @@ public class SplashScreen extends JWindow {
 	 * generated
 	 */
 	private static final long serialVersionUID = 7763452240461525048L;
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) throws Exception{
-		Application app = Application.getInstance();
-		Image image = app.getIconLoader().loadImage("logo.jpg");
-		ImageIcon myImage = new ImageIcon(image);
-		SplashScreen screen = new SplashScreen(myImage);
-		screen.setLocationRelativeTo(null);
-		screen.setProgressMax(100);
-		screen.setScreenVisible(true);
-		// do something here to simulate the program doing something that
-		// is time consuming
-		for (int i = 0; i <= 100; i++) {
-			Thread.sleep((long)(100L*Math.random()));//simulated delay
-			screen.setProgress("    Nazdar " + i+" %", i); // progress bar with a message
-		}
-		screen.setScreenVisible(false);
-		System.exit(0);
-
-	}
 
 	JLabel splashImage = new JLabel();
 	JLabel messageLabel = new JLabel();

@@ -13,10 +13,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.log4j.Logger;
 
@@ -31,9 +29,7 @@ public class ImporterFactory {
 	 * number of lines in import file
 	 * FIXME refactor me!
 	 */
-	@Setter
-	@Getter
-	private int lines=0;
+	public AtomicInteger lines=new AtomicInteger(0);
 
 	public ImporterFactory() {
 		super();
@@ -48,7 +44,7 @@ public class ImporterFactory {
 			in = new FileInputStream(fileName);
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(in));
-			importer = new Importer(reader,this.lines);
+			importer = new Importer(reader);
 		} catch (FileNotFoundException ex) {
 			log.error("there is no such file " + fileName);
 			throw new RuntimeException("there is no such a file "+fileName,ex);
@@ -93,7 +89,7 @@ public class ImporterFactory {
 		try{
 			GZIPInputStream gzip = new GZIPInputStream(stream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-			importer = new Importer(br,this.lines);
+			importer = new Importer(br);
 		}catch(IOException ioex){
 			ioex.printStackTrace();
 		}
@@ -108,7 +104,7 @@ public class ImporterFactory {
 			in = new FileInputStream(file);
 			GZIPInputStream gzip = new GZIPInputStream(in);
 			BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-			importer = new Importer(br,this.lines);
+			importer = new Importer(br);
 		}catch(FileNotFoundException ex){
 			log.error("there is no such file " + file);
 			throw new RuntimeException("there is no such a file "+file,ex);

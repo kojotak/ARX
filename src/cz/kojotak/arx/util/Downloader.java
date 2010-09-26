@@ -33,7 +33,7 @@ public class Downloader implements RunnableWithProgress {
 	private File target;
 	private String source;
 	private AtomicInteger readBytes=new AtomicInteger(0);
-	private AtomicInteger totalBytes=new AtomicInteger(RunnableWithProgress.UNKNOWN);
+	private AtomicInteger totalBytes=new AtomicInteger(0);
 	private static final int BUFFER_SIZE=4096;
 
 	public Downloader(Application app,String source,File target) {

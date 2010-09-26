@@ -10,6 +10,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.ui.MainWindow;
 import cz.kojotak.arx.ui.SplashScreen;
 import cz.kojotak.arx.ui.SplashWorker;
@@ -46,7 +47,7 @@ public class DesktopRunner {
 			app.getLogger(DesktopRunner.class).error(
 					"cannot initialize application", ex);
 		}
-		splash.setProgress("initializing GUI", -1);
+		splash.setProgress("initializing GUI", RunnableWithProgress.UNKNOWN);
 		app.finishInitialization();
 
 		SwingUtilities.invokeLater(new Runnable() {

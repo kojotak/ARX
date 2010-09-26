@@ -12,6 +12,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.LogManager;
 
 import lombok.Getter;
@@ -124,19 +125,19 @@ public final class Application {
 		this.modes.add(noncompetetiveMode);
 	}
 
-	private void doImport() {
-		long startTime = System.currentTimeMillis();
-		long startMem = Runtime.getRuntime().freeMemory();
-
-		// importer = ifa.createFromGziped(currentDir + File.separator +
-		// "tmp"+File.separator+"rotaxmame_databaze.gz");
-		importer = importerFactory.createFromWeb();
-		long endTime = System.currentTimeMillis();
-		long endMem = Runtime.getRuntime().freeMemory();
-		log.info("import done in " + (double)(endTime - startTime) / 1000
-				+ " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
-
-	}
+//	private void doImport() {
+//		long startTime = System.currentTimeMillis();
+//		long startMem = Runtime.getRuntime().freeMemory();
+//
+//		// importer = ifa.createFromGziped(currentDir + File.separator +
+//		// "tmp"+File.separator+"rotaxmame_databaze.gz");
+//		importer = importerFactory.createFromWeb();
+//		long endTime = System.currentTimeMillis();
+//		long endMem = Runtime.getRuntime().freeMemory();
+//		log.info("import done in " + (double)(endTime - startTime) / 1000
+//				+ " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
+//
+//	}
 /*
 	private void logCookies() {
 		List<Cookie> cookies = client.getCookieStore().getCookies();
@@ -356,7 +357,7 @@ public final class Application {
 	public List<Job> getJobs(){
 		List<Job> list = new ArrayList<Job>();
 		Downloader downloader = new Downloader(this,RM_DB_URL,getZipedDatabaseFile());
-		Job downloaderJob = new Job(downloader,100,"stahov·nÌ datab·ze rotaxmame");
+		Job downloaderJob = new Job(downloader,100,"stahov·nÌ datab·ze");
 		LineCounter counter = new LineCounter(getZipedDatabaseFile(),this);
 		Job counterJob = new Job(counter,5,"zjiöùov·nÌ velikosti datab·ze");
 		this.importer = this.importerFactory.createFromGziped(getZipedDatabaseFile());
@@ -367,6 +368,8 @@ public final class Application {
 		list.add(importerJob);
 		return list;
 	}
+	
+	public AtomicInteger linesToImport = new AtomicInteger(0);
 	
 	public static final String RM_DB_URL="http://rotaxmame.cz/php/download3.php?co=kompletni_databaze";
 	

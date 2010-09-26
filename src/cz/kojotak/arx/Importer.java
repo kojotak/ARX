@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.log4j.Logger;
 
@@ -257,16 +258,17 @@ public class Importer implements RunnableWithProgress{
 	
 	public Importer(){}
 	
+	@Setter
+	@Getter
 	private int countLines=-1;
 	
-	Importer(BufferedReader reader,int countLines) {
+	Importer(BufferedReader reader) {
 		super();
 		log = Application.getInstance().getLogger(this);
 		gamesSingle = new HashMap<String, MameGameSingle>(2000);
 		gamesDouble = new HashMap<String, MameGameDouble>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
 		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
-		this.countLines=countLines;
 		this.reader=reader;
 	}
 	
@@ -330,7 +332,8 @@ public class Importer implements RunnableWithProgress{
 	}
 	
 	public void run(){
-		log.debug("running importer...");
+		this.countLines=Application.getInstance().linesToImport.get();//FIXME please, refactor me
+		log.debug("running importer... (expecting "+countLines+")");
 		try {
 			String line = null;
 			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0;
@@ -372,7 +375,7 @@ public class Importer implements RunnableWithProgress{
 			}
 			log.info("done..., mame games=" + mameGames
 					+ ", amiga games=" + amigaGames + ", noncompetitive games="
-					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
+					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines+", max lines="+countLines);
 		} catch (IOException x) {
 			x.printStackTrace();
 		}

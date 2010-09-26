@@ -16,7 +16,6 @@ import lombok.ToString;
 import org.apache.log4j.Logger;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.ImporterFactory;
 import cz.kojotak.arx.common.RunnableWithProgress;
 
 /**
@@ -28,13 +27,13 @@ public class LineCounter implements RunnableWithProgress {
 	
 	private File file;
 	private Logger log;
-	private ImporterFactory ifa;
+	private Application app;
 
 	public LineCounter(File file,Application app) {
 		super();
 		this.file = file;
 		this.log = app.getLogger(this);
-		this.ifa = app.getImporterFactory();
+		this.app = app;
 	}
 
 	/* (non-Javadoc)
@@ -91,7 +90,8 @@ public class LineCounter implements RunnableWithProgress {
 			while(reader.readLine()!=null){
 				lines++;
 			}
-			ifa.setLines(lines);
+			app.linesToImport.set(lines);
+			log.error("lines to import set to "+lines);
 		} catch (IOException ex) {
 			log.error("cannot count lines in "+file,ex);
 		} finally {
