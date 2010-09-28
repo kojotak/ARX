@@ -46,7 +46,7 @@ public class SplashScreen extends JWindow {
 		this.setLayout(layout);	   
 		
 		this.messageLabel.setForeground(Color.GREEN);
-		this.messageLabel.setText("hello");
+		this.messageLabel.setText("Inicializuju...");
 		this.messageLabel.setForeground(rmBlue);
 		this.messageLabel.setFont(messageFont);
 		this.imageIcon = imageIcon;

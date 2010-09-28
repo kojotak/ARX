@@ -320,14 +320,14 @@ public class Importer implements RunnableWithProgress{
 
 	
 	@Override
-	public int max(){
+	public long max(){
 		return countLines;
 	};
 	
-	private int readLines=0;
+	private long readLines=0;
 	
 	@Override
-	public int current(){
+	public long current(){
 		return readLines;
 	}
 	

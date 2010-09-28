@@ -37,7 +37,7 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 		this.splash = splash;
 		this.jobs = jobs;
 		for (Job job : jobs) {
-			totalWeight += job.weight;
+			totalWeight += job.getWeight();
 		}
 		scheduler = Executors.newScheduledThreadPool(1);
 		log = Application.getInstance().getLogger(this);
@@ -58,13 +58,13 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 				if(job==null){
 					return;
 				}
-				RunnableWithProgress runnable = job.runnable;
+				RunnableWithProgress runnable = job.getRunnable();
 				double d =   RunnableWithProgress.UNKNOWN == runnable.max() ? RunnableWithProgress.UNKNOWN:
-					100.0 *runnable.current()/runnable.max()*job.weight/totalWeight;
+					100.0 *runnable.current()/runnable.max()*job.getWeight()/totalWeight;
 				d += Double.longBitsToDouble(soFar.get());
 				int i=(int)d;
 				log.debug("updating progress for "+job+", done "+i);
-				Progress progress = new Progress(i,job.description+(i!=RunnableWithProgress.UNKNOWN?" "+i+" %" :""));
+				Progress progress = new Progress(i,job.getDescription()+(i!=RunnableWithProgress.UNKNOWN?" "+i+" %" :""));
 				SplashWorker.this.publish(progress);
 			}
 		};
@@ -73,10 +73,10 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 
 		for (Job job : jobs) {
 			System.err.println("working on "+job+", so far "+Double.longBitsToDouble(soFar.get()));
-			RunnableWithProgress runnable = job.runnable;
+			RunnableWithProgress runnable = job.getRunnable();
 			currentJob.setHolded(job);
 			runnable.run();
-			double soFarDouble = 100.0*job.weight/totalWeight + Double.longBitsToDouble(soFar.get());
+			double soFarDouble = 100.0*job.getWeight()/totalWeight + Double.longBitsToDouble(soFar.get());
 			soFar.set(Double.doubleToLongBits(soFarDouble));
 		}
 		updaterHandle.cancel(true);

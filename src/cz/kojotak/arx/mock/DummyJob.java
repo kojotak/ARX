@@ -21,16 +21,16 @@ public class DummyJob extends Job {
 
 	public DummyJob(final int sleepInMs) {
 		super(new RunnableWithProgress(){
-			int max = 100;
+			long max = 100;
 			AtomicInteger current=new AtomicInteger(0);
 			
 			@Override
-			public int current() {
+			public long current() {
 				return current.get();
 			}
 
 			@Override
-			public int max() {
+			public long max() {
 				return max;
 			}
 

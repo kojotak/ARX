@@ -40,7 +40,7 @@ public class LineCounter implements RunnableWithProgress {
 	 * @see cz.kojotak.arx.common.RunnableWithProgress#current()
 	 */
 	@Override
-	public int current() {
+	public long current() {
 		return 0;
 	}
 
@@ -48,7 +48,7 @@ public class LineCounter implements RunnableWithProgress {
 	 * @see cz.kojotak.arx.common.RunnableWithProgress#max()
 	 */
 	@Override
-	public int max() {
+	public long max() {
 		return RunnableWithProgress.UNKNOWN;
 	}
 

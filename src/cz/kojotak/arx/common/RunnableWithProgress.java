@@ -13,9 +13,9 @@ public interface RunnableWithProgress extends Runnable {
 	public static final int UNKNOWN=-1;
 
 	/** maximum progress, counting from zero, if unknown, {@link #UNKNOWN} can be returned instead*/
-	int max();
+	long max();
 	
 	/** current progress between 0 and {@link #max()}*/
-	int current();
+	long current();
 	
 }

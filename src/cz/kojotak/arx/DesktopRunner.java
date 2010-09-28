@@ -20,13 +20,27 @@ import cz.kojotak.arx.ui.SplashWorker;
  * @author Kojotak
  */
 public class DesktopRunner {
-
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		final Application app = Application.getInstance();
 		app.init();
+		
+		
+//		//handle exceptions in EDT
+//		SwingUtilities.invokeLater(new Runnable() {
+//		    public void run() {
+//		        Thread.currentThread().setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+//					
+//					@Override
+//					public void uncaughtException(Thread thread, Throwable ex) {
+//						app.getLogger(thread).error("Exception in EDT", ex);						
+//					}
+//				});
+//		    }
+//		});
 		
 		Image image = app.getIconLoader().loadImage("logo.jpg");
 		ImageIcon myImage = new ImageIcon(image);

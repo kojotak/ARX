@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import lombok.ToString;
 
@@ -32,8 +32,8 @@ public class Downloader implements RunnableWithProgress {
 	private Logger log;
 	private File target;
 	private String source;
-	private AtomicInteger readBytes=new AtomicInteger(0);
-	private AtomicInteger totalBytes=new AtomicInteger(0);
+	private AtomicLong readBytes=new AtomicLong(0);
+	private AtomicLong totalBytes=new AtomicLong(0);
 	private static final int BUFFER_SIZE=4096;
 
 	public Downloader(Application app,String source,File target) {
@@ -47,7 +47,7 @@ public class Downloader implements RunnableWithProgress {
 	 * @see cz.kojotak.arx.common.RunnableWithProgress#current()
 	 */
 	@Override
-	public int current() {
+	public long current() {
 		return readBytes.get();
 	}
 
@@ -55,7 +55,7 @@ public class Downloader implements RunnableWithProgress {
 	 * @see cz.kojotak.arx.common.RunnableWithProgress#max()
 	 */
 	@Override
-	public int max() {
+	public long max() {
 		return totalBytes.get();
 	}
 
