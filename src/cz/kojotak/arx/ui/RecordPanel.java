@@ -22,11 +22,18 @@ public class RecordPanel extends JPanel {
 
 	public RecordPanel(final MainWindow window) {
 		super();
-		this.setPreferredSize(new Dimension(182,this.getHeight()));
+		//this.setPreferredSize(new Dimension(182,this.getHeight()));
 		table = new RecordTable();
 		JScrollPane scrollbars = new JScrollPane();
 		scrollbars.setViewportView(table);
 		scrollbars.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		int height = table.getPreferredSize().height;
+		int width = table.getPreferredSize().width
+			+ scrollbars.getVerticalScrollBar().getPreferredSize().width
+			+ 6 /* FIXME remove this magic constant*/
+			;
+		this.setPreferredSize(new Dimension(width,height));
+		
 		this.setLayout(new BorderLayout());
 		this.add(scrollbars,BorderLayout.CENTER);
 	}

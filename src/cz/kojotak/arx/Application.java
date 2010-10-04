@@ -328,7 +328,7 @@ public final class Application {
 				.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, "importování databáze");
 		// list.add(new DummyJob(50));
-		list.add(downloaderJob);
+		//list.add(downloaderJob);
 		list.add(counterJob);
 		list.add(importerJob);
 
