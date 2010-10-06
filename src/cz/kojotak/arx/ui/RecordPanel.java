@@ -42,7 +42,7 @@ public class RecordPanel extends JPanel implements PropertyChangeListener {
 		scrollbars = new JScrollPane();
 		scrollbars.setViewportView(table);
 		scrollbars.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		updatePreferredSize();
+//		updatePreferredSize();
 		this.setLayout(new BorderLayout());
 		this.add(scrollbars,BorderLayout.CENTER);
 	}
@@ -71,6 +71,5 @@ public class RecordPanel extends JPanel implements PropertyChangeListener {
 		
 			}});
 	}
-	
 	
 }

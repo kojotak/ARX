@@ -18,6 +18,7 @@ import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.ui.column.BaseColumn;
+import cz.kojotak.arx.ui.column.FinishedRecordColumn;
 import cz.kojotak.arx.ui.column.PositionColumn;
 import cz.kojotak.arx.ui.column.RecordDurationColumn;
 import cz.kojotak.arx.ui.column.RecordPlayerColumn;
@@ -38,6 +39,7 @@ public class RecordTable extends JXTable {
 		add(new RecordPlayerColumn());
 		add(new ScoreRecordColumn());
 		add(new RecordDurationColumn());
+		add(new FinishedRecordColumn());
 	}};
 
 	@SuppressWarnings("unchecked")
