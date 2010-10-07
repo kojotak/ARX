@@ -20,6 +20,8 @@ public class PositionTableCellRenderer extends DefaultTableCellRenderer {
 	@Override
 	protected void setValue(Object value) {
 		if(value==null|| !(value instanceof Integer)){
+			setIcon(null);
+			setText("");
 			return;
 		}
 		Integer position = Integer.class.cast(value);
