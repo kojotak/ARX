@@ -8,7 +8,9 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JTable;
+import javax.swing.event.TableColumnModelEvent;
 
+import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
@@ -16,6 +18,7 @@ import org.jdesktop.swingx.JXTable;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
+import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.FinishedRecordColumn;
@@ -23,6 +26,7 @@ import cz.kojotak.arx.ui.column.PositionColumn;
 import cz.kojotak.arx.ui.column.RecordDurationColumn;
 import cz.kojotak.arx.ui.column.RecordPlayerColumn;
 import cz.kojotak.arx.ui.column.ScoreRecordColumn;
+import cz.kojotak.arx.ui.event.ResizeRecordPanel;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
@@ -42,8 +46,17 @@ public class RecordTable extends JXTable {
 		add(new FinishedRecordColumn());
 	}};
 
+	private static final List<BaseColumn<?,?>> COL2P= new ArrayList<BaseColumn<?,?>>(){
+		private static final long serialVersionUID = 576599846226451116L;{
+		add(new PositionColumn());
+		add(new RecordPlayerColumn());
+		add(new ScoreRecordColumn());
+		add(new RecordDurationColumn());
+		add(new FinishedRecordColumn());
+	}};
+	
 	@SuppressWarnings("unchecked")
-	public RecordTable() {
+	public RecordTable(Mode<?> mode) {
 		super(new GenericTableModel(Collections.emptyList(),COLS),new GenericTableColumnModel(COLS));
 		AnnotationProcessor.process(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -73,4 +86,17 @@ public class RecordTable extends JXTable {
 			}
 		}
 	}
+
+	@Override
+	public void columnAdded(TableColumnModelEvent e) {
+		super.columnAdded(e);
+		EventBus.publish(new ResizeRecordPanel());
+	}
+
+	@Override
+	public void columnRemoved(TableColumnModelEvent e) {
+		super.columnRemoved(e);
+		EventBus.publish(new ResizeRecordPanel());
+	}
+		
 }

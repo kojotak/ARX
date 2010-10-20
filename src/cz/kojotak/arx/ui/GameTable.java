@@ -41,8 +41,7 @@ public class GameTable extends JXTable {
 
 	private static final long serialVersionUID = -4069244471240497960L;
 
-	public GameTable(GenericTableModel<?> dm, TableColumnModel cm,
-			RecordTable rec) {
+	public GameTable(GenericTableModel<?> dm, TableColumnModel cm) {
 		super(dm, cm);
 		AnnotationProcessor.process(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -51,9 +50,7 @@ public class GameTable extends JXTable {
 		this.setColumnControlVisible(true);
 		this.user=Application.getInstance().getCurrentUser();
 		this.mode=Application.getInstance().getCurrentMode();
-		this.modeOrPlayerChanged();
-		
-		
+		this.modeOrPlayerChanged();		
 	}
 
 	/**

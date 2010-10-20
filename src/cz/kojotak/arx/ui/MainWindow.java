@@ -73,7 +73,7 @@ public class MainWindow extends JFrame {
 		Mode<?> mode = app.getCurrentMode();
 		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
 		@SuppressWarnings("unchecked")GenericTableModel<?> tm = new GenericTableModel(mode.getGames(),mode.getColumns());
-		table = new GameTable(tm,cm,records.table);
+		table = new GameTable(tm,cm);
 
 		JScrollPane scrollbars = new JScrollPane();
 		scrollbars.setViewportView(table);

@@ -5,20 +5,21 @@ package cz.kojotak.arx.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Enumeration;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.TableColumn;
+
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
+
+import cz.kojotak.arx.Application;
+import cz.kojotak.arx.ui.event.ResizeRecordPanel;
 
 /**
  * @date 27.1.2010
  * @author Kojotak
  */
-public class RecordPanel extends JPanel implements PropertyChangeListener {
+public class RecordPanel extends JPanel {
 
 
 	private static final long serialVersionUID = -8847662693620484228L;
@@ -29,25 +30,20 @@ public class RecordPanel extends JPanel implements PropertyChangeListener {
 
 	public RecordPanel(final MainWindow window) {
 		super();
+		AnnotationProcessor.process(this);
 		//this.setPreferredSize(new Dimension(182,this.getHeight()));
-		table = new RecordTable();
+		table = new RecordTable(Application.getInstance().getCurrentMode());
 		this.window = window;
-		
-		Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
-		while(cols.hasMoreElements()){
-			TableColumn col = cols.nextElement();
-			col.addPropertyChangeListener(this);
-		}
-		
+				
 		scrollbars = new JScrollPane();
 		scrollbars.setViewportView(table);
 		scrollbars.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//		updatePreferredSize();
 		this.setLayout(new BorderLayout());
 		this.add(scrollbars,BorderLayout.CENTER);
 	}
-	
-	private void updatePreferredSize(){
+		
+	@EventSubscriber
+	public void resizePanel(ResizeRecordPanel resize){
 		int height = table.getPreferredSize().height;
 		int width = table.getPreferredSize().width
 			+ scrollbars.getVerticalScrollBar().getPreferredSize().width
@@ -55,21 +51,7 @@ public class RecordPanel extends JPanel implements PropertyChangeListener {
 			;
 		Dimension dim = new Dimension(width,height);
 		this.setPreferredSize(dim);
+		this.revalidate();
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		SwingUtilities.invokeLater(new Runnable(){
-
-			@Override
-			public void run() {
-			
-				
-			
-		updatePreferredSize();		
-		window.pack();
-		
-			}});
-	}
-	
 }
