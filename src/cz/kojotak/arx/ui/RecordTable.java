@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.TableColumnModel;
@@ -25,8 +26,10 @@ import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CoplayerColumn;
+import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.column.FinishedRecordColumn;
 import cz.kojotak.arx.ui.column.PositionColumn;
+import cz.kojotak.arx.ui.column.Record2PFirstPlayerColumn;
 import cz.kojotak.arx.ui.column.RecordDurationColumn;
 import cz.kojotak.arx.ui.column.RecordPlayerColumn;
 import cz.kojotak.arx.ui.column.ScoreRecordColumn;
@@ -61,9 +64,12 @@ public class RecordTable extends JXTable {
 	private static List<BaseColumn<?,?>> getColumns(Mode<?> mode){
 		List<BaseColumn<?,?>> cols = new ArrayList<BaseColumn<?,?>>();
 		cols.add(new PositionColumn());
-		cols.add(new RecordPlayerColumn());
+		
 		if(mode instanceof TwoPlayerMode){
+			cols.add(new Record2PFirstPlayerColumn());
 			cols.add(new CoplayerColumn());
+		}else{
+			cols.add(new RecordPlayerColumn());
 		}
 		cols.add(new ScoreRecordColumn());
 		cols.add(new RecordDurationColumn());
@@ -75,7 +81,7 @@ public class RecordTable extends JXTable {
 	public void onModeChange(Mode<?> mode){
 		List<BaseColumn<?,?>> cols = getColumns(mode);
 		this.cols=cols;
-		TableModel tm = new GenericTableModel(Collections.emptyList(),cols);
+		@SuppressWarnings("unchecked")TableModel tm = new GenericTableModel(Collections.emptyList(),cols);
 		TableColumnModel tcm = new GenericTableColumnModel(cols);
 		this.setModel(tm);
 		this.setColumnModel(tcm);
@@ -120,6 +126,11 @@ public class RecordTable extends JXTable {
 	public void columnRemoved(TableColumnModelEvent e) {
 		super.columnRemoved(e);
 		EventBus.publish(new ResizeRecordPanel());
+	}
+	
+	@Override
+	protected JComponent createDefaultColumnControl() {
+		return new CustomColumnControlButton(this, null);
 	}
 		
 }
