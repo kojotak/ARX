@@ -68,7 +68,7 @@ public class MainWindow extends JFrame {
 		splitter.setContinuousLayout(true);
 		container.add(splitter,BorderLayout.CENTER);
 
-		records = new RecordPanel(this);
+		
 		//changeTable();
 		Mode<?> mode = app.getCurrentMode();
 		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
@@ -82,6 +82,7 @@ public class MainWindow extends JFrame {
 		centerHolder.setLayout(new BorderLayout());
 		centerHolder.add(scrollbars, BorderLayout.CENTER);
 
+		records = new RecordPanel(this,mode);
 		upper.add(centerHolder, BorderLayout.CENTER);
 		upper.add(records, BorderLayout.EAST);
 
@@ -112,6 +113,9 @@ public class MainWindow extends JFrame {
 				break;
 			}
 		}
+//		if(showRecords){
+//			records.setRecordTable(mode);
+//		}
 		if(showRecords && !added){
 			upper.add(records, BorderLayout.EAST);
 		}else if(!showRecords && added){

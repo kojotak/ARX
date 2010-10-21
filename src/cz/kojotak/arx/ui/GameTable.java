@@ -69,7 +69,7 @@ public class GameTable extends JXTable {
 
 	private FilterModel filterModel = new FilterModel();
 
-	@EventSubscriber(eventClass = FilterModel.class)
+	@EventSubscriber
 	public void updateGameFilter(FilterModel update) {
 		this.filterModel = FilterModel.updateWith(this.filterModel, update);
 

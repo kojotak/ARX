@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.event.TableColumnModelEvent;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
@@ -20,7 +22,9 @@ import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.WithStatistics;
+import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.ui.column.BaseColumn;
+import cz.kojotak.arx.ui.column.CoplayerColumn;
 import cz.kojotak.arx.ui.column.FinishedRecordColumn;
 import cz.kojotak.arx.ui.column.PositionColumn;
 import cz.kojotak.arx.ui.column.RecordDurationColumn;
@@ -36,43 +40,62 @@ import cz.kojotak.arx.ui.model.GenericTableModel;
  */
 public class RecordTable extends JXTable {
 	private static final long serialVersionUID = 6894398339660146006L;
-
-	private static final List<BaseColumn<?,?>> COLS= new ArrayList<BaseColumn<?,?>>(){
-		private static final long serialVersionUID = 576599846226451116L;{
-		add(new PositionColumn());
-		add(new RecordPlayerColumn());
-		add(new ScoreRecordColumn());
-		add(new RecordDurationColumn());
-		add(new FinishedRecordColumn());
-	}};
-
-	private static final List<BaseColumn<?,?>> COL2P= new ArrayList<BaseColumn<?,?>>(){
-		private static final long serialVersionUID = 576599846226451116L;{
-		add(new PositionColumn());
-		add(new RecordPlayerColumn());
-		add(new ScoreRecordColumn());
-		add(new RecordDurationColumn());
-		add(new FinishedRecordColumn());
-	}};
+		
 	
+	private List<BaseColumn<?,?>> cols;
 	@SuppressWarnings("unchecked")
-	public RecordTable(Mode<?> mode) {
-		super(new GenericTableModel(Collections.emptyList(),COLS),new GenericTableColumnModel(COLS));
+	private RecordTable(List<BaseColumn<?,?>> cols) {
+		super(new GenericTableModel(Collections.emptyList(),cols), new GenericTableColumnModel(cols));
+		this.cols = cols;
 		AnnotationProcessor.process(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.setColumnControlVisible(true);
 	}
+	
+	public static RecordTable createRecordTable(Mode<?> mode){
+		List<BaseColumn<?,?>> cols = getColumns(mode);
+		RecordTable rt = new RecordTable(cols);
+		return rt;
+	}
+	
+	private static List<BaseColumn<?,?>> getColumns(Mode<?> mode){
+		List<BaseColumn<?,?>> cols = new ArrayList<BaseColumn<?,?>>();
+		cols.add(new PositionColumn());
+		cols.add(new RecordPlayerColumn());
+		if(mode instanceof TwoPlayerMode){
+			cols.add(new CoplayerColumn());
+		}
+		cols.add(new ScoreRecordColumn());
+		cols.add(new RecordDurationColumn());
+		cols.add(new FinishedRecordColumn());
+		return cols;
+	}
 
 	@EventSubscriber
-	public void updateTableModel(Game event){
+	public void onModeChange(Mode<?> mode){
+		List<BaseColumn<?,?>> cols = getColumns(mode);
+		this.cols=cols;
+		TableModel tm = new GenericTableModel(Collections.emptyList(),cols);
+		TableColumnModel tcm = new GenericTableColumnModel(cols);
+		this.setModel(tm);
+		this.setColumnModel(tcm);
+		EventBus.publish(new ResizeRecordPanel());
+	}
+	
+	/**
+	 * updates record table
+	 * @param event
+	 */
+	@EventSubscriber
+	public void onGameChange(Game event){
 		if(!(event instanceof Competetive<?>)){
 			return;
 		}
 		Competetive<?> game = Competetive.class.cast(event); 
 		List<?> records = game!=null?game.getRecords():Collections.emptyList();
-		@SuppressWarnings("unchecked")GenericTableModel<?> model = new GenericTableModel(records,COLS);
-		this.setModel(model);
-		model.fireTableDataChanged();
+		@SuppressWarnings("unchecked")GenericTableModel<?> tableModel = new GenericTableModel(records,cols);
+		this.setModel(tableModel);
+		//tableModel.fireTableDataChanged();
 
 		if(game instanceof WithStatistics){
 			WithStatistics ws = WithStatistics.class.cast(game);
