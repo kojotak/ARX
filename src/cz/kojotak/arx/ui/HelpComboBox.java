@@ -6,6 +6,7 @@ package cz.kojotak.arx.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,13 +17,12 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import cn.rui.chm.swing.CHMPane;
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.properties.Licence;
-import cz.kojotak.arx.properties.Localization;
-import cz.kojotak.arx.ui.icon.GUIIcons;
 import cz.kojotak.arx.ui.renderer.HelpChoicesRenderer;
 
 /**
@@ -142,6 +142,7 @@ public class HelpComboBox extends JComboBox {
 		editor.setEditable(false);
 		JScrollPane scroll = new JScrollPane(editor,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jf.add(scroll);
+		editor.select(0,1);
 	}
 
 }
