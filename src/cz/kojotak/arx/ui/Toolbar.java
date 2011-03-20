@@ -50,7 +50,7 @@ public class Toolbar extends JPanel {
 		leftPart.add(vyberModu);
 		leftPart.add(vyberHrace);
 		middlePart.add(new UpdateComboBox());
-		middlePart.add(new ChatButton(window.getSplitter()));
+		middlePart.add(new ChatButton(window));
 		middlePart.add(new SettingsButton());
 		middlePart.add(new HelpComboBox());
 		rightPart.add(new SearchPanel());

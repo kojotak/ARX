@@ -41,7 +41,11 @@ public class MainWindow extends JFrame {
 	@Getter
 	private Sidebar sidebar;
 	
-	JPanel upper;
+	@Getter
+	private JPanel upperPanel;
+	
+	@Getter
+	private JPanel lowerPanel;
 
 	public GameTable getGameTable() {
 		return table;
@@ -60,11 +64,11 @@ public class MainWindow extends JFrame {
 		this.setLayout(new BorderLayout());
 		Container container = this.getContentPane();
 
-		upper = new JPanel();
-		JPanel lower = new JPanel();
-		upper.setLayout(new BorderLayout());
-		lower.setLayout(new BorderLayout());
-		splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT,upper,lower);
+		upperPanel = new JPanel();
+		lowerPanel = new JPanel();
+		upperPanel.setLayout(new BorderLayout());
+		lowerPanel.setLayout(new BorderLayout());
+		splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT,upperPanel,lowerPanel);
 		splitter.setContinuousLayout(true);
 		container.add(splitter,BorderLayout.CENTER);
 
@@ -83,12 +87,12 @@ public class MainWindow extends JFrame {
 		centerHolder.add(scrollbars, BorderLayout.CENTER);
 
 		records = new RecordPanel(this,mode);
-		upper.add(centerHolder, BorderLayout.CENTER);
-		upper.add(records, BorderLayout.EAST);
+		upperPanel.add(centerHolder, BorderLayout.CENTER);
+		upperPanel.add(records, BorderLayout.EAST);
 
 		sidebar = new Sidebar();
 		toolbar = new Toolbar(this,sidebar.getFilter().getCategoryComboBox());
-		upper.add(sidebar,BorderLayout.WEST);
+		upperPanel.add(sidebar,BorderLayout.WEST);
 		container.add(toolbar, BorderLayout.NORTH);
 
 		JPanel statusBar = new StatusBar();
@@ -96,7 +100,7 @@ public class MainWindow extends JFrame {
 		JPanel chat = new JPanel();//new ChatPanel();
 		chat.setPreferredSize(new Dimension(0,0));
 		chat.setMinimumSize(new Dimension(0,0));
-		lower.add(chat,BorderLayout.CENTER);
+		lowerPanel.add(chat,BorderLayout.CENTER);
 		splitter.setDividerLocation(1.0);
 		switchRecordPanel(mode);
 				
@@ -108,7 +112,7 @@ public class MainWindow extends JFrame {
 	public void switchRecordPanel(Mode<?> mode){
 		boolean showRecords = !(mode instanceof NoncompetetiveMode);
 		boolean added=false;
-		for(Component c:upper.getComponents()){
+		for(Component c:upperPanel.getComponents()){
 			if(c.equals(records)){
 				added=true;
 				break;
@@ -118,9 +122,9 @@ public class MainWindow extends JFrame {
 //			records.setRecordTable(mode);
 //		}
 		if(showRecords && !added){
-			upper.add(records, BorderLayout.EAST);
+			upperPanel.add(records, BorderLayout.EAST);
 		}else if(!showRecords && added){
-			upper.remove(records);
+			upperPanel.remove(records);
 		}
 	}
 

@@ -3,10 +3,11 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JSplitPane;
+import org.apache.log4j.Logger;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.ui.icon.GUIIcons;
@@ -19,23 +20,26 @@ public class ChatButton extends BaseButton implements ActionListener{
 
 	private static final long serialVersionUID = -9050492894315708044L;
 
-	JSplitPane split;
+	private final MainWindow window;
 	boolean expanded;
+	private final Application app;
+	private final Logger logger;
 
-	public ChatButton(final JSplitPane split) {
+	public ChatButton(final MainWindow window) {
 		super();
-		this.setIcon(Application.getInstance().getIconLoader().tryLoadIcon(GUIIcons.CHAT));
-		this.setText(Application.getInstance().getLocalization().getString(this, "LABEL"));
-		this.split=split;
+		this.app = Application.getInstance();
+		this.logger = app.getLogger(this);
+		this.window = window;
+		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.CHAT));
+		this.setText(app.getLocalization().getString(this, "LABEL"));
 		expanded=false;
 		this.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		//split.s
 		expanded=!expanded;
-		split.setDividerLocation(expanded?0.5:1);
-		Application.getInstance().getLogger(this).debug("chat "+(expanded?"expanded":"collapsed"));
+		window.getSplitter().setDividerLocation(expanded?0.5:1);
+		logger.debug("chat "+(expanded?"expanded":"collapsed"));
 	}
 }
