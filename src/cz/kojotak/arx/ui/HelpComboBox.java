@@ -5,18 +5,23 @@ package cz.kojotak.arx.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import cn.rui.chm.swing.CHMPane;
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.properties.Licence;
+import cz.kojotak.arx.properties.Localization;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 import cz.kojotak.arx.ui.renderer.HelpChoicesRenderer;
 
@@ -31,13 +36,14 @@ public class HelpComboBox extends JComboBox {
 	public static final String LOC_KEY="LABEL";
 	public static final String ROTAXMAME="ROTAXMAME";
 	public static final String CREDITS="CREDITS";
+	public static final String LICENCE="LICENCE";
 	transient private Application app;
 	private JFrame jf;
 
 	public HelpComboBox() {
 		super();
 		app=Application.getInstance();
-		this.setModel(new DefaultComboBoxModel(new String[]{ROTAXMAME,CREDITS}));
+		this.setModel(new DefaultComboBoxModel(new String[]{ROTAXMAME,LICENCE,CREDITS}));
 		this.setEditable(false);
 		this.addActionListener(new ActionListener(){
 
@@ -49,7 +55,13 @@ public class HelpComboBox extends JComboBox {
 					HelpComboBox.this.selectRotaxmame();
 				}else if(CREDITS.equals(selected)){
 					HelpComboBox.this.selectCredits();
+				}else if(LICENCE.equals(selected)){
+					HelpComboBox.this.selectLicence();
 				}
+				String title = HelpComboBox.this.jf.getTitle();
+				String section = app.getLocalization().getString(HelpComboBox.this, selected);
+				section = section.toLowerCase();
+				HelpComboBox.this.jf.setTitle(title+" - "+section);
 				source.setSelectedIndex(0);//vratim prvni vybrany
 			}
 
@@ -60,19 +72,18 @@ public class HelpComboBox extends JComboBox {
 
 	private JFrame getHelpFrame(){
 		JFrame jf = new JFrame();
+		Image ico = app.getMainWindow().getIconImage();
+		jf.setIconImage(ico);
 		jf.setSize(new Dimension(500,500));
 		jf.setVisible(true);
 		jf.setTitle(app.getLocalization().getString(this, LOC_KEY));
-		String helpIcoPath = Application.getInstance().getIcons().getString(GUIIcons.HELP);
-		jf.setIconImage(Application.getInstance().getIconLoader().loadIcoAsImage(helpIcoPath));
 		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//FIXME broken
+		jf.setLocationRelativeTo(null);	
 		if(this.jf!=null){
 			//stare zavreme
 			this.jf.dispose();
-		}else{
-			this.jf=jf;
 		}
+		this.jf=jf;		
 		return jf;
 	}
 
@@ -103,6 +114,34 @@ public class HelpComboBox extends JComboBox {
 		JLabel label = new JLabel(text);
 		panel.add(label);
 		jf.add(panel);
+	}
+	
+	protected void selectLicence(){
+		JFrame jf = getHelpFrame();
+		
+		StringBuilder sb = new StringBuilder("<html><body><h1>");
+		Licence loc = app.getLicence();
+		sb.append(loc.getString(loc, Licence.HEADER));
+		sb.append("</h1>");
+		for(Licence.Item licence:Licence.Item.values()){
+			String key = licence.name();
+			String name = loc.getString(key, Licence.PROP_NAME);
+			String url = loc.getOptionalString(key, Licence.PROP_URL);
+			String lic = loc.getString(key, Licence.PROP_LIC);
+			String desc = loc.getOptionalString(key, Licence.PROP_DESC);
+			sb.append("<h2>").append(name).append("</h2><ul>");
+			sb.append("<li>").append(lic).append("</li>");
+			if(url!=null){
+				sb.append("<li>").append(url).append("</li>");
+			}
+			if(desc!=null){
+				sb.append("<li>").append(desc).append("</li>");
+			}
+		}
+		JEditorPane editor = new JEditorPane("text/html", sb.toString());
+		editor.setEditable(false);
+		JScrollPane scroll = new JScrollPane(editor,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		jf.add(scroll);
 	}
 
 }

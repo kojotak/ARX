@@ -33,7 +33,9 @@ import cz.kojotak.arx.domain.mode.ArcadeMode;
 import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.properties.Icons;
+import cz.kojotak.arx.properties.Licence;
 import cz.kojotak.arx.properties.Localization;
+import cz.kojotak.arx.ui.MainWindow;
 import cz.kojotak.arx.util.Downloader;
 import cz.kojotak.arx.util.LineCounter;
 import cz.kojotak.arx.util.StorageUnit;
@@ -53,6 +55,9 @@ public final class Application {
 
 	@Getter
 	private Localization localization;
+	
+	@Getter
+	private Licence licence;
 
 	@Getter
 	private Icons icons;
@@ -84,6 +89,10 @@ public final class Application {
 	@Getter
 	@Setter
 	private Mode<?> currentMode;
+	
+	@Getter
+	@Setter
+	private MainWindow mainWindow;
 
 	@Getter
 	private List<Mode<?>> modes;
@@ -241,6 +250,7 @@ public final class Application {
 		properties = new Properties(language);
 		localization = new Localization(language);
 		icons = new Icons(language);
+		licence = new Licence(language);
 	}
 
 	public String getTmpDir() {

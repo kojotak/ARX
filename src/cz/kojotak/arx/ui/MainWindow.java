@@ -101,6 +101,7 @@ public class MainWindow extends JFrame {
 		switchRecordPanel(mode);
 				
 		this.pack();
+		app.setMainWindow(this);
 	}
 	
 	@EventSubscriber

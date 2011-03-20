@@ -66,7 +66,7 @@ public class Properties{
 	}
 
 	protected String getKey(Object owner,String property){
-		StringBuilder sb = new StringBuilder(owner.getClass().getSimpleName());
+		StringBuilder sb = new StringBuilder(owner instanceof String?(String)owner:owner.getClass().getSimpleName());
 		sb.append(".").append(property);
 		return sb.toString();
 	}
