@@ -4,12 +4,12 @@
 package cz.kojotak.arx.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
-
-import org.apache.log4j.Logger;
+import javax.swing.JToggleButton;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.ui.icon.GUIIcons;
@@ -18,29 +18,28 @@ import cz.kojotak.arx.ui.icon.GUIIcons;
  * @date 28.3.2010
  * @author Kojotak
  */
-public class ChatButton extends BaseButton implements ActionListener{
+public class ChatButton extends JToggleButton implements ActionListener{
 
 	private static final long serialVersionUID = -9050492894315708044L;
 
 	private final MainWindow window;
 	boolean expanded;
 	private final Application app;
-	private final Logger logger;
 
 	public ChatButton(final MainWindow window) {
 		super();
+		this.setMargin(new Insets(0,0,0,0));
 		this.app = Application.getInstance();
-		this.logger = app.getLogger(this);
 		this.window = window;
 		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.CHAT));
 		this.setText(app.getLocalization().getString(this, "LABEL"));
-		expanded=false;
 		this.addActionListener(this);
+		expanded=true;
+		this.setSelected(expanded);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		expanded=!expanded;
 //		window.getSplitter().setDividerLocation(expanded?0.5:1);
 //		logger.debug("chat "+(expanded?"expanded":"collapsed"));
 		JComponent toRemove = expanded?window.getSplitter():window.getUpperPanel();
@@ -54,5 +53,6 @@ public class ChatButton extends BaseButton implements ActionListener{
 		}
 		panel.invalidate();
 		window.pack();
+		expanded=!expanded;
 	}
 }
