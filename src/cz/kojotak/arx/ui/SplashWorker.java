@@ -72,7 +72,7 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 				updater, 0, 200, TimeUnit.MILLISECONDS);
 
 		for (Job job : jobs) {
-			System.err.println("working on "+job+", so far "+Double.longBitsToDouble(soFar.get()));
+			log.info("working on "+job+", so far "+Double.longBitsToDouble(soFar.get()));
 			RunnableWithProgress runnable = job.getRunnable();
 			currentJob.setHolded(job);
 			runnable.run();

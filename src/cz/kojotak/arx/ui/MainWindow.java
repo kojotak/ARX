@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.io.File;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -46,6 +47,9 @@ public class MainWindow extends JFrame {
 	
 	@Getter
 	private JPanel lowerPanel;
+	
+	@Getter
+	private JPanel centerPanel;
 
 	public GameTable getGameTable() {
 		return table;
@@ -66,11 +70,13 @@ public class MainWindow extends JFrame {
 
 		upperPanel = new JPanel();
 		lowerPanel = new JPanel();
+		centerPanel = new JPanel(new BorderLayout());
 		upperPanel.setLayout(new BorderLayout());
 		lowerPanel.setLayout(new BorderLayout());
 		splitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT,upperPanel,lowerPanel);
 		splitter.setContinuousLayout(true);
-		container.add(splitter,BorderLayout.CENTER);
+		centerPanel.add(splitter, BorderLayout.CENTER);
+		container.add(centerPanel,BorderLayout.CENTER);
 
 		
 		//changeTable();
@@ -97,11 +103,12 @@ public class MainWindow extends JFrame {
 
 		JPanel statusBar = new StatusBar();
 		container.add(statusBar,BorderLayout.SOUTH);
-		JPanel chat = new JPanel();//new ChatPanel();
-		chat.setPreferredSize(new Dimension(0,0));
-		chat.setMinimumSize(new Dimension(0,0));
+//		JPanel chat = new JPanel();//new ChatPanel();
+//		chat.setPreferredSize(new Dimension(0,0));
+//		chat.setMinimumSize(new Dimension(0,0));
+		JLabel chat = new JLabel("TODO chat");
 		lowerPanel.add(chat,BorderLayout.CENTER);
-		splitter.setDividerLocation(1.0);
+		splitter.setDividerLocation(0.5);
 		switchRecordPanel(mode);
 				
 		this.pack();

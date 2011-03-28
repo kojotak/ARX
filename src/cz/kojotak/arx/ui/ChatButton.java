@@ -3,9 +3,11 @@
  */
 package cz.kojotak.arx.ui;
 
-import java.awt.Container;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
 
@@ -39,7 +41,18 @@ public class ChatButton extends BaseButton implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		expanded=!expanded;
-		window.getSplitter().setDividerLocation(expanded?0.5:1);
-		logger.debug("chat "+(expanded?"expanded":"collapsed"));
+//		window.getSplitter().setDividerLocation(expanded?0.5:1);
+//		logger.debug("chat "+(expanded?"expanded":"collapsed"));
+		JComponent toRemove = expanded?window.getSplitter():window.getUpperPanel();
+		JComponent toAdd = expanded?window.getUpperPanel():window.getSplitter();
+		JComponent panel = window.getCenterPanel();
+				
+		panel.remove(toRemove);
+		panel.add(toAdd,BorderLayout.CENTER);
+		if(!expanded){
+			window.getSplitter().setLeftComponent(window.getUpperPanel());
+		}
+		panel.invalidate();
+		window.pack();
 	}
 }
