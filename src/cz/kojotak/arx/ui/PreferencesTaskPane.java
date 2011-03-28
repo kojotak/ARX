@@ -3,13 +3,26 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 import javax.swing.GroupLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 
+import lombok.Getter;
+
+import org.bushe.swing.event.EventBus;
 import org.jdesktop.swingx.JXTaskPane;
 
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.domain.Category;
+import cz.kojotak.arx.ui.event.FilterModel;
+import cz.kojotak.arx.ui.event.OpponentChosen;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
 /**
@@ -21,50 +34,56 @@ public class PreferencesTaskPane extends JXTaskPane {
 	private static final long serialVersionUID = -1612142402940438020L;
 	protected transient Application app;
 	
+	private final JLabel opponentLabel;
+	
+	@Getter
+	private final JTextField opponentField;
+	
 	public PreferencesTaskPane() {
 		super();
 		app = Application.getInstance();
 		String title = app.getLocalization().getString(this, "TITLE");
-		this.setTitle(title);
-		this.setCollapsed(true);
-		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.PREFERENCES));
+		setTitle(title);
+		setCollapsed(true);
+		setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.PREFERENCES));
+		opponentLabel = new JLabel(app.getLocalization().getString(this, "OPPONENT"));
+		opponentField=new JTextField(3);
+		opponentField.addKeyListener(new KeyAdapter() {
 
-		JPanel panel = new JPanel();
-		initDynamically(panel);
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String text = opponentField.getText();
+				if(text==null || text.length()==0 || text.length()==3){
+					//send update only for full or empty nick name
+					OpponentChosen event = new OpponentChosen();
+					event.setOpponent(text);
+					EventBus.publish(event);					
+				}
+			}
 
-		this.add(panel);
+		});
+		arrangeLayout();
 	}
 	
-	private void initDynamically(JPanel panel){
+	private void arrangeLayout(){
+		JPanel panel = new JPanel();
+		this.add(panel);
 		GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
-		
-//		Mode<?> mode = app.getCurrentMode();
-//		List<? extends BaseColumn<?, ?>> cols = mode.getColumns();
+
 		
 		ParallelGroup firstColumn= layout.createParallelGroup();
 		ParallelGroup secondColumn= layout.createParallelGroup();
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
+
 		
-//		for(BaseColumn<?,?> c:cols){
-////			if(!c.isSwitchable()){
-////				continue;
-////			}
-//			
-//			JCheckBox left = new JCheckBox();
-////			JComponent right = c.getCustomized();
-//			JComponent right = new JLabel(c.getClass().getSimpleName());
-//			right.setAlignmentX(0.5f);
-//			firstColumn.addComponent(left);
-//			secondColumn.addComponent(right);
-//			
-//			vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-//					.addComponent(left)
-//					.addComponent(right)
-//					);
-//		}
+		firstColumn.addComponent(opponentLabel);
+		secondColumn.addComponent(opponentField);
+		
+		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+				.addComponent(opponentLabel).addComponent(opponentField));
 
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup()
 			.addGroup(firstColumn).addGroup(secondColumn);

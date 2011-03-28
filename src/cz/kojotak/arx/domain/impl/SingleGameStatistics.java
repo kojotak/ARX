@@ -76,7 +76,7 @@ public class SingleGameStatistics implements GameStatistics {
 				ratingsCount++;
 				ratingsSum+=record.getRating();
 			}
-			if(sign.equals(oponent.getId())){
+			if(oponent!=null && sign.equals(oponent.getId())){
 				oponentPosition=record.getPosition();
 			}
 		}

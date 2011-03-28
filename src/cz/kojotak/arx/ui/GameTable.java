@@ -12,6 +12,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.log4j.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -30,6 +31,7 @@ import cz.kojotak.arx.domain.impl.SimpleUser;
 import cz.kojotak.arx.domain.impl.SingleGameStatistics;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.event.FilterModel;
+import cz.kojotak.arx.ui.event.OpponentChosen;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
@@ -40,17 +42,19 @@ import cz.kojotak.arx.ui.model.GenericTableModel;
 public class GameTable extends JXTable {
 
 	private static final long serialVersionUID = -4069244471240497960L;
-
+	private final Logger logger;
+	
 	public GameTable(GenericTableModel<?> dm, TableColumnModel cm) {
 		super(dm, cm);
 		AnnotationProcessor.process(this);
+		logger =Application.getInstance().getLogger(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.getSelectionModel().setSelectionInterval(0, 0);
 		this.setColumnControlVisible(true);
 		this.user=Application.getInstance().getCurrentUser();
 		this.mode=Application.getInstance().getCurrentMode();
-		this.modeOrPlayerChanged();		
+		this.recalculate();		
 	}
 
 	/**
@@ -73,8 +77,7 @@ public class GameTable extends JXTable {
 	public void updateGameFilter(FilterModel update) {
 		this.filterModel = FilterModel.updateWith(this.filterModel, update);
 
-		final Application app = Application.getInstance();
-		app.getLogger(this).debug("setting game table filter");
+		logger.debug("setting game table filter");
 		GenericTableModel<?> model = this.getGenericTableModel();
 		RowFilter<GenericTableModel<?>, Integer> categoryFilter = new RowFilter<GenericTableModel<?>, Integer>() {
 
@@ -123,25 +126,35 @@ public class GameTable extends JXTable {
 
 	private Mode<?> mode=null;
 	private User user=null;
+	private User opponent=null;
 	
 	@EventSubscriber
 	public void updateMode(Mode<?> mode){
 		this.mode=mode;
 		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
 		this.setColumnModel(cm);//got new column model
-		this.modeOrPlayerChanged();
+		logger.info("setting new mode: "+this.mode);
+		this.recalculate();
+	}
+	
+	@EventSubscriber
+	public void updateOpponent(OpponentChosen opponent){
+		this.opponent = new SimpleUser(opponent.getOpponent());
+		logger.info("setting new opponent: "+this.opponent);
+		recalculate();
 	}
 	
 	@EventSubscriber
 	public void updateUser(User user){
 		this.user=user;
-		this.modeOrPlayerChanged();
+		logger.info("setting new user: "+this.user);
+		recalculate();
 	}
 	
 	/**
 	 * helper method to set new table model
 	 */
-	private void modeOrPlayerChanged() {
+	private void recalculate() {
 		final Application app = Application.getInstance();
 		app.getLogger(this).debug(
 				"setting new game table model for " + user + " and " + mode);
@@ -164,7 +177,7 @@ public class GameTable extends JXTable {
 				@SuppressWarnings("unchecked")
 				Competetive<Record> cmp = Competetive.class.cast(game);
 				SingleGameStatistics stats = new SingleGameStatistics(cmp,
-						user, new SimpleUser("VLD"));
+						user, opponent);
 				if (!(game instanceof WithStatistics)) {
 					throw new IllegalStateException(
 							"This model is not suitable for games without statistics");
@@ -174,8 +187,7 @@ public class GameTable extends JXTable {
 			}
 		}
 		this.setModel(model);
-		this.updateGameFilter(null);// have to apply filter on update table
-									// model
+		this.updateGameFilter(null);// have to apply filter on update table model
 	}
 
 	@Override

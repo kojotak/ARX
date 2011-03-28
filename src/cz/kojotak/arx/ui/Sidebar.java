@@ -28,14 +28,10 @@ public class Sidebar extends JPanel {
 	
 	public Sidebar() {
 		super();
-
-		this
-				.setPreferredSize(new Dimension(230,
-						this.getPreferredSize().height));
+		this.setPreferredSize(new Dimension(230,this.getPreferredSize().height));
 		
 		JXTaskPaneContainer taskpanecontainer = new JXTaskPaneContainer();
-		taskpanecontainer
-				.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		taskpanecontainer.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		taskpanecontainer.setPreferredSize(new Dimension(220, 640));
 		taskpanecontainer.setBackground(this.getBackground());
 		taskpanecontainer.setBorder(new EmptyBorder(0,0,0,0));
