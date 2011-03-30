@@ -19,7 +19,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -96,7 +95,6 @@ public final class Application {
 
 	@Getter
 	private List<Mode<?>> modes;
-	private DefaultHttpClient client;
 	List<User> players = new ArrayList<User>();
 
 	@Getter
@@ -116,10 +114,6 @@ public final class Application {
 		// this.postInit();
 		// this.initHttpClient();
 		this.initPlayers();
-	}
-
-	public void destroy() {
-		client.getConnectionManager().shutdown();
 	}
 
 	public void finishInitialization() {
@@ -338,7 +332,7 @@ public final class Application {
 				.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, "importování databáze");
 		// list.add(new DummyJob(50));
-		//list.add(downloaderJob);
+		list.add(downloaderJob);
 		list.add(counterJob);
 		list.add(importerJob);
 

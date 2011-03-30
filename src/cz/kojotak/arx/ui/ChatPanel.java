@@ -5,9 +5,9 @@ package cz.kojotak.arx.ui;
 
 import javax.swing.JPanel;
 
-import org.lobobrowser.html.gui.HtmlPanel;
-import org.lobobrowser.html.test.SimpleHtmlRendererContext;
-import org.lobobrowser.html.test.SimpleUserAgentContext;
+//import org.lobobrowser.html.gui.HtmlPanel;
+//import org.lobobrowser.html.test.SimpleHtmlRendererContext;
+//import org.lobobrowser.html.test.SimpleUserAgentContext;
 
 import cz.kojotak.arx.Application;
 
@@ -20,8 +20,8 @@ public class ChatPanel extends JPanel {
 
 	public ChatPanel() {
 		super();
-		HtmlPanel panel = initSimple();
-		this.add(panel);
+//		HtmlPanel panel = initSimple();
+//		this.add(panel);
 	}
 /*
 	private HtmlPanel initChat() {
@@ -68,7 +68,7 @@ public class ChatPanel extends JPanel {
 
 		return panel;
 	}
-*/
+
 	private HtmlPanel initSimple() {
 		HtmlPanel panel = new HtmlPanel();
 		panel.setPreferredWidth(800);
@@ -81,7 +81,7 @@ public class ChatPanel extends JPanel {
 		}
 		return panel;
 	}
-/*
+
 	private static class LocalUserAgentContext extends SimpleUserAgentContext {
 		// Override methods from SimpleUserAgentContext to
 		// provide more accurate information about application.
