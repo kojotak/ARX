@@ -233,11 +233,7 @@ public final class Application {
 		}
 
 		language = Language.CZECH;
-		String icoPath = currentDir + File.separator + "res" + File.separator
-				+ "icons" + File.separator;
-		String imgPath = currentDir + File.separator + "tmp" + File.separator
-				+ "images" + File.separator;
-		iconLoader = new IconLoader(icoPath, imgPath, this);
+		iconLoader = new IconLoader("icons/", "images/", this);
 		properties = new Properties(language);
 		localization = new Localization(language);
 		icons = new Icons(language);

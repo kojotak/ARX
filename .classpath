@@ -17,5 +17,6 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/prace/workspace/ARX/lib/devel/swingx-1.6.2-javadoc.zip!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="res"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,7 +6,7 @@ package cz.kojotak.arx;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,9 +19,8 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import cz.kojotak.arx.ui.icon.EmptyIcon;
-
 import net.sf.image4j.codec.ico.ICODecoder;
+import cz.kojotak.arx.ui.icon.EmptyIcon;
 
 /**
  * @date 21.3.2010
@@ -29,8 +28,9 @@ import net.sf.image4j.codec.ico.ICODecoder;
  */
 public class IconLoader {
 
-	private String icoPrefix;
-	private String imgPrefix;
+	private final String icoPrefix;
+	private final String imgPrefix;
+	private final String screenshotPrefix=null;
 	private Application app;
 	final static String IMAGE_EXTENSION = ".png";
 
@@ -67,20 +67,20 @@ public class IconLoader {
 				i = new ImageIcon(im);
 
 		}else if(iconPath.endsWith(".png")){
-			i = new ImageIcon(iconPath);
+			i = new ImageIcon(url(iconPath));
 		}
 		return i;
 	}
 	
-	private Image loadImageInt(String prefix,String path,boolean appendExtension){
-		Image img=null;
-		StringBuilder sb = new StringBuilder(prefix).append(path);
-		if(appendExtension){
-			sb.append(IMAGE_EXTENSION);
-		}
-		String filename = sb.toString();
+	private URL url(String path){
+		return getClass().getClassLoader().getResource(path);
+	}
+	
+	private Image loadInt(String prefix,String path){
+		Image img=null;		
+		String filename = prefix+path;
 		try{
-			img = ImageIO.read(new File(filename));
+			img = ImageIO.read(url(filename));
 		}catch(Exception ex){
 			Application.getInstance().getLogger(this).warn("cannot load image "+filename+" because: "+ex);
 		}
@@ -89,12 +89,11 @@ public class IconLoader {
 	
 	public Image loadImageFromIcon(Enum<?> e){
 		String path = app.getIcons().getOptionalString(e);
-		return loadImageInt(icoPrefix, path, false);
+		return loadInt(icoPrefix, path);
 	}
 
 	public Image loadImage(String path){
-		boolean appendExtension=!path.contains(".");
-		return loadImageInt(imgPrefix, path,appendExtension);
+		return loadInt(imgPrefix, path);
 	}
 	
 	//FIXME this ugly code!!!
@@ -122,13 +121,19 @@ public class IconLoader {
 	      return null;
 	    }
 
-	    String filename = imgPrefix + path+IMAGE_EXTENSION;
-		app.getLogger(this).debug("saving as "+path+" ... ");
-	    FileOutputStream out = new FileOutputStream(filename);
-	    out.write(data);
-	    out.flush();
-	    out.close();
-		return loadImage(path);
+	    if(screenshotPrefix!=null){
+	    	String filename = imgPrefix + path+IMAGE_EXTENSION;
+	  		app.getLogger(this).debug("saving as "+filename+" ... ");
+	  	    FileOutputStream out = new FileOutputStream(filename);
+	  	    out.write(data);
+	  	    out.flush();
+	  	    out.close();
+	  		return loadImage(path);
+	    }else{
+	    	BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
+	    	return img;
+	    }
+	  
 	}
 	public Image downloadAndLoadImage(String path){
 		Image img = null;
@@ -140,16 +145,17 @@ public class IconLoader {
 		return img;
 	}
 
-	public Image loadIcoAsImage(String path){
-		if(path==null){
+	public Image loadIcoAsImage(String name){
+		if(name==null){
 			return null;
 		}
-		if(!path.endsWith(".ico")){
-			return loadImage(icoPrefix+path);
+		String path = icoPrefix+name;
+		if(!name.endsWith(".ico")){
+			return loadImage(path);
 		}
 		List<BufferedImage> bufims = Collections.emptyList();
 		try{
-			bufims=ICODecoder.read(new File(icoPrefix+path));
+			bufims=ICODecoder.read(url(path).openStream());
 			if(bufims.size()>0){
 				return bufims.get(0);
 			}
