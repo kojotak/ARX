@@ -218,19 +218,16 @@ public final class Application {
 
 	private Application() {
 		currentDir = System.getProperty("user.dir");
-		String etcDirPath = currentDir + File.separator + "etc"
-				+ File.separator;
-
+		
 		// log4 initialization
-		PropertyConfigurator.configure(etcDirPath + "log4j.properties");
+		PropertyConfigurator.configure(getClass().getClassLoader().getResource("log4j.properties"));
 		log = Logger.getLogger(Application.class);
 		log.debug("logger ready");
 
 		// java.util.logging initialization for chmpane
-		System.setProperty("java.util.logging.config.file", etcDirPath
-				+ "logging.properties");
+		//System.setProperty("java.util.logging.config.file", "logging.properties");
 		try {
-			LogManager.getLogManager().readConfiguration();
+			LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("log4j.properties"));
 		} catch (Exception ex) {
 			log.error("cannot reconfigure java.util.LogManager", ex);
 		}
