@@ -10,10 +10,11 @@ package cz.kojotak.arx.util;
 public enum StorageUnit {
 	BYTE(1L, "B"), 
 	KILOBYTE(1L << 10, "KB"), 
-	MEGABYTE(1L << 20, "MB"), 
-	GIGABYTE(1L << 30, "GB"),
-	TERABYTE(1L << 40, "TB"), 
-	PETABYTE(1L << 50, "PB");
+//	MEGABYTE(1L << 20, "MB"), 
+//	GIGABYTE(1L << 30, "GB"),
+//	TERABYTE(1L << 40, "TB"), 
+//	PETABYTE(1L << 50, "PB")
+	;
 
 	private long divider;
 	private String name;

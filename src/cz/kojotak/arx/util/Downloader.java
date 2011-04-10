@@ -64,6 +64,10 @@ public class Downloader implements RunnableWithProgress {
 	 */
 	@Override
 	public void run() {
+		if(target.exists() && target.length()>0L){
+			log.info("found previously downloaded database, skipping download");
+			return;
+		}
 		URL url = null;
 		try{
 			url = new URL(source);

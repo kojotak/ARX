@@ -306,10 +306,29 @@ public final class Application {
 		}
 		return string;
 	}
+	
+	private File tmpDb=null;
 
 	public File getZipedDatabaseFile() {
-		String filename = getTmpDir() + File.separator + "rm_db.gz";
-		return new File(filename);
+//		if(tmpDb==null){
+//			try{
+//				tmpDb=File.createTempFile("arx_tmp.", ".db");
+//			}catch(IOException ioex){
+//				log.error("cannot create tmp file for rotax database",ioex);
+//			}
+//		}
+//		String filename = getTmpDir() + File.separator + "rm_db.gz";	
+//		return new File(filename);
+		String tmpDir = System.getProperty("java.io.tmpdir");
+		File tmpDb = new File(tmpDir,"arx.db");
+		if(!tmpDb.exists()){
+			try {
+				tmpDb.createNewFile();
+			} catch (IOException e) {
+				log.error("cannot create tmp file for rotax database",e);
+			}
+		}
+		return tmpDb;
 	}
 
 	public List<Job> getJobs() {
@@ -321,8 +340,8 @@ public final class Application {
 				"stahov·nÌ datab·ze");
 		LineCounter counter = new LineCounter(getZipedDatabaseFile(), this);
 		Job counterJob = new Job(counter, 5, "zjiöùov·nÌ velikosti datab·ze");
-		this.importer = this.importerFactory
-				.createFromGziped(getZipedDatabaseFile());
+		this.importer = new Importer(getZipedDatabaseFile()); 
+			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, "importov·nÌ datab·ze");
 		// list.add(new DummyJob(50));
 		list.add(downloaderJob);

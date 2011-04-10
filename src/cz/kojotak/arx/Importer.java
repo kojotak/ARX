@@ -1,7 +1,12 @@
 package cz.kojotak.arx;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.GZIPInputStream;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -256,19 +262,25 @@ public class Importer implements RunnableWithProgress{
 		game.setAverageRatings(hodnoceni);
 	}
 	
-	public Importer(){}
-	
-	@Setter
-	@Getter
-	private int countLines=-1;
-	
-	Importer(BufferedReader reader) {
-		super();
+	public Importer(){
 		log = Application.getInstance().getLogger(this);
 		gamesSingle = new HashMap<String, MameGameSingle>(2000);
 		gamesDouble = new HashMap<String, MameGameDouble>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
 		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
+	}
+	
+	private File tmpFile;
+	public Importer(File tmpFile){
+		this();
+		this.tmpFile=tmpFile;
+	}
+	
+	@Setter
+	@Getter
+	private int countLines=-1;
+	
+	public void setReader(BufferedReader reader) {
 		this.reader=reader;
 	}
 	
@@ -332,6 +344,21 @@ public class Importer implements RunnableWithProgress{
 	}
 	
 	public void run(){
+		log.info("starting importer ...");
+		InputStream in=null;
+		try{
+			in = new FileInputStream(tmpFile);
+			GZIPInputStream gzip = new GZIPInputStream(in);
+			BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
+			this.setReader(br);
+		}catch(FileNotFoundException ex){
+			log.error("there is no such file " + tmpFile);
+			throw new RuntimeException("there is no such a file "+tmpFile,ex);
+		}catch(IOException ioex){
+			log.error("Cannot import data using "+tmpFile);
+			throw new RuntimeException("Error during import",ioex);
+		}
+			
 		this.countLines=Application.getInstance().linesToImport.get();//FIXME please, refactor me
 		log.debug("running importer... (expecting "+countLines+")");
 		try {
