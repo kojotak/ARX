@@ -22,6 +22,9 @@
     	<!-- pack all resources -->
     	<jar destfile="${dist.dir}/${app.name}-res.jar">
     		  <fileset dir="${basedir}/res" includes="**/*" />
+    		 <fileset dir="${bin.dir}">
+    		 	<include name="**/*.properties"/>
+    		 </fileset>
     	</jar>
     	
     	<property name="jar.file" value="${dist.dir}/${app.name}.jar"/>    	    	
@@ -32,14 +35,15 @@
     	    </classpath>
     	</manifestclasspath>
     	
-    	<echo>${manifest.classpath}</echo>
-    	
+      	
         <jar destfile="${jar.file}">
             <manifest>
                 <attribute name="Main-Class" value="cz.kojotak.arx.DesktopRunner"/>
             	<attribute name="Class-Path" value="${manifest.classpath}" />
             </manifest>
-            <fileset dir="${bin.dir}"/>
+            <fileset dir="${bin.dir}">
+            	<include name="**/*.class"/>
+            </fileset>
         </jar>
 
     </target>
