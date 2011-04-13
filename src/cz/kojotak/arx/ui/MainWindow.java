@@ -63,7 +63,7 @@ public class MainWindow extends JFrame {
 		String title = app.getLocalization().getString(this, "TITLE");
 		setTitle(title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Image ico = app.getIconLoader().loadIcoAsImage("mamu"+File.separator+"39in1.ico");
+		Image ico = app.getIconLoader().loadIcoAsImage("mamu/39in1.ico");
 		this.setIconImage(ico);
 		this.setLayout(new BorderLayout());
 		Container container = this.getContentPane();
@@ -103,9 +103,7 @@ public class MainWindow extends JFrame {
 
 		JPanel statusBar = new StatusBar();
 		container.add(statusBar,BorderLayout.SOUTH);
-//		JPanel chat = new JPanel();//new ChatPanel();
-//		chat.setPreferredSize(new Dimension(0,0));
-//		chat.setMinimumSize(new Dimension(0,0));
+
 		JLabel chat = new JLabel("TODO chat");
 		lowerPanel.add(chat,BorderLayout.CENTER);
 		splitter.setDividerLocation(0.5);

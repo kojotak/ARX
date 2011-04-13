@@ -34,14 +34,12 @@ public class ChatButton extends JToggleButton implements ActionListener{
 		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.CHAT));
 		this.setText(app.getLocalization().getString(this, "LABEL"));
 		this.addActionListener(this);
-		expanded=true;
+		expanded=false;
 		this.setSelected(expanded);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-//		window.getSplitter().setDividerLocation(expanded?0.5:1);
-//		logger.debug("chat "+(expanded?"expanded":"collapsed"));
+	public void actionPerformed(ActionEvent event) {
 		JComponent toRemove = expanded?window.getSplitter():window.getUpperPanel();
 		JComponent toAdd = expanded?window.getUpperPanel():window.getSplitter();
 		JComponent panel = window.getCenterPanel();

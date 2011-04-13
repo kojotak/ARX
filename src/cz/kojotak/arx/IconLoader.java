@@ -155,12 +155,17 @@ public class IconLoader {
 		}
 		List<BufferedImage> bufims = Collections.emptyList();
 		try{
-			bufims=ICODecoder.read(url(path).openStream());
+			URL url = url(path);
+			if(url==null){
+				app.getLogger(this).error("Cannot create url for icon "+path);
+				return null;
+			}
+			bufims=ICODecoder.read(url.openStream());
 			if(bufims.size()>0){
 				return bufims.get(0);
 			}
 		}catch(IOException ex){
-			Application.getInstance().getLogger(this).error("Cannot load icon "+path,ex);
+			app.getLogger(this).error("Cannot load icon "+path,ex);
 		}
 		return null;
 	}
