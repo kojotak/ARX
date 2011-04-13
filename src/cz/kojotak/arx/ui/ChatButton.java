@@ -34,8 +34,8 @@ public class ChatButton extends JToggleButton implements ActionListener{
 		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.CHAT));
 		this.setText(app.getLocalization().getString(this, "LABEL"));
 		this.addActionListener(this);
-		expanded=false;
-		this.setSelected(expanded);
+		expanded=true;
+		actionPerformed(null);//dirty trick to collapse chat by default:-o
 	}
 
 	@Override
@@ -52,5 +52,6 @@ public class ChatButton extends JToggleButton implements ActionListener{
 		panel.invalidate();
 		window.pack();
 		expanded=!expanded;
+		setSelected(expanded);
 	}
 }
