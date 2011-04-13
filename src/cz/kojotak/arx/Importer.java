@@ -36,6 +36,7 @@ import cz.kojotak.arx.domain.game.MameGameSingle;
 import cz.kojotak.arx.domain.game.NoncompetitiveGame;
 import cz.kojotak.arx.domain.impl.Record2PImpl;
 import cz.kojotak.arx.domain.impl.RecordImpl;
+import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
 
@@ -276,9 +277,9 @@ public class Importer implements RunnableWithProgress{
 		this.tmpFile=tmpFile;
 	}
 	
-	@Setter
-	@Getter
-	private int countLines=-1;
+	//@Setter
+	//@Getter
+	private long maxSize=-1;
 	
 	public void setReader(BufferedReader reader) {
 		this.reader=reader;
@@ -333,24 +334,23 @@ public class Importer implements RunnableWithProgress{
 	
 	@Override
 	public long max(){
-		return countLines;
+		return maxSize;
 	};
-	
-	private long readLines=0;
 	
 	@Override
 	public long current(){
-		return readLines;
+		return progressIs.getTotalNumBytesRead();
 	}
-	
+	ProgressInputStream progressIs=null;
 	public void run(){
 		log.info("starting importer ...");
+		this.maxSize=Application.getInstance().bytesToImport.get();
 		InputStream in=null;
 		try{
 			in = new FileInputStream(tmpFile);
-			GZIPInputStream gzip = new GZIPInputStream(in);
-			BufferedReader br = new BufferedReader(new InputStreamReader(gzip));
-			this.setReader(br);
+			progressIs = new ProgressInputStream(in);
+			GZIPInputStream gzip = new GZIPInputStream(progressIs);
+			reader = new BufferedReader(new InputStreamReader(gzip));
 		}catch(FileNotFoundException ex){
 			log.error("there is no such file " + tmpFile);
 			throw new RuntimeException("there is no such a file "+tmpFile,ex);
@@ -359,13 +359,11 @@ public class Importer implements RunnableWithProgress{
 			throw new RuntimeException("Error during import",ioex);
 		}
 			
-		this.countLines=Application.getInstance().linesToImport.get();//FIXME please, refactor me
-		log.debug("running importer... (expecting "+countLines+")");
 		try {
 			String line = null;
-			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0;
+			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
 			while ((line = reader.readLine()) != null) {
-				this.readLines++;
+				readLines++;
 				int start = line.indexOf("('");
 				int end = line.indexOf("')");
 				if (start < 0 || end < 0) {
@@ -402,7 +400,7 @@ public class Importer implements RunnableWithProgress{
 			}
 			log.info("done..., mame games=" + mameGames
 					+ ", amiga games=" + amigaGames + ", noncompetitive games="
-					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines+", max lines="+countLines);
+					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
 		} catch (IOException x) {
 			x.printStackTrace();
 		}

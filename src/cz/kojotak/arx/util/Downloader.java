@@ -66,6 +66,7 @@ public class Downloader implements RunnableWithProgress {
 	public void run() {
 		if(target.exists() && target.length()>0L){
 			log.info("found previously downloaded database, skipping download");
+			Application.getInstance().bytesToImport.set(target.length());
 			return;
 		}
 		URL url = null;
@@ -89,9 +90,11 @@ public class Downloader implements RunnableWithProgress {
 			out = new BufferedOutputStream(fos);
 			byte[] buf = new byte[BUFFER_SIZE];
 			int read = -1;
+			int total=0;
 			while ((read = in.read(buf)) != -1) {
 				readBytes.addAndGet(read);
 				out.write(buf, 0, read);
+				total+=read;
 			}
 		}catch(IOException ioex){
 			log.error("cannot read from "+source,ioex);
@@ -107,6 +110,7 @@ public class Downloader implements RunnableWithProgress {
 				log.warn("problem with closing streams from "+source, ex);
 			}
 		}
+		Application.getInstance().bytesToImport=totalBytes;
 
 	}
 

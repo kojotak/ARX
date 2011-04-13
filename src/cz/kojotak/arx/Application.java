@@ -12,7 +12,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.LogManager;
 
 import lombok.Getter;
@@ -36,7 +36,6 @@ import cz.kojotak.arx.properties.Licence;
 import cz.kojotak.arx.properties.Localization;
 import cz.kojotak.arx.ui.MainWindow;
 import cz.kojotak.arx.util.Downloader;
-import cz.kojotak.arx.util.LineCounter;
 import cz.kojotak.arx.util.StorageUnit;
 
 /**
@@ -306,19 +305,8 @@ public final class Application {
 		}
 		return string;
 	}
-	
-	private File tmpDb=null;
 
 	public File getZipedDatabaseFile() {
-//		if(tmpDb==null){
-//			try{
-//				tmpDb=File.createTempFile("arx_tmp.", ".db");
-//			}catch(IOException ioex){
-//				log.error("cannot create tmp file for rotax database",ioex);
-//			}
-//		}
-//		String filename = getTmpDir() + File.separator + "rm_db.gz";	
-//		return new File(filename);
 		String tmpDir = System.getProperty("java.io.tmpdir");
 		File tmpDb = new File(tmpDir,"arx.db");
 		if(!tmpDb.exists()){
@@ -338,20 +326,20 @@ public final class Application {
 				getZipedDatabaseFile());
 		Job downloaderJob = new DownloaderJob(downloader, 100,
 				"stahov·nÌ datab·ze");
-		LineCounter counter = new LineCounter(getZipedDatabaseFile(), this);
-		Job counterJob = new Job(counter, 5, "zjiöùov·nÌ velikosti datab·ze");
+		//LineCounter counter = new LineCounter(getZipedDatabaseFile(), this);
+		//Job counterJob = new Job(counter, 5, "zjiöùov·nÌ velikosti datab·ze");
 		this.importer = new Importer(getZipedDatabaseFile()); 
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, "importov·nÌ datab·ze");
 		// list.add(new DummyJob(50));
 		list.add(downloaderJob);
-		list.add(counterJob);
+		//list.add(counterJob);
 		list.add(importerJob);
 
 		return list;
 	}
 
-	public AtomicInteger linesToImport = new AtomicInteger(0);
+	public AtomicLong bytesToImport = new AtomicLong(0);
 
 	public static final String RM_DB_URL = "http://rotaxmame.cz/php/download3.php?co=kompletni_databaze";
 
