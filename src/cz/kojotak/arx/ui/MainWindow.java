@@ -67,7 +67,7 @@ public class MainWindow extends JFrame {
 		this.setIconImage(ico);
 		this.setLayout(new BorderLayout());
 		Container container = this.getContentPane();
-
+		
 		upperPanel = new JPanel();
 		lowerPanel = new JPanel();
 		centerPanel = new JPanel(new BorderLayout());

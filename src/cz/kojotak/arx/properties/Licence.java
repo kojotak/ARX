@@ -35,7 +35,7 @@ public class Licence extends Properties {
 	public static final String FILE_LINK="LINK";
 	
 	public static enum Item{
-		CHM_PANE,EVENT_BUS,IMAGE4J,LOG4J,LOMBOK,ROTAXMAME,SWING_X
+		CHM_PANE,EVENT_BUS,FAMFAMFAM,IMAGE4J,LOG4J,LOMBOK,MAMU,ROTAXMAME,SWING_X
 	}
 
 	public Licence(Language lang) {
