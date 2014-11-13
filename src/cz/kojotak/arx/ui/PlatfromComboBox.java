@@ -30,7 +30,7 @@ import cz.kojotak.arx.util.GenericEnumComparator;
  * @date 2.6.2010
  * @author Kojotak
  */
-public class PlatfromComboBox extends JComboBox {
+public class PlatfromComboBox extends JComboBox<Platform> {
 
 	private static final long serialVersionUID = 4089373502308114318L;
 
@@ -68,7 +68,7 @@ public class PlatfromComboBox extends JComboBox {
 		Collections.sort(sorted, new GenericEnumComparator(app.getLanguage()));
 		v.add(Platform.ALL);
 		v.addAll(sorted);
-		ComboBoxModel model = new DefaultComboBoxModel(v);
+		ComboBoxModel<Platform> model = new DefaultComboBoxModel<Platform>(v);
 		this.setModel(model);
 	}
 

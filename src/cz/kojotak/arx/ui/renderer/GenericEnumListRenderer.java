@@ -17,7 +17,7 @@ import cz.kojotak.arx.ui.icon.EmptyIcon;
  * @date 25.2.2010
  * @author Kojotak
  */
-public class GenericEnumListRenderer<T extends Enum<?>> extends JLabel implements ListCellRenderer {
+public class GenericEnumListRenderer<T extends Enum<?>> extends JLabel implements ListCellRenderer<T> {
 
 	private static final long serialVersionUID = -2126498516703851009L;
 	private Class<T> enumType;
@@ -37,15 +37,8 @@ public class GenericEnumListRenderer<T extends Enum<?>> extends JLabel implement
 		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
-	 * .JList, java.lang.Object, int, boolean, boolean)
-	 */
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value,
+	public Component getListCellRendererComponent(JList<? extends T> list, T value,
 			int index, boolean isSelected, boolean cellHasFocus) {
 		Application app = Application.getInstance();
 		if(value==null || !enumType.isAssignableFrom(value.getClass())){

@@ -22,7 +22,7 @@ import cz.kojotak.arx.ui.renderer.PlayerListRenderer;
  * @date 19.4.2010
  * @author Kojotak
  */
-public class PlayerComboBox extends JComboBox {
+public class PlayerComboBox extends JComboBox<String> {
 
 	private static final long serialVersionUID = -8481423043530284950L;
 	public static final String ADD_NEW="_NEW";
@@ -34,7 +34,7 @@ public class PlayerComboBox extends JComboBox {
 		this.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				JComboBox cb = (JComboBox) event.getSource();
+				JComboBox<String> cb = (JComboBox) event.getSource();
 				String usrName = (String) cb.getSelectedItem();
 				if (PlayerComboBox.ADD_NEW.equals(usrName)) {
 					Application.getInstance().getLogger(this).info(
@@ -54,11 +54,11 @@ public class PlayerComboBox extends JComboBox {
 	}
 
 
-	private ComboBoxModel getUsersComboBox() {
+	private ComboBoxModel<String> getUsersComboBox() {
 		Application app = Application.getInstance();
 		List<String> usrNames = app.getPlayers();
 		usrNames.add(ADD_NEW);
-		ComboBoxModel model = new DefaultComboBoxModel(new Vector<String>(usrNames));
+		ComboBoxModel<String> model = new DefaultComboBoxModel<String>(new Vector<String>(usrNames));
 		model.setSelectedItem(app.getCurrentUser().getId());
 		return model;
 	}

@@ -22,7 +22,7 @@ import cz.kojotak.arx.util.AvailibilityComparator;
  * @date 19.5.2010
  * @author Kojotak
  */
-public class AvailibilityComboBox extends JComboBox {
+public class AvailibilityComboBox extends JComboBox<Availibility> {
 
 	private static final long serialVersionUID = 9214892993791504736L;
 
@@ -30,7 +30,7 @@ public class AvailibilityComboBox extends JComboBox {
 		super();
 		Availibility[] values = Availibility.values();
 		Arrays.sort(values, new AvailibilityComparator());
-		this.setModel(new DefaultComboBoxModel(values));
+		this.setModel(new DefaultComboBoxModel<Availibility>(values));
 		this.setMaximumRowCount(values.length);
 		this.setRenderer(new GenericEnumListRenderer<Availibility>(null,Availibility.class));
 		this.addActionListener(new ActionListener() {

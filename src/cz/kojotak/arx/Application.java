@@ -128,19 +128,19 @@ public final class Application {
 		this.modes.add(noncompetetiveMode);
 	}
 
-	// private void doImport() {
-	// long startTime = System.currentTimeMillis();
-	// long startMem = Runtime.getRuntime().freeMemory();
-	//
-	// // importer = ifa.createFromGziped(currentDir + File.separator +
-	// // "tmp"+File.separator+"rotaxmame_databaze.gz");
-	// importer = importerFactory.createFromWeb();
-	// long endTime = System.currentTimeMillis();
-	// long endMem = Runtime.getRuntime().freeMemory();
-	// log.info("import done in " + (double)(endTime - startTime) / 1000
-	// + " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
-	//
-	// }
+	 private void doImport() {
+		 long startTime = System.currentTimeMillis();
+		 long startMem = Runtime.getRuntime().freeMemory();
+		
+		 // importer = ifa.createFromGziped(currentDir + File.separator +
+		 // "tmp"+File.separator+"rotaxmame_databaze.gz");
+		 importer = importerFactory.createFromWeb();
+		 long endTime = System.currentTimeMillis();
+		 long endMem = Runtime.getRuntime().freeMemory();
+		 log.info("import done in " + (double)(endTime - startTime) / 1000
+		 + " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
+		
+	 }
 	/*
 	 * private void logCookies() { List<Cookie> cookies =
 	 * client.getCookieStore().getCookies(); if (cookies.isEmpty()) {
@@ -325,12 +325,12 @@ public final class Application {
 		Downloader downloader = new Downloader(this, RM_DB_URL,
 				getZipedDatabaseFile());
 		Job downloaderJob = new DownloaderJob(downloader, 100,
-				"stahov·nÌ datab·ze");
+				"stahovÔøΩnÔøΩ databÔøΩze");
 		//LineCounter counter = new LineCounter(getZipedDatabaseFile(), this);
-		//Job counterJob = new Job(counter, 5, "zjiöùov·nÌ velikosti datab·ze");
+		//Job counterJob = new Job(counter, 5, "zjiÔøΩÔøΩovÔøΩnÔøΩ velikosti databÔøΩze");
 		this.importer = new Importer(getZipedDatabaseFile()); 
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
-		Job importerJob = new Job(importer, 100, "importov·nÌ datab·ze");
+		Job importerJob = new Job(importer, 100, "importovÔøΩnÔøΩ databÔøΩze");
 		// list.add(new DummyJob(50));
 		list.add(downloaderJob);
 		//list.add(counterJob);
@@ -354,7 +354,7 @@ public final class Application {
 			
 			RunnableWithProgress runnable = this.getRunnable();
 			
-			String max = StorageUnit.toString(runnable.max());
+//			String max = StorageUnit.toString(runnable.max());
 			String current = StorageUnit.toString(runnable.current());		
 			return super.getDescription() + " "+current;
 		}

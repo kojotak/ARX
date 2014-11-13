@@ -6,7 +6,6 @@ package cz.kojotak.arx.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,7 +16,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import cn.rui.chm.swing.CHMPane;
@@ -29,7 +27,7 @@ import cz.kojotak.arx.ui.renderer.HelpChoicesRenderer;
  * @author TBe
  *
  */
-public class HelpComboBox extends JComboBox {
+public class HelpComboBox extends JComboBox<String> {
 
 	private static final long serialVersionUID = 7184865050053098182L;
 
@@ -43,7 +41,7 @@ public class HelpComboBox extends JComboBox {
 	public HelpComboBox() {
 		super();
 		app=Application.getInstance();
-		this.setModel(new DefaultComboBoxModel(new String[]{ROTAXMAME,LICENCE,CREDITS}));
+		this.setModel(new DefaultComboBoxModel<String>(new String[]{ROTAXMAME,LICENCE,CREDITS}));
 		this.setEditable(false);
 		this.addActionListener(new ActionListener(){
 

@@ -30,7 +30,7 @@ import cz.kojotak.arx.util.GenericEnumComparator;
  * @date 21.4.2010
  * @author Kojotak
  */
-public class CategoryComboBox extends JComboBox {
+public class CategoryComboBox extends JComboBox<Category> {
 
 	private static final long serialVersionUID = 8070450403361850796L;
 
@@ -67,7 +67,7 @@ public class CategoryComboBox extends JComboBox {
 		List<Category> sorted = new ArrayList<Category>(catSet);
 		Collections.sort(sorted, new GenericEnumComparator(app.getLanguage()));
 		v.addAll(sorted);
-		ComboBoxModel model = new DefaultComboBoxModel(v);
+		ComboBoxModel<Category> model = new DefaultComboBoxModel<Category>(v);
 		this.setModel(model);
 	}
 

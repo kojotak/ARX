@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.log4j.Logger;
 

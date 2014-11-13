@@ -4,7 +4,7 @@
 package cz.kojotak.arx.domain;
 
 /**
- * Identifikaèní rozhraní
+ * Identifikacni rozhrani
  * @date 14.10.2009
  * @author Kojotak
  */

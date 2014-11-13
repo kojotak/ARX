@@ -96,6 +96,7 @@ public class Downloader implements RunnableWithProgress {
 				out.write(buf, 0, read);
 				total+=read;
 			}
+			log.trace(total+" bytes were read");
 		}catch(IOException ioex){
 			log.error("cannot read from "+source,ioex);
 		}finally{

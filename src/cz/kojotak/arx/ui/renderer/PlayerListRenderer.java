@@ -19,7 +19,7 @@ import cz.kojotak.arx.ui.icon.GUIIcons;
  * @date 19.4.2010
  * @author Kojotak 
  */
-public class PlayerListRenderer extends JLabel implements ListCellRenderer {
+public class PlayerListRenderer extends JLabel implements ListCellRenderer<String> {
 
 	private static final long serialVersionUID = -8067946040669163322L;
 	transient private Application app;
@@ -32,13 +32,9 @@ public class PlayerListRenderer extends JLabel implements ListCellRenderer {
 		app=Application.getInstance();
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
-	 */
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value,
+	public Component getListCellRendererComponent(JList<? extends String> list, String string,
 			int index, boolean isSelected, boolean cellHasFocus) {
-		String string = value.toString();
 		Icon icon = null;
 		if (isSelected) {
 			setBackground(list.getSelectionBackground());
