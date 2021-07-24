@@ -9,8 +9,6 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import lombok.Getter;
-
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
@@ -22,7 +20,6 @@ public class Sidebar extends JPanel {
 
 	private static final long serialVersionUID = 1954740479797461511L;
 
-	@Getter
 	private FilterTaskPane filter;
 	private PreferencesTaskPane preferences;
 	
@@ -48,6 +45,10 @@ public class Sidebar extends JPanel {
 		taskpanecontainer.add(details);
 
 		this.add(taskpanecontainer);
+	}
+
+	public FilterTaskPane getFilter() {
+		return filter;
 	}
 
 }

@@ -3,8 +3,6 @@
  */
 package cz.kojotak.arx.domain.impl;
 
-import lombok.Getter;
-import lombok.Setter;
 import cz.kojotak.arx.domain.Record;
 
 
@@ -14,28 +12,11 @@ import cz.kojotak.arx.domain.Record;
  */
 public class RecordImpl implements Record {
 
-	@Getter
-	@Setter
 	protected Long score;
-	
-	@Getter
-	@Setter
 	protected Float rating;
-	
-	@Getter
-	@Setter
 	protected Boolean finished;
-	
-	@Getter
-	@Setter
 	protected String player;
-	
-	@Getter
-	@Setter
 	protected Integer duration;
-
-	@Getter
-	@Setter
 	protected Integer position;
 	
 	public RecordImpl() {
@@ -45,6 +26,54 @@ public class RecordImpl implements Record {
 	@Override
 	public Boolean isFinished() {
 		return getFinished();
+	}
+
+	public Long getScore() {
+		return score;
+	}
+
+	public void setScore(Long score) {
+		this.score = score;
+	}
+
+	public Float getRating() {
+		return rating;
+	}
+
+	public void setRating(Float rating) {
+		this.rating = rating;
+	}
+
+	public Boolean getFinished() {
+		return finished;
+	}
+
+	public void setFinished(Boolean finished) {
+		this.finished = finished;
+	}
+
+	public String getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(String player) {
+		this.player = player;
+	}
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 	
 }

@@ -18,8 +18,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
-import lombok.Getter;
-
 import org.apache.log4j.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
@@ -50,34 +48,15 @@ public class Importer implements RunnableWithProgress{
 	private Map<String, AmigaGame> gamesAmiga;
 	private Map<String, NoncompetitiveGame> gamesNoncompetetive;
 	
-	@Getter
 	private Set<String> singlePlayers = new HashSet<String>();
-	
-	@Getter
 	int singleRecords=0;
-	
-	@Getter
 	int doubleRecords=0;
-	
-	@Getter
 	int amigaRecords=0;
-	
-	@Getter
 	private Set<Category> singleCategories=new HashSet<Category>();
-	
-	@Getter
 	private Set<Category> doubleCategories=new HashSet<Category>();
-	
-	@Getter
 	private Set<Category> amigaCategories=new HashSet<Category>();
-	
-	@Getter
 	private Set<Category> noncometetiveCategories=new HashSet<Category>();
-	
-	@Getter
 	private Set<Platform> noncompetetivePlatforms=new HashSet<Platform>();
-	
-	@Getter
 	private Date lastUpdate;
 	protected Logger log;
 
@@ -405,4 +384,37 @@ public class Importer implements RunnableWithProgress{
 		}
 		
 	}
+
+	public Set<Category> getSingleCategories() {
+		return singleCategories;
+	}
+
+	public Set<Category> getAmigaCategories() {
+		return amigaCategories;
+	}
+
+	public Set<Category> getNoncometetiveCategories() {
+		return noncometetiveCategories;
+	}
+
+	public Set<Platform> getNoncompetetivePlatforms() {
+		return noncompetetivePlatforms;
+	}
+
+	public Set<Category> getDoubleCategories() {
+		return doubleCategories;
+	}
+
+	public Set<String> getSinglePlayers() {
+		return singlePlayers;
+	}
+
+	public int getSingleRecords() {
+		return singleRecords;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+	
 }

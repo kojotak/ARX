@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import lombok.Getter;
-
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
@@ -35,25 +33,11 @@ public class MainWindow extends JFrame {
 	private RecordPanel records;
 	private GameTable table;
 	private Toolbar toolbar;
-	
-	@Getter
 	private JSplitPane splitter;
-	
-	@Getter
 	private Sidebar sidebar;
-	
-	@Getter
 	private JPanel upperPanel;
-	
-	@Getter
 	private JPanel lowerPanel;
-	
-	@Getter
 	private JPanel centerPanel;
-
-	public GameTable getGameTable() {
-		return table;
-	}
 
 	public MainWindow() {
 		super();
@@ -143,4 +127,28 @@ public class MainWindow extends JFrame {
 //			table = new GameTable(tm,cm,records.table);
 //		}
 //	}
+	
+	public JSplitPane getSplitter() {
+		return splitter;
+	}
+
+	public Sidebar getSidebar() {
+		return sidebar;
+	}
+
+	public JPanel getUpperPanel() {
+		return upperPanel;
+	}
+
+	public JPanel getLowerPanel() {
+		return lowerPanel;
+	}
+
+	public JPanel getCenterPanel() {
+		return centerPanel;
+	}
+
+	public GameTable getGameTable() {
+		return table;
+	}
 }

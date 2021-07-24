@@ -1,12 +1,9 @@
 package cz.kojotak.arx.util;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 /**
  * Counts read bytes from wrapped input stream

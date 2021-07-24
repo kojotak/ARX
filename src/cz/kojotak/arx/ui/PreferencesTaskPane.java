@@ -3,25 +3,20 @@
  */
 package cz.kojotak.arx.ui;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout.ParallelGroup;
-
-import lombok.Getter;
 
 import org.bushe.swing.event.EventBus;
 import org.jdesktop.swingx.JXTaskPane;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.event.OpponentChosen;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
@@ -36,7 +31,6 @@ public class PreferencesTaskPane extends JXTaskPane {
 	
 	private final JLabel opponentLabel;
 	
-	@Getter
 	private final JTextField opponentField;
 	
 	public PreferencesTaskPane() {
@@ -91,6 +85,9 @@ public class PreferencesTaskPane extends JXTaskPane {
 		layout.setHorizontalGroup(hGroup);
 		layout.setVerticalGroup(vGroup);
 	}
-	
+
+	public JTextField getOpponentField() {
+		return opponentField;
+	}
 	
 }

@@ -3,8 +3,6 @@
  */
 package cz.kojotak.arx.domain.enums;
 
-import lombok.Getter;
-
 /**
  * Supported game platforms
  * @date 2.6.2010
@@ -35,13 +33,15 @@ public enum Platform {
 	ZX("zx")
 	;
 	
-	@Getter
 	private String emulator;
 		
 	private Platform(String emulator) {
 		this.emulator = emulator;
 	}
 
+	public String getEmulator() {
+		return emulator;
+	}
 
 	/**
 	 * Resolve known string representations of platform into {@link Platform} itself

@@ -16,8 +16,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
-import lombok.Getter;
-
 /**
  * Splash screen
  * 
@@ -114,16 +112,21 @@ public class SplashScreen extends JWindow {
 	}
 	
 	public static class Progress{
-		@Getter
 		private int percent;
-		
-		@Getter
 		private String message;
 		
 		public Progress(int percent, String message) {
 			super();
 			this.percent = percent;
 			this.message = message;
+		}
+
+		public int getPercent() {
+			return percent;
+		}
+
+		public String getMessage() {
+			return message;
 		}
 		
 	}

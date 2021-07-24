@@ -3,8 +3,6 @@
  */
 package cz.kojotak.arx.domain.game;
 
-import lombok.Getter;
-import lombok.Setter;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.LegacyGameMetaData;
@@ -20,20 +18,34 @@ public abstract class LegacyCompetitiveGame extends SimpleGame implements Legacy
 		super(id,category, title, file);
 	}
 	
-	@Getter
-	@Setter
 	private String rules;
-	
-	@Getter
-	@Setter
 	private Integer playerCount;
-	
-	@Getter
-	@Setter
 	private String firstPlayerSign;
-	
-	@Getter
-	@Setter
 	protected GameStatistics statistics;
 
+	public String getRules() {
+		return rules;
+	}
+	public void setRules(String rules) {
+		this.rules = rules;
+	}
+	public Integer getPlayerCount() {
+		return playerCount;
+	}
+	public void setPlayerCount(Integer playerCount) {
+		this.playerCount = playerCount;
+	}
+	public String getFirstPlayerSign() {
+		return firstPlayerSign;
+	}
+	public void setFirstPlayerSign(String firstPlayerSign) {
+		this.firstPlayerSign = firstPlayerSign;
+	}
+	public GameStatistics getStatistics() {
+		return statistics;
+	}
+	public void setStatistics(GameStatistics statistics) {
+		this.statistics = statistics;
+	}
+	
 }

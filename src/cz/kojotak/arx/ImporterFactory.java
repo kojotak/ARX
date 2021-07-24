@@ -118,4 +118,8 @@ public class ImporterFactory {
 		return importer;
 	}
 
+	public Importer createFromGziped(String string) {
+		return createFromGziped(new File(string));
+	}
+
 }

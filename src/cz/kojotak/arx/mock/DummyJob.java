@@ -5,8 +5,6 @@ package cz.kojotak.arx.mock;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import lombok.ToString;
-
 import cz.kojotak.arx.Application.Job;
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.ui.SplashScreen;
@@ -16,7 +14,6 @@ import cz.kojotak.arx.ui.SplashScreen;
  * @date 26.9.2010
  * @author Kojotak 
  */
-@ToString
 public class DummyJob extends Job {
 
 	public DummyJob(final int sleepInMs) {

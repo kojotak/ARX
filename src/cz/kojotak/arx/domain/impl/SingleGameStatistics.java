@@ -5,7 +5,6 @@ package cz.kojotak.arx.domain.impl;
 
 import java.util.List;
 
-import lombok.Getter;
 
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.GameStatistics;
@@ -19,26 +18,26 @@ import cz.kojotak.arx.domain.enums.FinishedStatus;
  */
 public class SingleGameStatistics implements GameStatistics {
 	
-	@Getter	Integer playerPosition=null;
-	@Getter	Float playerRating=null;
+	Integer playerPosition=null;
+	Float playerRating=null;
 	
-	@Getter	Float averageRating=null;
-	@Getter	Float playerRelativePosition=null;
-	@Getter	String playerSign=null;
+	Float averageRating=null;
+	Float playerRelativePosition=null;
+	String playerSign=null;
 	
-	@Getter String bestPlayer=null;
-	@Getter	int recordsCount=0;
-	@Getter	int ratingsCount=0;
-	@Getter Boolean playerFinished=null;
-	@Getter Boolean somebodyFinished=false;
+	String bestPlayer=null;
+	int recordsCount=0;
+	int ratingsCount=0;
+	Boolean playerFinished=null;
+	Boolean somebodyFinished=false;
 	
-	@Getter	Long highestScore=null;
-	@Getter	Long userScore=null;
+	Long highestScore=null;
+	Long userScore=null;
 	
-	@Getter Integer oponentDiff=null;
+	Integer oponentDiff=null;
 	
-	@Getter User oponent=null;
-	@Getter	Integer points=null;
+	User oponent=null;
+	Integer points=null;
 		
 	public SingleGameStatistics(Competetive<Record> game,User user,User oponent) {
 		super();
@@ -106,4 +105,65 @@ public class SingleGameStatistics implements GameStatistics {
 			return null;
 		}
 	}
+
+	public Integer getPlayerPosition() {
+		return playerPosition;
+	}
+
+	public Float getPlayerRating() {
+		return playerRating;
+	}
+
+	public Float getAverageRating() {
+		return averageRating;
+	}
+
+	public Float getPlayerRelativePosition() {
+		return playerRelativePosition;
+	}
+
+	public String getPlayerSign() {
+		return playerSign;
+	}
+
+	public String getBestPlayer() {
+		return bestPlayer;
+	}
+
+	public int getRecordsCount() {
+		return recordsCount;
+	}
+
+	public int getRatingsCount() {
+		return ratingsCount;
+	}
+
+	public Boolean getPlayerFinished() {
+		return playerFinished;
+	}
+
+	public Boolean getSomebodyFinished() {
+		return somebodyFinished;
+	}
+
+	public Long getHighestScore() {
+		return highestScore;
+	}
+
+	public Long getUserScore() {
+		return userScore;
+	}
+
+	public Integer getOponentDiff() {
+		return oponentDiff;
+	}
+
+	public User getOponent() {
+		return oponent;
+	}
+
+	public Integer getPoints() {
+		return points;
+	}
+	
 }

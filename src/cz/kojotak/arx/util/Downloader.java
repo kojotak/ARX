@@ -14,7 +14,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.atomic.AtomicLong;
 
-import lombok.ToString;
 
 import org.apache.log4j.Logger;
 
@@ -26,7 +25,6 @@ import cz.kojotak.arx.common.RunnableWithProgress;
  * @date 26.9.2010
  * @author Kojotak 
  */
-@ToString(exclude={"log","readBytes","totalBytes"})
 public class Downloader implements RunnableWithProgress {
 	
 	private Logger log;
@@ -114,5 +112,8 @@ public class Downloader implements RunnableWithProgress {
 		Application.getInstance().bytesToImport=totalBytes;
 
 	}
-
+	@Override
+	public String toString() {
+		return "Downloader [target=" + target + ", source=" + source + "]";
+	}
 }

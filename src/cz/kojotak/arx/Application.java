@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.LogManager;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -42,61 +38,37 @@ import cz.kojotak.arx.util.StorageUnit;
  * @date 25.10.2009
  * @author Kojotak
  */
+/**
+ * @author admin
+ *
+ */
 public final class Application {
 
 	private String currentDir;
 
 	protected Logger log;
 
-	@Getter
 	private Properties properties;
-
-	@Getter
 	private Localization localization;
-	
-	@Getter
 	private Licence licence;
-
-	@Getter
 	private Icons icons;
-
-	@Getter
 	private ImporterFactory importerFactory;
-
-	@Getter
 	private Importer importer;
-
-	@Getter
 	private Language language;
-
-	@Getter
 	private IconLoader iconLoader;
-
-	@Getter
 	private AmigaMode amigaMode;
-
-	@Getter
 	private ArcadeMode arcadeMode;
-
-	@Getter
 	private TwoPlayerMode arcadeTwoPlayerMode;
-
-	@Getter
 	private NoncompetetiveMode noncompetetiveMode;
-
-	@Getter
-	@Setter
 	private Mode<?> currentMode;
-	
-	@Getter
-	@Setter
 	private MainWindow mainWindow;
-
-	@Getter
 	private List<Mode<?>> modes;
 	List<User> players = new ArrayList<User>();
 
-	@Getter
+	public static String getRmDbUrl() {
+		return RM_DB_URL;
+	}
+
 	User currentUser = null;
 
 	private static Application app = new Application();
@@ -132,9 +104,8 @@ public final class Application {
 		 long startTime = System.currentTimeMillis();
 		 long startMem = Runtime.getRuntime().freeMemory();
 		
-		 // importer = ifa.createFromGziped(currentDir + File.separator +
-		 // "tmp"+File.separator+"rotaxmame_databaze.gz");
-		 importer = importerFactory.createFromWeb();
+		  importer = importerFactory.createFromGziped(currentDir + File.separator + "tmp"+File.separator+"rotaxmame_databaze.gz");
+//		 importer = importerFactory.createFromWeb();
 		 long endTime = System.currentTimeMillis();
 		 long endMem = Runtime.getRuntime().freeMemory();
 		 log.info("import done in " + (double)(endTime - startTime) / 1000
@@ -308,10 +279,12 @@ public final class Application {
 
 	public File getZipedDatabaseFile() {
 		String tmpDir = System.getProperty("java.io.tmpdir");
-		File tmpDb = new File(tmpDir,"arx.db");
+		//File tmpDb = new File(tmpDir,"arx.db");
+		File tmpDb = new File("tmp/rotaxmame_databaze.gz");
 		if(!tmpDb.exists()){
 			try {
 				tmpDb.createNewFile();
+				log.info(tmpDb + " has been created");
 			} catch (IOException e) {
 				log.error("cannot create tmp file for rotax database",e);
 			}
@@ -361,15 +334,9 @@ public final class Application {
 
 	}
 
-	@ToString
 	public static class Job {
-		@Getter
 		private RunnableWithProgress runnable;
-
-		@Getter
 		private int weight;
-
-		@Getter
 		private String description;
 
 		public Job(RunnableWithProgress runnable, int weight, String description) {
@@ -379,6 +346,74 @@ public final class Application {
 			this.description = description;
 		}
 
+		public RunnableWithProgress getRunnable() {
+			return runnable;
+		}
+
+		public int getWeight() {
+			return weight;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		@Override
+		public String toString() {
+			return getClass().getSimpleName();
+		}
 	}
 
+	public Localization getLocalization() {
+		return localization;
+	}
+
+	public IconLoader getIconLoader() {
+		return iconLoader;
+	}
+
+	public Icons getIcons() {
+		return icons;
+	}
+
+	public Mode<?> getCurrentMode() {
+		return currentMode;
+	}
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public Licence getLicence() {
+		return licence;
+	}
+
+	public Importer getImporter() {
+		return importer;
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public MainWindow getMainWindow() {
+		return mainWindow;
+	}
+
+	public List<Mode<?>> getModes() {
+		return modes;
+	}
+
+	public void setCurrentMode(Mode<?> currentMode) {
+		this.currentMode = currentMode;
+	}
+
+	public void setMainWindow(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
+	}
+	
 }

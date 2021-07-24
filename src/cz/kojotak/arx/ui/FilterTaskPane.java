@@ -9,8 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 
-import lombok.Getter;
-
 import org.jdesktop.swingx.JXTaskPane;
 
 import cz.kojotak.arx.Application;
@@ -23,13 +21,8 @@ import cz.kojotak.arx.ui.icon.GUIIcons;
  */
 public class FilterTaskPane extends JXTaskPane {
 	
-	@Getter
 	private CategoryComboBox categoryComboBox;
-	
-	@Getter
 	private AvailibilityComboBox availibilityComboBox;
-	
-	@Getter
 	private PlatfromComboBox platformComboBox;
 	
 	JLabel catLab;
@@ -98,5 +91,17 @@ public class FilterTaskPane extends JXTaskPane {
 	}
 
 	private static final long serialVersionUID = -1038522044254134838L;
+
+	public CategoryComboBox getCategoryComboBox() {
+		return categoryComboBox;
+	}
+
+	public AvailibilityComboBox getAvailibilityComboBox() {
+		return availibilityComboBox;
+	}
+
+	public PlatfromComboBox getPlatformComboBox() {
+		return platformComboBox;
+	}
 
 }

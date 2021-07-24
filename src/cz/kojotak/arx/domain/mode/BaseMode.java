@@ -6,9 +6,6 @@ package cz.kojotak.arx.domain.mode;
 import java.util.Collections;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
@@ -28,8 +25,6 @@ public abstract class BaseMode<T extends Game> implements Mode<T>,Searchable {
 	protected String name;
 	protected Set<Category> cats=Collections.emptySet();
 	
-	@Getter
-	@Setter
 	protected FilterModel filter;
 	
 	/**
@@ -59,5 +54,12 @@ public abstract class BaseMode<T extends Game> implements Mode<T>,Searchable {
 		return cats;
 	}
 
-	
+	public FilterModel getFilter() {
+		return filter;
+	}
+
+	public void setFilter(FilterModel filter) {
+		this.filter = filter;
+	}
+
 }

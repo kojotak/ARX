@@ -6,8 +6,6 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-
 import cz.kojotak.arx.Importer;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.ModeWithStatistics;
@@ -33,13 +31,8 @@ import cz.kojotak.arx.ui.column.StatisticsPositionWithIconColumn;
  */
 public class ArcadeMode extends BaseMameMode<Record,MameGameSingle> implements ModeWithStatistics {
 
-	@Getter
 	private int playerCount = 0;
-	
-	@Getter
 	private int recordCount = 0;
-	
-	@Getter
 	private Category category=null;
 
 	@Override
@@ -77,6 +70,18 @@ public class ArcadeMode extends BaseMameMode<Record,MameGameSingle> implements M
 		list.add(new FinishedColumn());
 
 		return list;
+	}
+
+	public int getPlayerCount() {
+		return playerCount;
+	}
+
+	public int getRecordCount() {
+		return recordCount;
+	}
+
+	public Category getCategory() {
+		return category;
 	}
 
 }

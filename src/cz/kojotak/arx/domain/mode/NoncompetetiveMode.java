@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import lombok.Getter;
-
 import cz.kojotak.arx.Importer;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.game.NoncompetitiveGame;
@@ -40,10 +38,7 @@ public class NoncompetetiveMode extends BaseMode<NoncompetitiveGame> {
 		return NoncompetitiveGame.class;
 	}
 
-	@Getter
 	private List<NoncompetitiveGame> games;
-	
-	@Getter
 	private Set<Platform> platforms;
 
 	public NoncompetetiveMode(Importer importer) {
@@ -51,6 +46,14 @@ public class NoncompetetiveMode extends BaseMode<NoncompetitiveGame> {
 		this.games = importer.getNoncompetitiveGames();
 		this.cats=importer.getNoncometetiveCategories();
 		this.platforms=importer.getNoncompetetivePlatforms();
+	}
+
+	public List<NoncompetitiveGame> getGames() {
+		return games;
+	}
+
+	public Set<Platform> getPlatforms() {
+		return platforms;
 	}
 	
 }
