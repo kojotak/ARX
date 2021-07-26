@@ -1,7 +1,7 @@
 /tmp
 /dist
 /bin/
-/target/
+/target
 .classpath
 .project
 .settings
