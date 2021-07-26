@@ -1,9 +1,6 @@
 package cz.kojotak.arx;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -249,10 +246,10 @@ public class Importer implements RunnableWithProgress{
 		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
 	}
 	
-	private File tmpFile;
-	public Importer(File tmpFile){
+	private InputStream in;
+	public Importer(InputStream in){
 		this();
-		this.tmpFile=tmpFile;
+		this.in=in;
 	}
 	
 	//@Setter
@@ -323,17 +320,11 @@ public class Importer implements RunnableWithProgress{
 	public void run(){
 		log.info("starting importer ...");
 		this.maxSize=Application.getInstance().bytesToImport.get();
-		InputStream in=null;
 		try{
-			in = new FileInputStream(tmpFile);
 			progressIs = new ProgressInputStream(in);
 			GZIPInputStream gzip = new GZIPInputStream(progressIs);
 			reader = new BufferedReader(new InputStreamReader(gzip));
-		}catch(FileNotFoundException ex){
-			log.error("there is no such file " + tmpFile);
-			throw new RuntimeException("there is no such a file "+tmpFile,ex);
 		}catch(IOException ioex){
-			log.error("Cannot import data using "+tmpFile);
 			throw new RuntimeException("Error during import",ioex);
 		}
 			

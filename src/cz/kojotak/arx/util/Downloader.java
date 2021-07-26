@@ -34,7 +34,7 @@ public class Downloader implements RunnableWithProgress {
 	private AtomicLong totalBytes=new AtomicLong(0);
 	private static final int BUFFER_SIZE=4096;
 
-	public Downloader(Application app,String source,File target) {
+	public Downloader(Application app, String source, File target) {
 		super();
 		this.log = app.getLogger(this);
 		this.target = target;

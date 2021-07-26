@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -277,35 +280,33 @@ public final class Application {
 		return string;
 	}
 
-	public File getZipedDatabaseFile() {
-		String tmpDir = System.getProperty("java.io.tmpdir");
-		//File tmpDb = new File(tmpDir,"arx.db");
-		File tmpDb = new File("tmp/rotaxmame_databaze.gz");
-		if(!tmpDb.exists()){
-			try {
-				tmpDb.createNewFile();
-				log.info(tmpDb + " has been created");
-			} catch (IOException e) {
-				log.error("cannot create tmp file for rotax database",e);
-			}
-		}
-		return tmpDb;
+	public InputStream getZipedDatabaseFile() {
+//		File tmpDb = new File("rotaxmame_databaze.gz");
+//		if(!tmpDb.exists()){
+//			try {
+//				tmpDb.createNewFile();
+//				log.info(tmpDb + " has been created");
+//			} catch (IOException e) {
+//				log.error("cannot create tmp file for rotax database",e);
+//			}
+//		}
+//		return tmpDb;
+		return getClass().getClassLoader().getResourceAsStream("rotaxmame_databaze.gz");
 	}
 
 	public List<Job> getJobs() {
 		List<Job> list = new ArrayList<Job>();
 
-		Downloader downloader = new Downloader(this, RM_DB_URL,
-				getZipedDatabaseFile());
-		Job downloaderJob = new DownloaderJob(downloader, 100,
-				"stahov�n� datab�ze");
+//		Downloader downloader = new Downloader(this, RM_DB_URL, getZipedDatabaseFile());
+//		Job downloaderJob = new DownloaderJob(downloader, 100,
+//				"stahov�n� datab�ze");
 		//LineCounter counter = new LineCounter(getZipedDatabaseFile(), this);
 		//Job counterJob = new Job(counter, 5, "zji��ov�n� velikosti datab�ze");
 		this.importer = new Importer(getZipedDatabaseFile()); 
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, "importov�n� datab�ze");
 		// list.add(new DummyJob(50));
-		list.add(downloaderJob);
+//		list.add(downloaderJob);
 		//list.add(counterJob);
 		list.add(importerJob);
 
