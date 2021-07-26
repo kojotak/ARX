@@ -3,12 +3,10 @@
  */
 package cz.kojotak.arx.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -18,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import cn.rui.chm.swing.CHMPane;
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.properties.Licence;
 import cz.kojotak.arx.ui.renderer.HelpChoicesRenderer;
@@ -32,7 +29,6 @@ public class HelpComboBox extends JComboBox<String> {
 	private static final long serialVersionUID = 7184865050053098182L;
 
 	public static final String LOC_KEY="LABEL";
-	public static final String ROTAXMAME="ROTAXMAME";
 	public static final String CREDITS="CREDITS";
 	public static final String LICENCE="LICENCE";
 	transient private Application app;
@@ -41,7 +37,7 @@ public class HelpComboBox extends JComboBox<String> {
 	public HelpComboBox() {
 		super();
 		app=Application.getInstance();
-		this.setModel(new DefaultComboBoxModel<String>(new String[]{ROTAXMAME,LICENCE,CREDITS}));
+		this.setModel(new DefaultComboBoxModel<String>(new String[]{LICENCE,CREDITS}));
 		this.setEditable(false);
 		this.addActionListener(new ActionListener(){
 
@@ -49,9 +45,7 @@ public class HelpComboBox extends JComboBox<String> {
 			public void actionPerformed(ActionEvent event) {
 				HelpComboBox source = (HelpComboBox)event.getSource();
 				String selected = source.getSelectedItem().toString();
-				if(ROTAXMAME.equals(selected)){
-					HelpComboBox.this.selectRotaxmame();
-				}else if(CREDITS.equals(selected)){
+				if(CREDITS.equals(selected)){
 					HelpComboBox.this.selectCredits();
 				}else if(LICENCE.equals(selected)){
 					HelpComboBox.this.selectLicence();
@@ -83,23 +77,6 @@ public class HelpComboBox extends JComboBox<String> {
 		}
 		this.jf=jf;		
 		return jf;
-	}
-
-	protected void selectRotaxmame(){
-		JFrame jf = getHelpFrame();
-		String cd = Application.getInstance().getTmpDir();
-		cd+=File.separator+"napoveda.chm";
-		JPanel panel = null;
-		try{
-			panel=new CHMPane(cd);
-		}catch(Exception ex){
-			app.getLogger(this).error("cannot load help chm", ex);
-			panel = new JPanel();
-			JLabel er = new JLabel("nelze zobrazit napovedu: "+ex.getMessage());
-			panel.add(er);
-		}
-		jf.setLayout(new BorderLayout());
-		jf.add(panel, BorderLayout.CENTER);
 	}
 
 	protected void selectCredits(){
