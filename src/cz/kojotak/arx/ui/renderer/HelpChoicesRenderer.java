@@ -45,8 +45,6 @@ public class HelpChoicesRenderer extends JLabel implements ListCellRenderer {
 		if(index<0){
 			icon = app.getIconLoader().tryLoadIcon(GUIIcons.HELP);
 			string = HelpComboBox.LOC_KEY;
-		}else if(HelpComboBox.ROTAXMAME.equals(string)){
-			icon = app.getIconLoader().tryLoadIcon(GUIIcons.ROTAXMAME);
 		}
 		String text=app.getLocalization().getString(combo, string);
 		this.setText(text);
