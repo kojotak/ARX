@@ -2,3 +2,6 @@
 /dist
 /bin/
 /target/
+.classpath
+.project
+.settings
