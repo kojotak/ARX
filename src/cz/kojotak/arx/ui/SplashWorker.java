@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.swing.SwingWorker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.Application.Job;

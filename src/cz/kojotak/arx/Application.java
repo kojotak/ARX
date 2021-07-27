@@ -16,10 +16,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.LogManager;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Language;
@@ -192,15 +190,13 @@ public final class Application {
 	private Application() {
 		currentDir = System.getProperty("user.dir");
 		
-		// log4 initialization
-		PropertyConfigurator.configure(getClass().getClassLoader().getResource("log4j.properties"));
-		log = Logger.getLogger(Application.class);
+		log = getLogger(Application.class);
 		log.debug("logger ready");
 
 		// java.util.logging initialization for chmpane
 		//System.setProperty("java.util.logging.config.file", "logging.properties");
 		try {
-			LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("log4j.properties"));
+			java.util.logging.LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
 		} catch (Exception ex) {
 			log.error("cannot reconfigure java.util.LogManager", ex);
 		}
@@ -233,11 +229,11 @@ public final class Application {
 	}
 
 	public Logger getLogger(Object whoCalls) {
-		return Logger.getLogger(whoCalls.getClass());
+		return getLogger(whoCalls.getClass());
 	}
 
 	public Logger getLogger(Class<?> whoCalls) {
-		return Logger.getLogger(whoCalls);
+		return org.apache.logging.log4j.LogManager.getLogger(whoCalls.getSimpleName());
 	}
 
 	public Mode<?> resolveMode(String str) {

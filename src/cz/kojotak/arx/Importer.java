@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
