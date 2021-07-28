@@ -4,6 +4,8 @@
 package cz.kojotak.arx.ui.column;
 
 import cz.kojotak.arx.domain.WithStatistics;
+
+
 import cz.kojotak.arx.ui.renderer.PositionTableCellRenderer;
 
 /**
@@ -21,7 +23,9 @@ public class StatisticsPositionWithIconColumn extends BaseColumn<WithStatistics,
 
 	@Override
 	public Integer getValue(WithStatistics source) {
-		return source.getStatistics().getPlayerPosition();
+		//interpret missing position as the worst possible
+		Integer position = source.getStatistics().getPlayerPosition();
+		return position !=null && position > 0 ? position : Integer.MAX_VALUE;
 	}
 	
 	@Override

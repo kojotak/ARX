@@ -19,7 +19,10 @@ public class PositionTableCellRenderer extends DefaultTableCellRenderer {
 	
 	@Override
 	protected void setValue(Object value) {
-		if(value==null|| !(value instanceof Integer)){
+		if(value==null   //missing value 
+			|| !(value instanceof Integer) //something else than position 
+			|| (value instanceof Integer pos && pos == Integer.MAX_VALUE) //worst possible position
+				){
 			setIcon(null);
 			setText("");
 			return;
