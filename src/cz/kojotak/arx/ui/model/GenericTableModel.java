@@ -29,25 +29,16 @@ public class GenericTableModel<T> extends AbstractTableModel {
 		this.columns = columns;
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.table.TableModel#getColumnCount()
-	 */
 	@Override
 	public int getColumnCount() {
 		return columns.size();
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.table.TableModel#getRowCount()
-	 */
 	@Override
 	public int getRowCount() {
 		return items.size();
 	}
 	
-	/* (non-Javadoc)
-	 * @see javax.swing.table.TableModel#getValueAt(int, int)
-	 */
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if(rowIndex>=getRowCount()){
@@ -63,14 +54,6 @@ public class GenericTableModel<T> extends AbstractTableModel {
 		return columns.get(columnIndex).getValue(game);
 	}
 
-	/**
-	 * FIXME upravit, abych nemusel rowIndex predtim konvertovat pomoci
-	 * <pre>
-	 * games.convertRowIndexToModel(idx)
-	 * <pre>
-	 * @param rowIndex
-	 * @return
-	 */
 	public T getItem(int rowIndex){
 		return rowIndex>=0?items.get(rowIndex):null;
 	}
