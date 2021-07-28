@@ -11,7 +11,7 @@ import cz.kojotak.arx.domain.Record;
  */
 public class ScoreRecordColumn extends RightAlignedNumberColumn<Record,Long> {
 
-	private static final long serialVersionUID = 1491840483445159633L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Long getValue(Record source) {

@@ -9,10 +9,9 @@ import cz.kojotak.arx.domain.WithStatistics;
  * @date 21.3.2010
  * @author Kojotak
  */
-public class ScoreStatisticsColumn extends
-		RightAlignedNumberColumn<WithStatistics,Long> {
+public class ScoreStatisticsColumn extends RightAlignedNumberColumn<WithStatistics,Long> {
 
-	private static final long serialVersionUID = -9056650209015586420L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Long getValue(WithStatistics source) {
@@ -24,10 +23,4 @@ public class ScoreStatisticsColumn extends
 		return Long.class;
 	}
 
-	public ScoreStatisticsColumn() {
-		super();
-		this.setVisible(true);
-	}
-
-	
 }

@@ -15,7 +15,7 @@ import cz.kojotak.arx.ui.renderer.EnumIconTableCellRenderer;
  */
 public class PlatformIconColumn extends BaseColumn<Game, Platform> {
 
-	private static final long serialVersionUID = -6317607346004496106L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Class<Platform> getType() {

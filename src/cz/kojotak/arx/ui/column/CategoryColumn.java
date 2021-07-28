@@ -13,7 +13,7 @@ import cz.kojotak.arx.ui.renderer.EnumIconTableCellRenderer;
  */
 public class CategoryColumn extends BaseColumn<Game,Category> {
 
-	private static final long serialVersionUID = 6458801709211421211L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Category getValue(Game source) {

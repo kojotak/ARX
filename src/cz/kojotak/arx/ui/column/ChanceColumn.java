@@ -14,13 +14,10 @@ import cz.kojotak.arx.domain.WithStatistics;
  */
 public class ChanceColumn extends RightAlignedNumberColumn<WithStatistics, Integer>  {
 
-	private static final long serialVersionUID = -4694546461382910202L;
-	
-	
+	private static final long serialVersionUID = 1L;
 
 	public ChanceColumn() {
 		super();
-		this.setVisible(false);
 	}
 
 	@Override

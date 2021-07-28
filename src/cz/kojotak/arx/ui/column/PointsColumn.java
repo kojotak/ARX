@@ -11,7 +11,7 @@ import cz.kojotak.arx.domain.WithStatistics;
  */
 public class PointsColumn extends RightAlignedNumberColumn<WithStatistics, Integer> {
 
-	private static final long serialVersionUID = -8770512657034754376L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Class<Integer> getType() {

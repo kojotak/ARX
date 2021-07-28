@@ -13,13 +13,12 @@ public class RecordDurationColumn extends BaseColumn<Record, String> {
 
 	public RecordDurationColumn() {
 		super();
-		this.setVisible(false);
 	}
 
 	/**
 	 * generated
 	 */
-	private static final long serialVersionUID = 1873399856951793915L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Class<String> getType() {

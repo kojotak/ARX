@@ -16,7 +16,7 @@ import cz.kojotak.arx.ui.renderer.FinishedTableCellRenderer;
  */
 public class FinishedColumn extends BaseColumn<WithStatistics,FinishedStatus>{
 
-	private static final long serialVersionUID = -5420780968643808234L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public FinishedStatus getValue(WithStatistics source) {

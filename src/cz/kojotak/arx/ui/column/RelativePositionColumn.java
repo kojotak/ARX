@@ -12,12 +12,11 @@ import cz.kojotak.arx.ui.renderer.PercentTableCellRenderer;
  */
 public class RelativePositionColumn extends BaseColumn<WithStatistics,Float>{
 
-	private static final long serialVersionUID = -2869226294558561940L;
+	private static final long serialVersionUID = 1L;
 
 	public RelativePositionColumn() {
 		super();
 		this.setCellRenderer(new PercentTableCellRenderer());
-		this.setVisible(false);
 	}
 
 	@Override

@@ -17,8 +17,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 public class CustomColumnControlButton extends ColumnControlButton {
 
-	//generated
-	private static final long serialVersionUID = 3085435438688149763L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected ColumnVisibilityAction createColumnVisibilityAction(

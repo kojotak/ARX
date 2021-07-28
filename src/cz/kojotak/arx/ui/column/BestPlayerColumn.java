@@ -11,7 +11,7 @@ import cz.kojotak.arx.domain.WithStatistics;
  */
 public class BestPlayerColumn extends BaseColumn<WithStatistics,String> {
 
-	private static final long serialVersionUID = 4691044685847542971L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public String getValue(WithStatistics source) {
@@ -25,6 +25,5 @@ public class BestPlayerColumn extends BaseColumn<WithStatistics,String> {
 
 	public BestPlayerColumn() {
 		super();
-		this.setVisible(false);
 	}
 }

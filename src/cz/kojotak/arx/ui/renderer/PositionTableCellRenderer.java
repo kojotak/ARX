@@ -15,7 +15,7 @@ import cz.kojotak.arx.domain.enums.MedalPosition;
  */
 public class PositionTableCellRenderer extends DefaultTableCellRenderer {
 
-	private static final long serialVersionUID = 7771099823982776756L;
+	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void setValue(Object value) {

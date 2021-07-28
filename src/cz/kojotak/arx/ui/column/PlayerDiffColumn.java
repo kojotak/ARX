@@ -12,7 +12,7 @@ import cz.kojotak.arx.ui.renderer.PlayerDiffRenderer;
  */
 public class PlayerDiffColumn extends BaseColumn<WithStatistics, Integer> {
 
-	private static final long serialVersionUID = -3022319649724475810L;
+	private static final long serialVersionUID = 1L;
 
 	public PlayerDiffColumn() {
 		super();

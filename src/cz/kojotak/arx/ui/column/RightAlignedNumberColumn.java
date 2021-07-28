@@ -11,7 +11,7 @@ import cz.kojotak.arx.ui.renderer.RightAlignedNumberTableCellRenderer;
  */
 public abstract class RightAlignedNumberColumn<T,V> extends BaseColumn<T,V> {
 
-	private static final long serialVersionUID = -6484367493956838423L;
+	private static final long serialVersionUID = 1L;
 
 	public RightAlignedNumberColumn() {
 		super();

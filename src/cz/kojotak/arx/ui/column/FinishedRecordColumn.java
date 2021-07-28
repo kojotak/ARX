@@ -21,7 +21,6 @@ public class FinishedRecordColumn extends BaseColumn<Record,FinishedStatus> {
 	public FinishedRecordColumn() {
 		super();
 		this.setCellRenderer(new FinishedTableCellRenderer());
-		this.setVisible(false);
 	}
 
 	@Override

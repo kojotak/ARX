@@ -12,7 +12,7 @@ import cz.kojotak.arx.ui.renderer.PositionTableCellRenderer;
  */
 public class StatisticsPositionWithIconColumn extends BaseColumn<WithStatistics,Integer>{
 
-	private static final long serialVersionUID = -5048419876304225270L;
+	private static final long serialVersionUID = 1L;
 
 	public StatisticsPositionWithIconColumn() {
 		super();

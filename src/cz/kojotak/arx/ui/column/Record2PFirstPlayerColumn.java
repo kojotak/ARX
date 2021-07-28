@@ -10,9 +10,6 @@ package cz.kojotak.arx.ui.column;
  */
 public class Record2PFirstPlayerColumn extends RecordPlayerColumn {
 
-	/**
-	 * generated
-	 */
-	private static final long serialVersionUID = -8503801228743017892L;
+	private static final long serialVersionUID = 1L;
 
 }

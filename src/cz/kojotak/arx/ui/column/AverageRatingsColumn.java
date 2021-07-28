@@ -12,7 +12,7 @@ import cz.kojotak.arx.ui.renderer.PercentTableCellRenderer;
  */
 public class AverageRatingsColumn extends BaseColumn<SimpleGame,Float> {
 
-	private static final long serialVersionUID = 3216335001093806242L;
+	private static final long serialVersionUID = 1L;
 	
 	public AverageRatingsColumn() {
 		super();
@@ -28,6 +28,5 @@ public class AverageRatingsColumn extends BaseColumn<SimpleGame,Float> {
 	public Class<Float> getType() {
 		return Float.class;
 	}
-	
 	
 }

@@ -12,7 +12,7 @@ import cz.kojotak.arx.domain.WithStatistics;
 public class PlayerCountColumn extends
 		RightAlignedNumberColumn<WithStatistics,Integer> {
 
-	private static final long serialVersionUID = 8570607640759853418L;
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public Integer getValue(WithStatistics game) {
