@@ -43,7 +43,6 @@ public final class Application {
 	private Localization localization;
 	private Licence licence;
 	private Icons icons;
-	private ImporterFactory importerFactory;
 	private Importer importer;
 	private Language language;
 	private IconLoader iconLoader;
@@ -69,8 +68,6 @@ public final class Application {
 	}
 
 	public void init() {
-		importerFactory = new ImporterFactory();
-
 		// this.importer = new Importer();//delete me
 		// this.doImport();
 		// this.postInit();
@@ -91,18 +88,18 @@ public final class Application {
 		this.modes.add(noncompetetiveMode);
 	}
 
-	 private void doImport() {
-		 long startTime = System.currentTimeMillis();
-		 long startMem = Runtime.getRuntime().freeMemory();
-		
-		  importer = importerFactory.createFromGziped(currentDir + File.separator + "tmp"+File.separator+"rotaxmame_databaze.gz");
-//		 importer = importerFactory.createFromWeb();
-		 long endTime = System.currentTimeMillis();
-		 long endMem = Runtime.getRuntime().freeMemory();
-		 log.info("import done in " + (double)(endTime - startTime) / 1000
-		 + " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
-		
-	 }
+//	 private void doImport() {
+//		 long startTime = System.currentTimeMillis();
+//		 long startMem = Runtime.getRuntime().freeMemory();
+//		
+//		  importer = importerFactory.createFromGziped(currentDir + File.separator + "tmp"+File.separator+"rotaxmame_databaze.gz");
+////		 importer = importerFactory.createFromWeb();
+//		 long endTime = System.currentTimeMillis();
+//		 long endMem = Runtime.getRuntime().freeMemory();
+//		 log.info("import done in " + (double)(endTime - startTime) / 1000
+//		 + " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
+//		
+//	 }
 	private void initPlayers() {
 		this.setPlayer("SCH");
 		this.setPlayer("VLD");
@@ -212,12 +209,10 @@ public final class Application {
 //		Downloader downloader = new Downloader(this, RM_DB_URL, getZipedDatabaseFile());
 //		Job downloaderJob = new DownloaderJob(downloader, 100,
 //				"stahov�n� datab�ze");
-		//LineCounter counter = new LineCounter(getZipedDatabaseFile(), this);
-		//Job counterJob = new Job(counter, 5, "zji��ov�n� velikosti datab�ze");
 		this.importer = new Importer(getZipedDatabaseFile()); 
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
-		// list.add(new DummyJob(50));
+//		 list.add(new DummyJob(50));
 //		list.add(downloaderJob);
 		//list.add(counterJob);
 		list.add(importerJob);

@@ -41,25 +41,16 @@ public class Downloader implements RunnableWithProgress {
 		this.source = source;
 	}
 
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.common.RunnableWithProgress#current()
-	 */
 	@Override
 	public long current() {
 		return readBytes.get();
 	}
 
-	/* (non-Javadoc)
-	 * @see cz.kojotak.arx.common.RunnableWithProgress#max()
-	 */
 	@Override
 	public long max() {
 		return totalBytes.get();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
-	 */
 	@Override
 	public void run() {
 		if(target.exists() && target.length()>0L){
@@ -112,6 +103,7 @@ public class Downloader implements RunnableWithProgress {
 		Application.getInstance().bytesToImport=totalBytes;
 
 	}
+	
 	@Override
 	public String toString() {
 		return "Downloader [target=" + target + ", source=" + source + "]";

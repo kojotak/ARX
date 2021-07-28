@@ -237,28 +237,18 @@ public class Importer implements RunnableWithProgress{
 		game.setAverageRatings(hodnoceni);
 	}
 	
-	public Importer(){
+	private InputStream in;
+
+	public Importer(InputStream in){
 		log = Application.getInstance().getLogger(this);
 		gamesSingle = new HashMap<String, MameGameSingle>(2000);
 		gamesDouble = new HashMap<String, MameGameDouble>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
 		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
-	}
-	
-	private InputStream in;
-	public Importer(InputStream in){
-		this();
+
 		this.in=in;
 	}
 	
-	private long maxSize=-1;
-	
-	public void setReader(BufferedReader reader) {
-		this.reader=reader;
-	}
-	
-	BufferedReader reader=null;
-
 	<T extends Game> List<T> prepareGames(Map<String, T> map,Class<T> clz) {
 		if(map==null || map.isEmpty()){
 			return Collections.emptyList();
@@ -306,7 +296,7 @@ public class Importer implements RunnableWithProgress{
 	
 	@Override
 	public long max(){
-		return maxSize;
+		return -1; //we don't know
 	};
 	
 	@Override
@@ -316,7 +306,7 @@ public class Importer implements RunnableWithProgress{
 	ProgressInputStream progressIs=null;
 	public void run(){
 		log.info("starting importer ...");
-		this.maxSize=Application.getInstance().bytesToImport.get();
+		BufferedReader reader;
 		try{
 			progressIs = new ProgressInputStream(in);
 			GZIPInputStream gzip = new GZIPInputStream(progressIs);
@@ -329,6 +319,7 @@ public class Importer implements RunnableWithProgress{
 			String line = null;
 			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
 			while ((line = reader.readLine()) != null) {
+				
 				readLines++;
 				int start = line.indexOf("('");
 				int end = line.indexOf("')");
