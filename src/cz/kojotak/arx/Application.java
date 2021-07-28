@@ -103,70 +103,6 @@ public final class Application {
 		 + " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
 		
 	 }
-	/*
-	 * private void logCookies() { List<Cookie> cookies =
-	 * client.getCookieStore().getCookies(); if (cookies.isEmpty()) {
-	 * log.info("no cookies"); } else { for (int i = 0; i < cookies.size(); i++)
-	 * { log.debug("cookie - " + cookies.get(i).toString()); } } }
-	 */
-
-	/*
-	 * private void initHttpClient() { client = new DefaultHttpClient();
-	 * client.addRequestInterceptor(new HttpRequestInterceptor() {
-	 * 
-	 * public void process( final HttpRequest request, final HttpContext
-	 * context) throws HttpException, IOException { if
-	 * (!request.containsHeader("Accept-Encoding")) {
-	 * request.addHeader("Accept-Encoding", "gzip"); } }
-	 * 
-	 * });
-	 * 
-	 * client.addResponseInterceptor(new HttpResponseInterceptor() {
-	 * 
-	 * public void process( final HttpResponse response, final HttpContext
-	 * context) throws HttpException, IOException { HttpEntity entity =
-	 * response.getEntity(); Header ceheader = entity.getContentEncoding(); if
-	 * (ceheader != null) { HeaderElement[] codecs = ceheader.getElements(); for
-	 * (int i = 0; i < codecs.length; i++) { if
-	 * (codecs[i].getName().equalsIgnoreCase("gzip")) { response.setEntity( new
-	 * GzipDecompressingEntity(response.getEntity())); return; } } } }
-	 * 
-	 * });
-	 * 
-	 * client.getParams().setParameter(ClientPNames.COOKIE_POLICY,
-	 * CookiePolicy.BROWSER_COMPATIBILITY);
-	 * 
-	 * 
-	 * HttpContext localContext = new BasicHttpContext(); HttpResponse response
-	 * = null; HttpPost auth = new
-	 * HttpPost("http://www.rotaxmame.cz/index.php"); auth.addHeader(new
-	 * BasicHeader("Referer","http://www.rotaxmame.cz/"));
-	 * 
-	 * 
-	 * List<NameValuePair> nvps = new ArrayList<NameValuePair>(); nvps.add(new
-	 * BasicNameValuePair("prihjmeno", "coyot")); nvps.add(new
-	 * BasicNameValuePair("heslo", "rotaxheslo")); nvps.add(new
-	 * BasicNameValuePair("odeslat", "Prihlasit")); try{ auth.setEntity(new
-	 * UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-	 * }catch(UnsupportedEncodingException ex){
-	 * log.error("unknown encoding",ex); }
-	 * 
-	 * try { response = client.execute(auth, localContext); log.info("login> " +
-	 * response.getStatusLine()); this.logCookies(); } catch (Exception ex) {
-	 * log.error("cannot connect to chat", ex); } HttpEntity entity =
-	 * response.getEntity(); if(entity!=null){ try{ entity.consumeContent();
-	 * }catch(IOException ex){ log.error("cannot consume content", ex); } }
-	 * 
-	 * HttpGet get = new HttpGet("http://www.rotaxmame.cz/php/chat_new.php");
-	 * try { response = client.execute(get, localContext);
-	 * entity=response.getEntity(); log.info("chat> " +
-	 * response.getStatusLine()); this.logCookies(); } catch (Exception ex) {
-	 * log.error("cannot connect to chat", ex); }
-	 * 
-	 * if(entity!=null){ try{ //log.debug(EntityUtils.toString(entity));
-	 * chatStr=EntityUtils.toString(entity); }catch(Exception ex){
-	 * log.error("cannot convert content",ex); } } }
-	 */
 	private void initPlayers() {
 		this.setPlayer("SCH");
 		this.setPlayer("VLD");
@@ -267,16 +203,6 @@ public final class Application {
 	}
 
 	public InputStream getZipedDatabaseFile() {
-//		File tmpDb = new File("rotaxmame_databaze.gz");
-//		if(!tmpDb.exists()){
-//			try {
-//				tmpDb.createNewFile();
-//				log.info(tmpDb + " has been created");
-//			} catch (IOException e) {
-//				log.error("cannot create tmp file for rotax database",e);
-//			}
-//		}
-//		return tmpDb;
 		return getClass().getClassLoader().getResourceAsStream("rotaxmame_databaze.gz");
 	}
 
