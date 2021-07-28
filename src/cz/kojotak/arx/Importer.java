@@ -251,8 +251,6 @@ public class Importer implements RunnableWithProgress{
 		this.in=in;
 	}
 	
-	//@Setter
-	//@Getter
 	private long maxSize=-1;
 	
 	public void setReader(BufferedReader reader) {
@@ -371,8 +369,7 @@ public class Importer implements RunnableWithProgress{
 					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
 		} catch (IOException x) {
 			x.printStackTrace();
-		}
-		
+		} 
 	}
 
 	public Set<Category> getSingleCategories() {

@@ -8,8 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -35,14 +33,6 @@ import cz.kojotak.arx.ui.MainWindow;
 import cz.kojotak.arx.util.Downloader;
 import cz.kojotak.arx.util.StorageUnit;
 
-/**
- * @date 25.10.2009
- * @author Kojotak
- */
-/**
- * @author admin
- *
- */
 public final class Application {
 
 	private String currentDir;
@@ -300,7 +290,7 @@ public final class Application {
 		//Job counterJob = new Job(counter, 5, "zji��ov�n� velikosti datab�ze");
 		this.importer = new Importer(getZipedDatabaseFile()); 
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
-		Job importerJob = new Job(importer, 100, "importov�n� datab�ze");
+		Job importerJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
 		// list.add(new DummyJob(50));
 //		list.add(downloaderJob);
 		//list.add(counterJob);
