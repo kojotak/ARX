@@ -40,9 +40,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Create windows executable
-      run: jpackage --name arx --input . --main-jar D:\a\ARX\ARX\target\arx.jar --main-class cz.kojotak.arx.DesktopRunner --win-console --dest D:\a\ARX\ARX\target\
-    - name: Post jpackage check
-      run: tree D:\a\ARX\ARX\target /f
+      run: jpackage --type exe --name arx --input . --main-jar D:\a\ARX\ARX\target\arx.jar --main-class cz.kojotak.arx.DesktopRunner --win-console --dest D:\a\ARX\ARX\target\
     - name: Upload Artifact GitHub Action
       uses: actions/upload-artifact@v2
       with: 
