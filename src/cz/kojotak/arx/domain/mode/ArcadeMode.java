@@ -6,7 +6,7 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.kojotak.arx.Importer;
+import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.ModeWithStatistics;
 import cz.kojotak.arx.domain.Record;
@@ -40,7 +40,7 @@ public class ArcadeMode extends BaseMameMode<Record,MameGameSingle> implements M
 		return games.size();
 	}
 
-	public ArcadeMode(Importer importer) {
+	public ArcadeMode(LegacyImporter importer) {
 		super(importer.getMameSingleGames());
 		playerCount=importer.getSinglePlayers().size();
 		recordCount=importer.getSingleRecords();

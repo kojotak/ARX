@@ -43,7 +43,7 @@ public final class Application {
 	private Localization localization;
 	private Licence licence;
 	private Icons icons;
-	private Importer importer;
+	private LegacyImporter importer;
 	private Language language;
 	private IconLoader iconLoader;
 	private AmigaMode amigaMode;
@@ -209,7 +209,7 @@ public final class Application {
 //		Downloader downloader = new Downloader(this, RM_DB_URL, getZipedDatabaseFile());
 //		Job downloaderJob = new DownloaderJob(downloader, 100,
 //				"stahov�n� datab�ze");
-		this.importer = new Importer(getZipedDatabaseFile()); 
+		this.importer = new LegacyImporter(getZipedDatabaseFile()); 
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
 //		 list.add(new DummyJob(50));
@@ -300,7 +300,7 @@ public final class Application {
 		return licence;
 	}
 
-	public Importer getImporter() {
+	public LegacyImporter getImporter() {
 		return importer;
 	}
 

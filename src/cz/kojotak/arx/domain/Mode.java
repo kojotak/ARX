@@ -41,7 +41,7 @@ public interface Mode<T extends Game> {
 	List<? extends BaseColumn<T,?>> getColumns();
 	
 	/**
-	 * @return set of all categories as found in {@link Importer} (categories with no games are skipped)
+	 * @return set of all categories as found in {@link LegacyImporter} (categories with no games are skipped)
 	 */
 	Set<Category> getCategories();
 	

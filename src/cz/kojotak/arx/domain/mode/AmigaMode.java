@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import cz.kojotak.arx.Importer;
+import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.game.AmigaGame;
 import cz.kojotak.arx.ui.column.BaseColumn;
@@ -42,7 +42,7 @@ public class AmigaMode extends BaseMode<AmigaGame> {
 
 	private List<AmigaGame> games;
 
-	public AmigaMode(Importer importer) {
+	public AmigaMode(LegacyImporter importer) {
 		super();
 		this.games = importer.getAmigaGames();
 		this.cats = importer.getAmigaCategories();

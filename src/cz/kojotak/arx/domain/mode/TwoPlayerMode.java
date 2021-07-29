@@ -6,7 +6,7 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.kojotak.arx.Importer;
+import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Record2P;
 import cz.kojotak.arx.domain.game.MameGameDouble;
 import cz.kojotak.arx.domain.game.MameGameSingle;
@@ -20,7 +20,7 @@ import cz.kojotak.arx.ui.column.GameNameColumn;
  */
 public class TwoPlayerMode extends BaseMameMode<Record2P,MameGameDouble> {
 
-	public TwoPlayerMode(Importer importer) {
+	public TwoPlayerMode(LegacyImporter importer) {
 		super(importer.getMameDoubleGames());
 		this.cats = importer.getDoubleCategories();
 	}
