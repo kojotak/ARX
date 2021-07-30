@@ -8,7 +8,7 @@ public class RecordPlayerColumn extends BaseColumn<Record,String> {
 
 	@Override
 	public String getValue(Record source) {
-		return source.getPlayer();
+		return source.getPlayer().nick();
 	}
 
 	@Override

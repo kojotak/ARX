@@ -25,7 +25,7 @@ public class SingleGameStatistics implements GameStatistics {
 	Float playerRelativePosition=null;
 	String playerSign=null;
 	
-	String bestPlayer=null;
+	User bestPlayer=null;
 	int recordsCount=0;
 	int ratingsCount=0;
 	Boolean playerFinished=null;
@@ -52,13 +52,13 @@ public class SingleGameStatistics implements GameStatistics {
 		recordsCount=records.size();
 		Float ratingsSum=0F;
 		Long highest = 0L;
-		playerSign = user.id();
+		playerSign = user.nick();
 		Integer oponentPosition=null;
 		for(int i=0;i<records.size();i++){
 			Record record = records.get(i);
-			String sign = record.getPlayer();
+			User  player = record.getPlayer();
 			Long score=record.getScore();
-			if(sign.equals(user.id())){
+			if(player.id() == user.id()){
 				playerPosition=i+1;
 				playerRating = record.getRating();
 				playerFinished = record.isFinished();
@@ -66,7 +66,7 @@ public class SingleGameStatistics implements GameStatistics {
 			}
 			if(score>highest){
 				highest=score;
-				bestPlayer=sign;
+				bestPlayer=player;
 			}
 			if(record.isFinished()){
 				somebodyFinished=true;
@@ -75,7 +75,7 @@ public class SingleGameStatistics implements GameStatistics {
 				ratingsCount++;
 				ratingsSum+=record.getRating();
 			}
-			if(oponent!=null && sign.equals(oponent.id())){
+			if(oponent!=null && player.id() == oponent.id()){
 				oponentPosition=record.getPosition();
 			}
 		}
@@ -126,7 +126,7 @@ public class SingleGameStatistics implements GameStatistics {
 		return playerSign;
 	}
 
-	public String getBestPlayer() {
+	public User getBestPlayer() {
 		return bestPlayer;
 	}
 

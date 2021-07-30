@@ -100,11 +100,10 @@ public class SqliteImporter {
 		try(PreparedStatement  stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
 				while(rs.next()) {
-					int id = rs.getInt("id");
 					User u = new User(
-							""+id,
+							rs.getInt("id"),
 							rs.getString("nick"));
-					map.put(id, u);
+					map.put(u.id(), u);
 				}
 			}
 		} catch (SQLException e) {

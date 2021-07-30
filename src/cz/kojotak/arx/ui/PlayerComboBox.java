@@ -16,13 +16,14 @@ import javax.swing.JComboBox;
 import org.bushe.swing.event.EventBus;
 
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.ui.renderer.PlayerListRenderer;
 
 /**
  * @date 19.4.2010
  * @author Kojotak
  */
-public class PlayerComboBox extends JComboBox<String> {
+public class PlayerComboBox extends JComboBox<User> {
 
 	private static final long serialVersionUID = -8481423043530284950L;
 	public static final String ADD_NEW="_NEW";
@@ -34,14 +35,9 @@ public class PlayerComboBox extends JComboBox<String> {
 		this.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> cb = (JComboBox) event.getSource();
-				String usrName = (String) cb.getSelectedItem();
-				if (PlayerComboBox.ADD_NEW.equals(usrName)) {
-					Application.getInstance().getLogger(this).info(
-							"TODO add new player...");
-					usrName = null;
-				}
-				Application.getInstance().setPlayer(usrName,"XXX");//TODO fixme
+				JComboBox<User> cb = (JComboBox) event.getSource();
+				User usrName = (User) cb.getSelectedItem();
+				Application.getInstance().setCurrentUser(usrName);
 				EventBus.publish(Application.getInstance().getCurrentUser());
 				Application.getInstance().getLogger(this).info(
 						"selected user " + usrName);
@@ -54,12 +50,12 @@ public class PlayerComboBox extends JComboBox<String> {
 	}
 
 
-	private ComboBoxModel<String> getUsersComboBox() {
+	private ComboBoxModel<User> getUsersComboBox() {
 		Application app = Application.getInstance();
-		List<String> usrNames = app.getPlayers();
-		usrNames.add(ADD_NEW);
-		ComboBoxModel<String> model = new DefaultComboBoxModel<String>(new Vector<String>(usrNames));
-		model.setSelectedItem(app.getCurrentUser().id());
+		List<User> usrNames = app.getPlayers();
+		//usrNames.add(ADD_NEW);
+		ComboBoxModel<User> model = new DefaultComboBoxModel<User>(new Vector<User>(usrNames));
+		model.setSelectedItem(app.getCurrentUser());
 		return model;
 	}
 }

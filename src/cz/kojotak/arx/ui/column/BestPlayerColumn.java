@@ -15,7 +15,7 @@ public class BestPlayerColumn extends BaseColumn<WithStatistics,String> {
 
 	@Override
 	public String getValue(WithStatistics source) {
-		return source.getStatistics().getBestPlayer();
+		return source.getStatistics().getBestPlayer().nick();
 	}
 
 	@Override

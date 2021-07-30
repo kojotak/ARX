@@ -66,14 +66,6 @@ public final class Application {
 		return app;
 	}
 
-	public void init() {
-		// this.importer = new Importer();//delete me
-		// this.doImport();
-		// this.postInit();
-		// this.initHttpClient();
-		this.initPlayers();
-	}
-
 	public void finishInitialization() {
 		this.arcadeMode = new ArcadeMode(importer);
 		this.arcadeTwoPlayerMode = new TwoPlayerMode(importer);
@@ -85,28 +77,6 @@ public final class Application {
 		this.modes.add(arcadeTwoPlayerMode);
 		this.modes.add(amigaMode);
 		this.modes.add(noncompetetiveMode);
-	}
-
-//	 private void doImport() {
-//		 long startTime = System.currentTimeMillis();
-//		 long startMem = Runtime.getRuntime().freeMemory();
-//		
-//		  importer = importerFactory.createFromGziped(currentDir + File.separator + "tmp"+File.separator+"rotaxmame_databaze.gz");
-////		 importer = importerFactory.createFromWeb();
-//		 long endTime = System.currentTimeMillis();
-//		 long endMem = Runtime.getRuntime().freeMemory();
-//		 log.info("import done in " + (double)(endTime - startTime) / 1000
-//		 + " s, eaten " + (endMem - startMem) / 1024 + " kB RAM");
-//		
-//	 }
-	private void initPlayers() {
-		this.setPlayer("SCH","Schizo");
-		this.setPlayer("VLD","Tomsoft");
-		this.setPlayer("RGB","RGB");
-		this.setPlayer("HYP","HYP");
-		this.setPlayer("ORI","ORI");
-		this.setPlayer("COY","Coyot");
-
 	}
 
 	private Application() {
@@ -129,32 +99,34 @@ public final class Application {
 		localization = new Localization(language);
 		icons = new Icons(language);
 		licence = new Licence(language);
+		importer = new LegacyImporter(getZipedDatabaseFile()); 
+
+		//TODO remove this mock someday
+		this.players.add(importer.getOrFakeUser("COY"));
+		this.players.add(importer.getOrFakeUser("VLD"));
+		this.players.add(importer.getOrFakeUser("MIR"));
+		this.players.add(importer.getOrFakeUser("SCH"));
+		this.players.add(importer.getOrFakeUser("ORI"));
+		setCurrentUser(players.get(0));
 	}
 
 	public String getTmpDir() {
 		return currentDir + File.separator + "tmp";
 	}
 
-	public void setPlayer(String id, String nick) {
-		User user = new User(id, nick);
+	public void setCurrentUser(User user) {
 		this.currentUser = user;
-		this.players.add(user);
 	}
 
-	public List<String> getPlayers() {
-		List<User> users = players;
-		List<String> names = new ArrayList<String>();
-		for (User u : users) {
-			names.add(u.id());
-		}
-		return names;
+	public List<User> getPlayers() {
+		return players;
 	}
 
-	public Logger getLogger(Object whoCalls) {
+	public static Logger getLogger(Object whoCalls) {
 		return getLogger(whoCalls.getClass());
 	}
 
-	public Logger getLogger(Class<?> whoCalls) {
+	public static Logger getLogger(Class<?> whoCalls) {
 		return org.apache.logging.log4j.LogManager.getLogger(whoCalls.getSimpleName());
 	}
 
@@ -208,7 +180,7 @@ public final class Application {
 //		Downloader downloader = new Downloader(this, RM_DB_URL, getZipedDatabaseFile());
 //		Job downloaderJob = new DownloaderJob(downloader, 100,
 //				"stahov�n� datab�ze");
-		this.importer = new LegacyImporter(getZipedDatabaseFile()); 
+		
 			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
 //		 list.add(new DummyJob(50));

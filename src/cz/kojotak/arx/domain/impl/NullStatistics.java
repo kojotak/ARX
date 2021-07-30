@@ -42,7 +42,7 @@ public class NullStatistics implements GameStatistics {
 	 * @see cz.kojotak.arx.domain.GameStatistics#getBestPlayer()
 	 */
 	@Override
-	public String getBestPlayer() {
+	public User getBestPlayer() {
 		return null;
 	}
 

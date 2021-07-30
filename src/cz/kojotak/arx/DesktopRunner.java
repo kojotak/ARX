@@ -26,8 +26,6 @@ public class DesktopRunner {
 	 */
 	public static void main(String[] args) {
 		final Application app = Application.getInstance();
-		app.init();
-		
 		
 //		//handle exceptions in EDT
 //		SwingUtilities.invokeLater(new Runnable() {

@@ -5,19 +5,21 @@ package cz.kojotak.arx.ui.event;
 
 import java.util.Objects;
 
+import cz.kojotak.arx.domain.User;
+
 /**
  * @date 28.3.2011
  * @author Kojotak 
  */
 public class OpponentChosen {
 
-	private String opponent;
+	private User opponent;
 
-	public String getOpponent() {
+	public User getOpponent() {
 		return opponent;
 	}
 
-	public void setOpponent(String opponent) {
+	public void setOpponent(User opponent) {
 		this.opponent = opponent;
 	}
 

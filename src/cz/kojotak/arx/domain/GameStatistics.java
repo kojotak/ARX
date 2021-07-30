@@ -76,6 +76,6 @@ public interface GameStatistics {
 	/**
 	 * @return best player's sign
 	 */
-	String getBestPlayer();
+	User getBestPlayer();
 
 }

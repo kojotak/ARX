@@ -4,6 +4,7 @@
 package cz.kojotak.arx.domain.impl;
 
 import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.User;
 
 
 /**
@@ -15,7 +16,7 @@ public class RecordImpl implements Record {
 	protected Long score;
 	protected Float rating;
 	protected Boolean finished;
-	protected String player;
+	protected User player;
 	protected Integer duration;
 	protected Integer position;
 	
@@ -52,11 +53,11 @@ public class RecordImpl implements Record {
 		this.finished = finished;
 	}
 
-	public String getPlayer() {
+	public User getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(String player) {
+	public void setPlayer(User player) {
 		this.player = player;
 	}
 

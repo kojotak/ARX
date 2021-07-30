@@ -30,7 +30,7 @@ public interface Record{
 	 * 
 	 * @return user record owner
 	 */
-	String getPlayer();
+	User getPlayer();
 	
 	/**
 	 * 

@@ -138,7 +138,7 @@ public class GameTable extends JXTable {
 	
 	@EventSubscriber
 	public void updateOpponent(OpponentChosen opponent){
-		this.opponent = new User(opponent.getOpponent(),"TODO");//TODO fixme
+		this.opponent = opponent.getOpponent();
 		logger.info("setting new opponent: "+this.opponent);
 		recalculate();
 	}
@@ -159,8 +159,7 @@ public class GameTable extends JXTable {
 				"setting new game table model for " + user + " and " + mode);
 
 		@SuppressWarnings("unchecked")
-		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),
-				mode.getColumns());
+		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
 		Application.getInstance().getLogger(this).debug(
 				"new model has rows: " + model.getRowCount());
 
@@ -175,8 +174,7 @@ public class GameTable extends JXTable {
 				}
 				@SuppressWarnings("unchecked")
 				Competetive<Record> cmp = Competetive.class.cast(game);
-				SingleGameStatistics stats = new SingleGameStatistics(cmp,
-						user, opponent);
+				SingleGameStatistics stats = new SingleGameStatistics(cmp, user, opponent);
 				if (!(game instanceof WithStatistics)) {
 					throw new IllegalStateException(
 							"This model is not suitable for games without statistics");
