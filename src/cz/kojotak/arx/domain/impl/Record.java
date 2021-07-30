@@ -11,10 +11,10 @@ public class Record {
 	protected Long score;
 	protected Float rating;
 	protected Boolean finished;
-	protected User player;
 	protected Integer duration;
 	protected Integer position;
-	private String secondPlayer;
+	protected User player;
+	private User secondPlayer;
 
 	public Boolean isFinished() {
 		return getFinished();
@@ -68,11 +68,11 @@ public class Record {
 		this.position = position;
 	}
 
-	public String getSecondPlayer() {
+	public User getSecondPlayer() {
 		return secondPlayer;
 	}
 
-	public void setSecondPlayer(String secondPlayer) {
+	public void setSecondPlayer(User secondPlayer) {
 		this.secondPlayer = secondPlayer;
 	}
 }

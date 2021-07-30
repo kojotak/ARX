@@ -17,10 +17,9 @@ import cz.kojotak.arx.properties.Localization;
  * @date 25.3.2010
  * @author Kojotak
  */
-public abstract class BaseColumn<T, V> extends TableColumnExt implements
-		Valuable<T, V> {
+public abstract class BaseColumn<T, V> extends TableColumnExt implements Valuable<T, V> {
 
-	private static final long serialVersionUID = -5766438589532953454L;
+	private static final long serialVersionUID = 1L;
 	private String colName = null;	
 	
 	public static enum PROPS {

@@ -265,7 +265,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		List<T> list = new ArrayList<T>(collection);
 		log.trace("sorting "+clz.getSimpleName()+" ...");
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
-		log.trace("sorting and positioning records...");
+		log.trace("positioning "+clz.getSimpleName()+" records ...");
 		for(T t:list){
 			if(!(t instanceof Competetive)){
 				log.trace("skiping sorting records in non competetive game");
@@ -275,13 +275,9 @@ public class LegacyImporter implements RunnableWithProgress{
 			Collections.sort(competetive.getRecords(),ScoreBasedRecordComparator.INSTANCE);
 			for(int i=0;i<competetive.getRecords().size();i++){
 				Record r = competetive.getRecords().get(i);
-				if(r instanceof Record){
-					Record impl = Record.class.cast(r);
-					impl.setPosition(i+1);
-				}
+				r.setPosition(i+1);
 			}
 		}
-		log.trace("...done");
 		return list;
 	}
 
