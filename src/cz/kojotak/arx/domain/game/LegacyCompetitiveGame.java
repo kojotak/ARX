@@ -21,6 +21,7 @@ public abstract class LegacyCompetitiveGame extends SimpleGame implements Legacy
 	private String rules;
 	private Integer playerCount;
 	private String firstPlayerSign;
+	private String secondPlayerSign;
 	protected GameStatistics statistics;
 
 	public String getRules() {
@@ -47,5 +48,10 @@ public abstract class LegacyCompetitiveGame extends SimpleGame implements Legacy
 	public void setStatistics(GameStatistics statistics) {
 		this.statistics = statistics;
 	}
-	
+	public String getSecondPlayerSign() {
+		return secondPlayerSign;
+	}
+	public void setSecondPlayerSign(String secondPlayerSign) {
+		this.secondPlayerSign = secondPlayerSign;
+	}	
 }

@@ -24,9 +24,7 @@ import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.game.AmigaGame;
-import cz.kojotak.arx.domain.game.BaseMameGame;
-import cz.kojotak.arx.domain.game.MameGameDouble;
-import cz.kojotak.arx.domain.game.MameGameSingle;
+import cz.kojotak.arx.domain.game.MameGame;
 import cz.kojotak.arx.domain.game.NoncompetitiveGame;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
@@ -38,8 +36,8 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
  * @author Kojotak
  */
 public class LegacyImporter implements RunnableWithProgress{	
-	private Map<String, MameGameSingle> gamesSingle;
-	private Map<String, MameGameDouble> gamesDouble;
+	private Map<String, MameGame> gamesSingle;
+	private Map<String, MameGame> gamesDouble;
 	private Map<String, AmigaGame> gamesAmiga;
 	private Map<String, NoncompetitiveGame> gamesNoncompetetive;
 	
@@ -58,6 +56,9 @@ public class LegacyImporter implements RunnableWithProgress{
 	protected Logger log;
 
 	public User getOrFakeUser(String playerSign) {
+		if(playerSign == null) {
+			return null;
+		}
 		Integer id = fakeUserIds.get(playerSign);
 		if(id==null) {
 			id = fakeUserIds.size()+1;
@@ -67,7 +68,18 @@ public class LegacyImporter implements RunnableWithProgress{
 	}
 
 	private void setRecord(Record record, String[] parts) {
-		User player = getOrFakeUser(parts[1]);
+		String userParts = parts[1];
+		
+		String[] players = userParts.split("\\s");
+		if(players.length==2) {
+			boolean reverse = players[0].compareTo(players[1]) > 0;
+			record.setPlayer(getOrFakeUser(players[reverse ? 1 : 0]));
+			record.setSecondPlayer(getOrFakeUser(players[reverse ? 0 : 1]));
+		} else {
+			User player = getOrFakeUser(userParts);
+			record.setPlayer(player);
+		}
+		
 		String scoreStr = parts[2];
 		Long score = Long.parseLong(scoreStr);
 		String dohranoStr = parts[3];
@@ -75,7 +87,6 @@ public class LegacyImporter implements RunnableWithProgress{
 		String dobaStr = parts[4];
 		Integer doba = (dobaStr != null && dobaStr.length() > 0) ? Integer
 				.parseInt(dobaStr) : 0;
-		record.setPlayer(player);
 		record.setScore(score);
 		record.setDuration(doba);
 		record.setFinished(dohrano);
@@ -100,37 +111,24 @@ public class LegacyImporter implements RunnableWithProgress{
 		// ('39663','VLD','29200','0','93','mame')
 		String emulator = parts[5];
 		String id = parts[0];
-		Record record = null;
+		Record record = new Record();
+		setRecord(record, parts);
 		if ("mame".equals(emulator)) {
-			record = new Record();
-			MameGameSingle game = gamesSingle.get(id);
+			MameGame game = gamesSingle.get(id);
 			addRecord(game, record);
 			singleRecords++;
 		} else if ("mame2".equals(emulator)) {
-			Record record2 = new Record();
-			record = record2;// kvuli nastaveni singl veci
-			MameGameDouble game = gamesDouble.get(id);
-			addRecord(game, record2);
+			MameGame game = gamesDouble.get(id);
+			addRecord(game, record);
 			doubleRecords++;
 		} else if ("amiga".equals(emulator)) {
-			record = new Record();
 			AmigaGame game = gamesAmiga.get(id);
 			addRecord(game, record);
 			amigaRecords++;
 		} else {
 			return;
 		}
-		setRecord(record, parts);
 		//record.setPosition(competetive.getRecords().size());//rekordy jdou poporade, tj. pozice je rovna poradi
-		//TODO fix second player
-//		if (record instanceof Record2PImpl) {
-//			Record2PImpl rec2p = Record2PImpl.class.cast(record);
-//			String[] players = record.getPlayer().split("\\s");
-//			boolean reverse = players[0].compareTo(players[1]) > 0;
-//			rec2p.setPlayer(getOrFakeUser(players[reverse ? 1 : 0]));
-//			rec2p.setSecondPlayer(players[reverse ? 0 : 1]);
-//		}
-		
 		if("mame".equals(emulator)){
 			singlePlayers.add(record.getPlayer());
 		}
@@ -213,18 +211,18 @@ public class LegacyImporter implements RunnableWithProgress{
 		Integer hracu = Integer.parseInt(hracuStr);
 		String emulator = parts[9];
 
-		BaseMameGame game = null;
+		MameGame game = null;
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			MameGameSingle singleGame = new MameGameSingle(id, cat, title, file);
+			MameGame singleGame = new MameGame(id, cat, title, file);
 			game = singleGame;
 			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 			singleCategories.add(cat);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			MameGameDouble doubleGame = new MameGameDouble(id, cat, title, file);
+			MameGame doubleGame = new MameGame(id, cat, title, file);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");
@@ -249,8 +247,8 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	public LegacyImporter(InputStream in){
 		log = Application.getLogger(this);
-		gamesSingle = new HashMap<String, MameGameSingle>(2000);
-		gamesDouble = new HashMap<String, MameGameDouble>(200);
+		gamesSingle = new HashMap<String, MameGame>(2000);
+		gamesDouble = new HashMap<String, MameGame>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
 		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
 
@@ -281,12 +279,12 @@ public class LegacyImporter implements RunnableWithProgress{
 		return list;
 	}
 
-	public List<MameGameSingle> getMameSingleGames() {
-		return prepareGames(this.gamesSingle,MameGameSingle.class);
+	public List<MameGame> getMameSingleGames() {
+		return prepareGames(this.gamesSingle,MameGame.class);
 	}
 
-	public List<MameGameDouble> getMameDoubleGames() {
-		return prepareGames(this.gamesDouble,MameGameDouble.class);
+	public List<MameGame> getMameDoubleGames() {
+		return prepareGames(this.gamesDouble,MameGame.class);
 	}
 
 	public List<AmigaGame> getAmigaGames() {

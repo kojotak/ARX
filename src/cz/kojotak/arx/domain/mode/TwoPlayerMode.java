@@ -7,32 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.game.MameGameDouble;
-import cz.kojotak.arx.domain.game.MameGameSingle;
+import cz.kojotak.arx.domain.game.MameGame;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;
-import cz.kojotak.arx.domain.impl.Record;
 /**
  * @date 24.1.2010
  * @author Kojotak
  */
-public class TwoPlayerMode extends BaseMameMode<MameGameDouble> {
+public class TwoPlayerMode extends BaseMameMode {
 
 	public TwoPlayerMode(LegacyImporter importer) {
 		super(importer.getMameDoubleGames());
 		this.cats = importer.getDoubleCategories();
 	}
 	
-	@Override
-	public Class<MameGameDouble> getGameType() {
-		return MameGameDouble.class;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BaseColumn<MameGameDouble,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<MameGameSingle,?>>();
+	public List<BaseColumn<MameGame,?>> getColumns() {
+		List list = new ArrayList<BaseColumn<MameGame,?>>();
 
 		list.add(new GameNameColumn());
 		list.add(new CategoryColumn());

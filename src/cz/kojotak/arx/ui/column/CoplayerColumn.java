@@ -14,7 +14,7 @@ public class CoplayerColumn extends BaseColumn<Record, String> {
 
 	@Override
 	public String getValue(Record record) {
-		return record.getSecondPlayer().nick();
+		return record.getSecondPlayer() != null ? record.getSecondPlayer().nick() : "";
 	}
 
 	@Override

@@ -9,8 +9,7 @@ import java.util.List;
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.ModeWithStatistics;
-import cz.kojotak.arx.domain.impl.Record;
-import cz.kojotak.arx.domain.game.MameGameSingle;
+import cz.kojotak.arx.domain.game.MameGame;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.BestPlayerColumn;
@@ -29,7 +28,7 @@ import cz.kojotak.arx.ui.column.StatisticsPositionWithIconColumn;
  * @date 24.1.2010
  * @author Kojotak
  */
-public class ArcadeMode extends BaseMameMode<MameGameSingle> implements ModeWithStatistics {
+public class ArcadeMode extends BaseMameMode implements ModeWithStatistics {
 
 	private int playerCount = 0;
 	private int recordCount = 0;
@@ -47,15 +46,10 @@ public class ArcadeMode extends BaseMameMode<MameGameSingle> implements ModeWith
 		cats=importer.getSingleCategories();
 	}
 	
-	@Override
-	public Class<MameGameSingle> getGameType() {
-		return MameGameSingle.class;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BaseColumn<MameGameSingle,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<MameGameSingle,?>>();
+	public List<BaseColumn<MameGame,?>> getColumns() {
+		List list = new ArrayList<BaseColumn<MameGame,?>>();
 		list.add(new StatisticsPositionWithIconColumn());
 		list.add(new PlayerCountColumn());
 		list.add(new RelativePositionColumn());
