@@ -42,7 +42,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		super();
 		AnnotationProcessor.process(this);
-		this.setMinimumSize(new Dimension(640,480));
+		this.setMinimumSize(new Dimension(1200,800));
 		Application app = Application.getInstance();
 		String title = app.getLocalization().getString(this, "TITLE");
 		setTitle(title);
