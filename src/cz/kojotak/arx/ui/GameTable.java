@@ -24,11 +24,10 @@ import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.Record;
-import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.Platform;
-import cz.kojotak.arx.domain.impl.SimpleUser;
 import cz.kojotak.arx.domain.impl.SingleGameStatistics;
+import cz.kojotak.arx.domain.impl.User;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.event.OpponentChosen;
@@ -139,7 +138,7 @@ public class GameTable extends JXTable {
 	
 	@EventSubscriber
 	public void updateOpponent(OpponentChosen opponent){
-		this.opponent = new SimpleUser(opponent.getOpponent());
+		this.opponent = new User(opponent.getOpponent());
 		logger.info("setting new opponent: "+this.opponent);
 		recalculate();
 	}

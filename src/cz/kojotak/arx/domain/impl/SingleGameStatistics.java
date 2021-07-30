@@ -9,7 +9,6 @@ import java.util.List;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Record;
-import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 
 /**

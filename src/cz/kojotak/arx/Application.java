@@ -20,8 +20,7 @@ import org.apache.logging.log4j.Logger;
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Language;
 import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.User;
-import cz.kojotak.arx.domain.impl.SimpleUser;
+import cz.kojotak.arx.domain.impl.User;
 import cz.kojotak.arx.domain.mode.AmigaMode;
 import cz.kojotak.arx.domain.mode.ArcadeMode;
 import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
@@ -137,7 +136,7 @@ public final class Application {
 	}
 
 	public void setPlayer(String name) {
-		User user = new SimpleUser(name);
+		User user = new User(name);
 		this.currentUser = user;
 		this.players.add(user);
 	}
