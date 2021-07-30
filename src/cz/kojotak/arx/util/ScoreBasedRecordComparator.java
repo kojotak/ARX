@@ -2,7 +2,7 @@ package cz.kojotak.arx.util;
 
 import java.util.Comparator;
 
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 
 public enum ScoreBasedRecordComparator implements Comparator<Record> {
 	INSTANCE;

@@ -94,10 +94,10 @@ public class RecordTable extends JXTable {
 	 */
 	@EventSubscriber
 	public void onGameChange(Game event){
-		if(!(event instanceof Competetive<?>)){
+		if(!(event instanceof Competetive)){
 			return;
 		}
-		Competetive<?> game = Competetive.class.cast(event); 
+		Competetive game = Competetive.class.cast(event); 
 		List<?> records = game!=null?game.getRecords():Collections.emptyList();
 		@SuppressWarnings("unchecked")GenericTableModel<?> tableModel = new GenericTableModel(records,cols);
 		this.setModel(tableModel);

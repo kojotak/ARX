@@ -23,7 +23,7 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.Platform;
@@ -168,12 +168,11 @@ public class GameTable extends JXTable {
 					"calculating statistics for user " + user + " in mode "
 							+ mode);
 			for (Game game : mode.getGames()) {
-				if (!(game instanceof Competetive<?>)) {
+				if (!(game instanceof Competetive)) {
 					throw new IllegalStateException(
 							"This model is not suitable for non competetive game");
 				}
-				@SuppressWarnings("unchecked")
-				Competetive<Record> cmp = Competetive.class.cast(game);
+				Competetive cmp = Competetive.class.cast(game);
 				SingleGameStatistics stats = new SingleGameStatistics(cmp, user, opponent);
 				if (!(game instanceof WithStatistics)) {
 					throw new IllegalStateException(

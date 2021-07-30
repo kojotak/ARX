@@ -1,6 +1,6 @@
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 
 public class RecordPlayerColumn extends BaseColumn<Record,String> {
 

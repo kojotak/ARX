@@ -20,7 +20,7 @@ import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.game.AmigaGame;
@@ -28,8 +28,6 @@ import cz.kojotak.arx.domain.game.BaseMameGame;
 import cz.kojotak.arx.domain.game.MameGameDouble;
 import cz.kojotak.arx.domain.game.MameGameSingle;
 import cz.kojotak.arx.domain.game.NoncompetitiveGame;
-import cz.kojotak.arx.domain.impl.Record2PImpl;
-import cz.kojotak.arx.domain.impl.RecordImpl;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
@@ -68,7 +66,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		return new User(id, playerSign);
 	}
 
-	private void setRecord(RecordImpl record, String[] parts) {
+	private void setRecord(Record record, String[] parts) {
 		User player = getOrFakeUser(parts[1]);
 		String scoreStr = parts[2];
 		Long score = Long.parseLong(scoreStr);
@@ -83,16 +81,15 @@ public class LegacyImporter implements RunnableWithProgress{
 		record.setFinished(dohrano);
 	}
 
-	private <R extends Record> void addRecord(Competetive<R> game,
-			R record) {
+	private void addRecord(Competetive game, Record record) {
 		if (game == null) {
 			log.debug("No game found for record " + record);
 			return;
 		}
-		List<R> records = game.getRecords();
+		List<Record> records = game.getRecords();
 		if (records == null || records.size() == 0) {
 			// null or maybe imutable
-			records = new ArrayList<R>();
+			records = new ArrayList<>();
 			game.setRecords(records);
 		}
 		records.add(record);
@@ -103,20 +100,20 @@ public class LegacyImporter implements RunnableWithProgress{
 		// ('39663','VLD','29200','0','93','mame')
 		String emulator = parts[5];
 		String id = parts[0];
-		RecordImpl record = null;
+		Record record = null;
 		if ("mame".equals(emulator)) {
-			record = new RecordImpl();
+			record = new Record();
 			MameGameSingle game = gamesSingle.get(id);
 			addRecord(game, record);
 			singleRecords++;
 		} else if ("mame2".equals(emulator)) {
-			Record2PImpl record2 = new Record2PImpl();
+			Record record2 = new Record();
 			record = record2;// kvuli nastaveni singl veci
 			MameGameDouble game = gamesDouble.get(id);
 			addRecord(game, record2);
 			doubleRecords++;
 		} else if ("amiga".equals(emulator)) {
-			record = new RecordImpl();
+			record = new Record();
 			AmigaGame game = gamesAmiga.get(id);
 			addRecord(game, record);
 			amigaRecords++;
@@ -216,7 +213,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		Integer hracu = Integer.parseInt(hracuStr);
 		String emulator = parts[9];
 
-		BaseMameGame<? extends Record> game = null;
+		BaseMameGame game = null;
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
@@ -270,16 +267,16 @@ public class LegacyImporter implements RunnableWithProgress{
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
 		log.trace("sorting and positioning records...");
 		for(T t:list){
-			if(!(t instanceof Competetive<?>)){
+			if(!(t instanceof Competetive)){
 				log.trace("skiping sorting records in non competetive game");
 				break;
 			}
-			@SuppressWarnings("unchecked")Competetive<? extends Record> competetive = Competetive.class.cast(t);
+			Competetive competetive = Competetive.class.cast(t);
 			Collections.sort(competetive.getRecords(),ScoreBasedRecordComparator.INSTANCE);
 			for(int i=0;i<competetive.getRecords().size();i++){
 				Record r = competetive.getRecords().get(i);
-				if(r instanceof RecordImpl){
-					RecordImpl impl = RecordImpl.class.cast(r);
+				if(r instanceof Record){
+					Record impl = Record.class.cast(r);
 					impl.setPosition(i+1);
 				}
 			}

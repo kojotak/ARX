@@ -9,7 +9,7 @@ import java.util.List;
 import cz.kojotak.arx.domain.AmigaMetaData;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.Platform;
 
@@ -17,7 +17,7 @@ import cz.kojotak.arx.domain.enums.Platform;
  * @date 25.1.2010
  * @author Kojotak 
  */
-public class AmigaGame extends LegacyCompetitiveGame implements Competetive<Record>,AmigaMetaData,WithStatistics {
+public class AmigaGame extends LegacyCompetitiveGame implements Competetive,AmigaMetaData,WithStatistics {
 
 	protected List<Record> records;
 	private String md5Disk1;

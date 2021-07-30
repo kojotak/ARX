@@ -4,7 +4,6 @@
 package cz.kojotak.arx.domain.game;
 
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Record;
 import cz.kojotak.arx.domain.WithStatistics;
 
 /**
@@ -12,7 +11,7 @@ import cz.kojotak.arx.domain.WithStatistics;
  * @date 25.1.2010
  * @author Kojotak 
  */
-public class MameGameSingle extends BaseMameGame<Record> implements WithStatistics{
+public class MameGameSingle extends BaseMameGame implements WithStatistics{
 
 	public MameGameSingle(String id,Category category, String title, String file) {
 		super(id,category, title, file);

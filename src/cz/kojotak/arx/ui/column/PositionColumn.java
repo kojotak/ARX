@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.ui.renderer.PositionTableCellRenderer;
 
 /**

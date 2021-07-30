@@ -10,16 +10,16 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.LegacyGameMetaData;
-import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.enums.Platform;
 
 /**
  * @date 23.1.2010
  * @author Kojotak 
  */
-public abstract class BaseMameGame<T extends Record> extends LegacyCompetitiveGame implements Game, Competetive<T>, LegacyGameMetaData {
+public abstract class BaseMameGame extends LegacyCompetitiveGame implements Game, Competetive, LegacyGameMetaData {
 	
-	private List<T> records;
+	private List<Record> records;
 	private Integer coins;
 		
 	public BaseMameGame(String id,Category category, String title, String file) {
@@ -32,11 +32,11 @@ public abstract class BaseMameGame<T extends Record> extends LegacyCompetitiveGa
 		return Platform.MAME;
 	}
 
-	public List<T> getRecords() {
+	public List<Record> getRecords() {
 		return records;
 	}
 
-	public void setRecords(List<T> records) {
+	public void setRecords(List<Record> records) {
 		this.records = records;
 	}
 

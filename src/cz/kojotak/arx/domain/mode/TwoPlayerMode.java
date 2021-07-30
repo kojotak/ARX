@@ -7,18 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.Record2P;
 import cz.kojotak.arx.domain.game.MameGameDouble;
 import cz.kojotak.arx.domain.game.MameGameSingle;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;
-
+import cz.kojotak.arx.domain.impl.Record;
 /**
  * @date 24.1.2010
  * @author Kojotak
  */
-public class TwoPlayerMode extends BaseMameMode<Record2P,MameGameDouble> {
+public class TwoPlayerMode extends BaseMameMode<MameGameDouble> {
 
 	public TwoPlayerMode(LegacyImporter importer) {
 		super(importer.getMameDoubleGames());

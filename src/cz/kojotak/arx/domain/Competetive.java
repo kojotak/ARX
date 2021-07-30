@@ -4,18 +4,18 @@
 package cz.kojotak.arx.domain;
 
 import java.util.List;
-
+import cz.kojotak.arx.domain.impl.Record;
 /**
  * @date 23.1.2010
  * @author Kojotak 
  */
-public interface Competetive<T extends Record> {
+public interface Competetive {
 	
 	/**
 	 * 
 	 * @return ordered list of records for given game
 	 */
-	List<T> getRecords();
+	List<Record> getRecords();
 	
-	void setRecords(List<T> list);
+	void setRecords(List<Record> list);
 }

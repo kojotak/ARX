@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import cz.kojotak.arx.domain.Record;
 import cz.kojotak.arx.domain.enums.Platform;
 import cz.kojotak.arx.domain.game.BaseMameGame;
 
@@ -15,7 +14,7 @@ import cz.kojotak.arx.domain.game.BaseMameGame;
  * @date 23.1.2010
  * @author Kojotak 
  */
-public abstract class BaseMameMode<R extends Record,T extends BaseMameGame<R>> extends BaseMode<T> {
+public abstract class BaseMameMode<T extends BaseMameGame> extends BaseMode<T> {
 	
 	protected List<T> games;
 
