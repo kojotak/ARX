@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Language;
 import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.impl.User;
+import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.mode.AmigaMode;
 import cz.kojotak.arx.domain.mode.ArcadeMode;
 import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
@@ -100,12 +100,12 @@ public final class Application {
 //		
 //	 }
 	private void initPlayers() {
-		this.setPlayer("SCH");
-		this.setPlayer("VLD");
-		this.setPlayer("RGB");
-		this.setPlayer("HYP");
-		this.setPlayer("ORI");
-		this.setPlayer("COY");
+		this.setPlayer("SCH","Schizo");
+		this.setPlayer("VLD","Tomsoft");
+		this.setPlayer("RGB","RGB");
+		this.setPlayer("HYP","HYP");
+		this.setPlayer("ORI","ORI");
+		this.setPlayer("COY","Coyot");
 
 	}
 
@@ -135,8 +135,8 @@ public final class Application {
 		return currentDir + File.separator + "tmp";
 	}
 
-	public void setPlayer(String name) {
-		User user = new User(name);
+	public void setPlayer(String id, String nick) {
+		User user = new User(id, nick);
 		this.currentUser = user;
 		this.players.add(user);
 	}
@@ -145,7 +145,7 @@ public final class Application {
 		List<User> users = players;
 		List<String> names = new ArrayList<String>();
 		for (User u : users) {
-			names.add(u.getId());
+			names.add(u.id());
 		}
 		return names;
 	}

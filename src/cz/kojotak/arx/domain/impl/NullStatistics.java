@@ -4,6 +4,7 @@
 package cz.kojotak.arx.domain.impl;
 
 import cz.kojotak.arx.domain.GameStatistics;
+import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 
 /**

@@ -4,7 +4,6 @@
 package cz.kojotak.arx.domain;
 
 import cz.kojotak.arx.domain.enums.FinishedStatus;
-import cz.kojotak.arx.domain.impl.User;
 
 /**
  * @date 7.2.2010

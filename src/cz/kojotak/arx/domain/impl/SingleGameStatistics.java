@@ -9,6 +9,7 @@ import java.util.List;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Record;
+import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 
 /**
@@ -51,13 +52,13 @@ public class SingleGameStatistics implements GameStatistics {
 		recordsCount=records.size();
 		Float ratingsSum=0F;
 		Long highest = 0L;
-		playerSign = user.getId();
+		playerSign = user.id();
 		Integer oponentPosition=null;
 		for(int i=0;i<records.size();i++){
 			Record record = records.get(i);
 			String sign = record.getPlayer();
 			Long score=record.getScore();
-			if(sign.equals(user.getId())){
+			if(sign.equals(user.id())){
 				playerPosition=i+1;
 				playerRating = record.getRating();
 				playerFinished = record.isFinished();
@@ -74,7 +75,7 @@ public class SingleGameStatistics implements GameStatistics {
 				ratingsCount++;
 				ratingsSum+=record.getRating();
 			}
-			if(oponent!=null && sign.equals(oponent.getId())){
+			if(oponent!=null && sign.equals(oponent.id())){
 				oponentPosition=record.getPosition();
 			}
 		}

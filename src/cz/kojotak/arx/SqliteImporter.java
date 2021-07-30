@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.kojotak.arx.domain.User;
+
 public class SqliteImporter {
 
 	final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
@@ -22,10 +24,6 @@ public class SqliteImporter {
 			String name, 
 			String link, 
 			int modeMax) {
-	}
-	
-	static record User(int id, 
-			String nick) {
 	}
 	
 	static record Game(int id, 
@@ -102,10 +100,11 @@ public class SqliteImporter {
 		try(PreparedStatement  stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
 				while(rs.next()) {
+					int id = rs.getInt("id");
 					User u = new User(
-							rs.getInt("id"),
+							""+id,
 							rs.getString("nick"));
-					map.put(u.id(), u);
+					map.put(id, u);
 				}
 			}
 		} catch (SQLException e) {

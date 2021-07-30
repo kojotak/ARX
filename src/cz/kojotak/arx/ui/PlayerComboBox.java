@@ -41,7 +41,7 @@ public class PlayerComboBox extends JComboBox<String> {
 							"TODO add new player...");
 					usrName = null;
 				}
-				Application.getInstance().setPlayer(usrName);
+				Application.getInstance().setPlayer(usrName,"XXX");//TODO fixme
 				EventBus.publish(Application.getInstance().getCurrentUser());
 				Application.getInstance().getLogger(this).info(
 						"selected user " + usrName);
@@ -59,7 +59,7 @@ public class PlayerComboBox extends JComboBox<String> {
 		List<String> usrNames = app.getPlayers();
 		usrNames.add(ADD_NEW);
 		ComboBoxModel<String> model = new DefaultComboBoxModel<String>(new Vector<String>(usrNames));
-		model.setSelectedItem(app.getCurrentUser().getId());
+		model.setSelectedItem(app.getCurrentUser().id());
 		return model;
 	}
 }
