@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Importer {
+public class SqliteImporter {
 
 	final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
 	

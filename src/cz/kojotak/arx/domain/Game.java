@@ -10,7 +10,7 @@ import cz.kojotak.arx.domain.enums.Platform;
  * @date 14.10.2009
  * @author Kojotak 
  */
-public interface Game extends Identifiable<String>{
+public interface Game {
 	
 	Category getCategory();
 	
@@ -32,4 +32,5 @@ public interface Game extends Identifiable<String>{
 	 */
 	Platform getPlatform();
 		
+	String getId();
 }
