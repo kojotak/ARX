@@ -193,7 +193,7 @@ public final class Application {
 
 	public AtomicLong bytesToImport = new AtomicLong(0);
 
-	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/res/rotaxmame_databaze.gz?raw=true";
+	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/rotaxmame_databaze.gz?raw=true";
 
 	public static class DownloaderJob extends Job {
 
