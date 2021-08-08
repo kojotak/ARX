@@ -56,7 +56,6 @@
 			    </executions>
 			</plugin>
 						
-								
 		</plugins>
 	</build>
 	<dependencies>
@@ -78,7 +77,7 @@
 		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
-		    <version>3.36.0</version>
+		    <version>3.7.15-M1</version>
 		</dependency>
 	</dependencies>
 </project>
