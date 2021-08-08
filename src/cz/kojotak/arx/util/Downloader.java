@@ -81,7 +81,7 @@ public class Downloader implements RunnableWithProgress {
 				bytes = bos.toByteArray();
 			}
 		}catch(IOException ioex){
-			log.error("cannot read from "+source,ioex);
+			throw new RuntimeException("cannot read from "+source,ioex);
 		}
 		Application.getInstance().bytesToImport=totalBytes; //TODO remove ???
 	}
