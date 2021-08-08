@@ -40,10 +40,8 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 			totalWeight += job.getWeight();
 		}
 		scheduler = Executors.newScheduledThreadPool(1);
-		log = Application.getInstance().getLogger(this);
+		log = Application.getLogger(this);
 	}
-	
-	
 
 	@Override
 	protected Void doInBackground() throws Exception {
@@ -63,7 +61,7 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 					100.0 *runnable.current()/runnable.max()*job.getWeight()/totalWeight;
 				d += Double.longBitsToDouble(soFar.get());
 				int i=(int)d;
-				log.debug("updating progress for "+job+", done "+i);
+				log.debug("updating progress for "+job+", done "+i+" %");
 				Progress progress = new Progress(i,job.getDescription()+(i!=RunnableWithProgress.UNKNOWN?" "+i+" %" :""));
 				SplashWorker.this.publish(progress);
 			}

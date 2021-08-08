@@ -42,6 +42,7 @@ public final class Application {
 	private Localization localization;
 	private Licence licence;
 	private Icons icons;
+	private final Downloader downloader;
 	private LegacyImporter importer;
 	private Language language;
 	private IconLoader iconLoader;
@@ -99,7 +100,9 @@ public final class Application {
 		localization = new Localization(language);
 		icons = new Icons(language);
 		licence = new Licence(language);
-		importer = new LegacyImporter(getZipedDatabaseFile()); 
+		downloader = new Downloader(RM_DB_URL);
+		//importer = new LegacyImporter(this::getDBInputStream); 
+		importer = new LegacyImporter(downloader::getDBInputStream);
 
 		//TODO remove this mock someday
 		this.players.add(importer.getOrFakeUser("COY"));
@@ -170,21 +173,18 @@ public final class Application {
 		return string;
 	}
 
-	public InputStream getZipedDatabaseFile() {
+	public InputStream getDBInputStream() {
 		return getClass().getClassLoader().getResourceAsStream("rotaxmame_databaze.gz");
 	}
 
 	public List<Job> getJobs() {
 		List<Job> list = new ArrayList<Job>();
 
-//		Downloader downloader = new Downloader(this, RM_DB_URL, getZipedDatabaseFile());
-//		Job downloaderJob = new DownloaderJob(downloader, 100,
-//				"stahov�n� datab�ze");
+		Job downloaderJob = new DownloaderJob(downloader, 100,	getLocalization().getString(this, "DOWNLOAD_PROGRESS"));
 		
-			//this.importerFactory.createFromGziped(getZipedDatabaseFile());
 		Job importerJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
 //		 list.add(new DummyJob(50));
-//		list.add(downloaderJob);
+		list.add(downloaderJob);
 		//list.add(counterJob);
 		list.add(importerJob);
 
@@ -193,7 +193,7 @@ public final class Application {
 
 	public AtomicLong bytesToImport = new AtomicLong(0);
 
-	public static final String RM_DB_URL = "http://rotaxmame.cz/php/download3.php?co=kompletni_databaze";
+	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/res/rotaxmame_databaze.gz?raw=true";
 
 	public static class DownloaderJob extends Job {
 
@@ -203,10 +203,7 @@ public final class Application {
 
 		@Override
 		public String getDescription() {
-			
 			RunnableWithProgress runnable = this.getRunnable();
-			
-//			String max = StorageUnit.toString(runnable.max());
 			String current = StorageUnit.toString(runnable.current());		
 			return super.getDescription() + " "+current;
 		}

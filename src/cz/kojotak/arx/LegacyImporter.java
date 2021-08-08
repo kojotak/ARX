@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.zip.GZIPInputStream;
 import org.apache.logging.log4j.Logger;
 
@@ -243,9 +244,9 @@ public class LegacyImporter implements RunnableWithProgress{
 		game.setAverageRatings(hodnoceni);
 	}
 	
-	private InputStream in;
+	private Supplier<InputStream> in;
 
-	public LegacyImporter(InputStream in){
+	public LegacyImporter(Supplier<InputStream> in){
 		log = Application.getLogger(this);
 		gamesSingle = new HashMap<String, MameGame>(2000);
 		gamesDouble = new HashMap<String, MameGame>(200);
@@ -310,7 +311,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		log.info("starting importer ...");
 		BufferedReader reader;
 		try{
-			progressIs = new ProgressInputStream(in);
+			progressIs = new ProgressInputStream(in.get());
 			GZIPInputStream gzip = new GZIPInputStream(progressIs);
 			reader = new BufferedReader(new InputStreamReader(gzip));
 		}catch(IOException ioex){
