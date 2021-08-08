@@ -15,8 +15,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.common.RunnableWithProgress;
@@ -28,7 +27,7 @@ import cz.kojotak.arx.common.RunnableWithProgress;
  */
 public class Downloader implements RunnableWithProgress {
 	
-	private final Logger log = LogManager.getLogger(this);
+	private final Logger log;
 	private String source;
 	private AtomicLong readBytes=new AtomicLong(0);
 	private AtomicLong totalBytes=new AtomicLong(0);
@@ -37,6 +36,7 @@ public class Downloader implements RunnableWithProgress {
 
 	public Downloader(String source) {
 		this.source = source;
+		this.log = Application.getLogger(Downloader.class);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class Downloader implements RunnableWithProgress {
 			throw new RuntimeException("cannot open "+source,ex);		
 		}
 		this.totalBytes.set(con.getContentLengthLong());
-		log.info("total bytes: ", this.totalBytes);
+		log.info("total bytes: " + this.totalBytes);
 		try(BufferedInputStream in = new BufferedInputStream(con.getInputStream())){
 			try(ByteArrayOutputStream bos = new ByteArrayOutputStream()){
 				try(OutputStream out = new BufferedOutputStream(bos)){
@@ -76,7 +76,7 @@ public class Downloader implements RunnableWithProgress {
 						out.write(buf, 0, read);
 						total+=read;
 					}
-					log.trace(total+" bytes were read");
+					log.fine(total+" bytes were read");
 				}
 				bytes = bos.toByteArray();
 			}

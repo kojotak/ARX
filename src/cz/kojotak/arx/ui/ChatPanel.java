@@ -50,7 +50,7 @@ public class ChatPanel extends JPanel {
 		try {
 			document = builder.parse(is);
 		} catch (Exception ex) {
-			Application.getInstance().getLogger(this).error(
+			Application.getInstance().getLogger(this).severe(
 					"cannot parser document", ex);
 		}
 
@@ -76,7 +76,7 @@ public class ChatPanel extends JPanel {
 			new SimpleHtmlRendererContext(panel, new SimpleUserAgentContext())
 					.navigate("http://www.rotaxmame.cz/index.php?prihjmeno=coyot&heslo=rotaxheslo&odeslat=Prihlasit");
 		} catch (Exception ex) {
-			Application.getInstance().getLogger(this).error("cannot open url",
+			Application.getInstance().getLogger(this).severe("cannot open url",
 					ex);
 		}
 		return panel;

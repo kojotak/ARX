@@ -41,7 +41,7 @@ public class Properties{
 		try{
 			return bundle.getString(key);
 		}catch(MissingResourceException ex){
-			Application.getInstance().getLogger(this).error("missing value for key "+key);
+			Application.getInstance().getLogger(this).severe("missing value for key "+key);
 			return "";
 		}
 	}

@@ -4,6 +4,7 @@
 package cz.kojotak.arx;
 
 import java.awt.Image;
+import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -30,7 +31,7 @@ public class DesktopRunner {
 		//handle exceptions in EDT
 		SwingUtilities.invokeLater(()->{
 		        Thread.currentThread().setUncaughtExceptionHandler((thread,ex)-> {
-						Application.getLogger(thread).error("Exception in EDT", ex);						
+						Application.getLogger(thread).log(Level.SEVERE, "Exception in EDT", ex);						
 				});
 		});
 		
@@ -49,7 +50,7 @@ public class DesktopRunner {
 		try {
 			postInit.get();// wait until the result is available
 		} catch (Exception ex) {
-			Application.getLogger(DesktopRunner.class).error("cannot initialize application", ex);
+			Application.getLogger(DesktopRunner.class).severe("cannot initialize application " + ex);
 			System.exit(1);
 		}
 		splash.setProgress("initializing GUI", RunnableWithProgress.UNKNOWN);
@@ -61,8 +62,7 @@ public class DesktopRunner {
 					try {
 						UIManager.setLookAndFeel(info.getClassName());
 					} catch (Exception ex) {
-						Application.getLogger(MainWindow.class).warn(
-								"failed to load Nimbus L&F", ex);
+						Application.getLogger(MainWindow.class).log(Level.WARNING, "failed to load Nimbus L&F", ex);
 					}
 					Application.getLogger(MainWindow.class).info("L&F switched to Nimbus");
 					break;

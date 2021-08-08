@@ -48,7 +48,7 @@ public class GenericTableModel<T> extends AbstractTableModel {
 		try{
 			game = items.get(rowIndex);
 		}catch(IndexOutOfBoundsException ex){
-			Application.getInstance().getLogger(this).error("cannot return "+rowIndex+" from "+columns);
+			Application.getInstance().getLogger(this).severe("cannot return "+rowIndex+" from "+columns);
 			return null;
 		}
 		return columns.get(columnIndex).getValue(game);

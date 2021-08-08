@@ -14,8 +14,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Language;
@@ -82,17 +82,15 @@ public final class Application {
 
 	private Application() {
 		currentDir = System.getProperty("user.dir");
-		
-		log = getLogger(Application.class);
-		log.debug("logger ready");
 
-		// java.util.logging initialization for chmpane
-		//System.setProperty("java.util.logging.config.file", "logging.properties");
 		try {
 			java.util.logging.LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
 		} catch (Exception ex) {
-			log.error("cannot reconfigure java.util.LogManager", ex);
+			log.log(Level.SEVERE, "cannot reconfigure java.util.LogManager", ex);
 		}
+		
+		log = getLogger(Application.class);
+		log.info("logger ready");
 
 		language = Language.CZECH;
 		iconLoader = new IconLoader("icons/", "images/", this);
@@ -130,7 +128,7 @@ public final class Application {
 	}
 
 	public static Logger getLogger(Class<?> whoCalls) {
-		return org.apache.logging.log4j.LogManager.getLogger(whoCalls.getSimpleName());
+		return Logger.getLogger(whoCalls.getName());
 	}
 
 	public Mode<?> resolveMode(String str) {
@@ -152,7 +150,7 @@ public final class Application {
 		try {
 			stream = new FileInputStream(new File(path));
 		} catch (FileNotFoundException ex) {
-			log.error("cannot found " + path, ex);
+			log.log(Level.SEVERE, "cannot found " + path, ex);
 			return null;
 		}
 		try {
@@ -162,12 +160,12 @@ public final class Application {
 			/* Instead of using default, pass in a decoder. */
 			string = Charset.defaultCharset().decode(bb).toString();
 		} catch (IOException ex) {
-			this.log.error("cannot read from " + path, ex);
+			this.log.log(Level.SEVERE, "cannot read from " + path, ex);
 		} finally {
 			try {
 				stream.close();
 			} catch (IOException ex) {
-				this.log.error("cannot close stream from " + path, ex);
+				this.log.log(Level.SEVERE, "cannot close stream from " + path, ex);
 			}
 		}
 		return string;

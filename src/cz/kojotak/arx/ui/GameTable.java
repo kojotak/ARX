@@ -12,7 +12,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -23,7 +24,6 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.Platform;
@@ -76,7 +76,7 @@ public class GameTable extends JXTable {
 	public void updateGameFilter(FilterModel update) {
 		this.filterModel = FilterModel.updateWith(this.filterModel, update);
 
-		logger.debug("setting game table filter");
+		logger.fine("setting game table filter");
 		GenericTableModel<?> model = this.getGenericTableModel();
 		RowFilter<GenericTableModel<?>, Integer> categoryFilter = new RowFilter<GenericTableModel<?>, Integer>() {
 
@@ -155,16 +155,16 @@ public class GameTable extends JXTable {
 	 */
 	private void recalculate() {
 		final Application app = Application.getInstance();
-		app.getLogger(this).debug(
+		Application.getLogger(this).fine(
 				"setting new game table model for " + user + " and " + mode);
 
 		@SuppressWarnings("unchecked")
 		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
-		Application.getInstance().getLogger(this).debug(
+		Application.getLogger(this).fine(
 				"new model has rows: " + model.getRowCount());
 
 		if (Competetive.class.isAssignableFrom(mode.getGameType())) {
-			Application.getInstance().getLogger(this).trace(
+			Application.getLogger(this).fine(
 					"calculating statistics for user " + user + " in mode "
 							+ mode);
 			for (Game game : mode.getGames()) {
@@ -210,7 +210,7 @@ public class GameTable extends JXTable {
 			Game game = (Game)ggtm.getItem(convertRowIndexToModel(idx));
 			EventBus.publish(game);
 		}catch(Exception ex){//dirty and ugly
-			Application.getInstance().getLogger(this).warn("invalid row index in game table model",ex);
+			Application.getLogger(this).log(Level.WARNING, "invalid row index in game table model",ex);
 		}
 		
 	}

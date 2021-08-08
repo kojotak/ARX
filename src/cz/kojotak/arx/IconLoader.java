@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -82,7 +83,7 @@ public class IconLoader {
 		try{
 			img = ImageIO.read(url(filename));
 		}catch(Exception ex){
-			Application.getInstance().getLogger(this).warn("cannot load image "+filename+" because: "+ex);
+			Application.getLogger(this).warning("cannot load image "+filename+" because: "+ex);
 		}
 		return img;
 	}
@@ -99,7 +100,7 @@ public class IconLoader {
 	//FIXME this ugly code!!!
 	private Image downloadAndLoadImageInt(String path) throws Exception{
 		
-		app.getLogger(this).info("downloading "+path+" ... ");
+		Application.getLogger(this).info("downloading "+path+" ... ");
 		URL u = new URL("http://rotaxmame.cz/hry/"+path+IMAGE_EXTENSION);
 	    URLConnection uc = u.openConnection();
 	    int contentLength = uc.getContentLength();
@@ -117,13 +118,13 @@ public class IconLoader {
 	    in.close();
 
 	    if (offset != contentLength) {
-	      app.getLogger(this).warn("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
+	      Application.getLogger(this).warning("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
 	      return null;
 	    }
 
 	    if(screenshotPrefix!=null){
 	    	String filename = imgPrefix + path+IMAGE_EXTENSION;
-	  		app.getLogger(this).debug("saving as "+filename+" ... ");
+	  		Application.getLogger(this).fine("saving as "+filename+" ... ");
 	  	    FileOutputStream out = new FileOutputStream(filename);
 	  	    out.write(data);
 	  	    out.flush();
@@ -140,7 +141,7 @@ public class IconLoader {
 		try{
 			img = downloadAndLoadImageInt(path);
 		}catch(Exception ex){
-			app.getLogger(this).error("cannot download image "+path,ex);
+			Application.getLogger(this).log(Level.SEVERE, "cannot download image "+path,ex);
 		}
 		return img;
 	}
@@ -157,7 +158,7 @@ public class IconLoader {
 		try{
 			URL url = url(path);
 			if(url==null){
-				app.getLogger(this).error("Cannot create url for icon "+path);
+				Application.getLogger(this).severe("Cannot create url for icon "+path);
 				return null;
 			}
 			bufims=ICODecoder.read(url.openStream());
@@ -165,7 +166,7 @@ public class IconLoader {
 				return bufims.get(0);
 			}
 		}catch(IOException ex){
-			app.getLogger(this).error("Cannot load icon "+path,ex);
+			Application.getLogger(this).log(Level.SEVERE, "Cannot load icon "+path,ex);
 		}
 		return null;
 	}

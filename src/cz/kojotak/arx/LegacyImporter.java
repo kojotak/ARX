@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.zip.GZIPInputStream;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
@@ -95,7 +95,7 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	private void addRecord(Competetive game, Record record) {
 		if (game == null) {
-			log.debug("No game found for record " + record);
+			log.fine("No game found for record " + record);
 			return;
 		}
 		List<Record> records = game.getRecords();
@@ -262,12 +262,12 @@ public class LegacyImporter implements RunnableWithProgress{
 		}
 		Collection<T> collection = map.values();
 		List<T> list = new ArrayList<T>(collection);
-		log.trace("sorting "+clz.getSimpleName()+" ...");
+		log.fine("sorting "+clz.getSimpleName()+" ...");
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
-		log.trace("positioning "+clz.getSimpleName()+" records ...");
+		log.fine("positioning "+clz.getSimpleName()+" records ...");
 		for(T t:list){
 			if(!(t instanceof Competetive)){
-				log.trace("skiping sorting records in non competetive game");
+				log.fine("skiping sorting records in non competetive game");
 				break;
 			}
 			Competetive competetive = Competetive.class.cast(t);

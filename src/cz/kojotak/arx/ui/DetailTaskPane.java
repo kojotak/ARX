@@ -6,6 +6,7 @@ package cz.kojotak.arx.ui;
 import java.awt.Image;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
 
 import javax.swing.SwingWorker;
 
@@ -74,7 +75,7 @@ public class DetailTaskPane extends JXTaskPane{
 		try{
 			link.setURI(new URI(uri));
 		}catch(URISyntaxException ex){
-			app.getLogger(this).error("cannot set uri "+uri,ex);
+			Application.getLogger(this).log(Level.SEVERE, "cannot set uri "+uri,ex);
 		}
 		setHyperlink();
 		
@@ -95,14 +96,13 @@ public class DetailTaskPane extends JXTaskPane{
 
 		@Override
 		protected Image doInBackground() throws Exception {
-			//Thread.sleep(5000);//debug
-			app.getLogger(DetailTaskPane.this).debug("working...");
+			Application.getLogger(DetailTaskPane.this).fine("working...");
 			return app.getIconLoader().downloadAndLoadImage(name);
 		}
 
 		@Override
 		protected void done() {
-			app.getLogger(DetailTaskPane.this).debug("done...");
+			Application.getLogger(DetailTaskPane.this).fine("done...");
 			Image downloaded = null;
 			try{
 				downloaded = get();
@@ -115,7 +115,7 @@ public class DetailTaskPane extends JXTaskPane{
                 } else {
                     why = e.getMessage();
                 }
-                app.getLogger(DetailTaskPane.this).warn("Error retrieving "+name+ " because: " + why);
+                Application.getLogger(DetailTaskPane.this).warning("Error retrieving "+name+ " because: " + why);
             }
             if(downloaded==null){
             	downloaded = app.getIconLoader().loadImageFromIcon(ImageDetail.MISSING);
