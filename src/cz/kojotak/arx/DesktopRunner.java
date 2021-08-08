@@ -4,6 +4,7 @@
 package cz.kojotak.arx;
 
 import java.awt.Image;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -27,18 +28,12 @@ public class DesktopRunner {
 	public static void main(String[] args) {
 		final Application app = Application.getInstance();
 		
-//		//handle exceptions in EDT
-//		SwingUtilities.invokeLater(new Runnable() {
-//		    public void run() {
-//		        Thread.currentThread().setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-//					
-//					@Override
-//					public void uncaughtException(Thread thread, Throwable ex) {
-//						app.getLogger(thread).error("Exception in EDT", ex);						
-//					}
-//				});
-//		    }
-//		});
+		//handle exceptions in EDT
+		SwingUtilities.invokeLater(()->{
+		        Thread.currentThread().setUncaughtExceptionHandler((thread,ex)-> {
+						Application.getLogger(thread).error("Exception in EDT", ex);						
+				});
+		});
 		
 		Image image = app.getIconLoader().loadImage("logo.jpg");
 		ImageIcon myImage = new ImageIcon(image);
