@@ -47,9 +47,10 @@
 			                    <descriptorRef>jar-with-dependencies</descriptorRef>
 			                </descriptorRefs>
 					    
-					<!-- next 2 lines are from https://stackoverflow.com/questions/33673260/override-maven-assembly-plugin-output-file-name -->
-					<finalName>arx</finalName>
-    					<appendAssemblyId>false</appendAssemblyId>    
+							<!-- next 2 lines are from https://stackoverflow.com/questions/33673260/override-maven-assembly-plugin-output-file-name -->
+							<finalName>arx</finalName>
+    						<appendAssemblyId>false</appendAssemblyId>    
+							<outputDirectory>target/assembly</outputDirectory>
 			            </configuration>
 			        </execution>
 			    </executions>
