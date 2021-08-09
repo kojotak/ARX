@@ -62,4 +62,9 @@ public abstract class BaseMode<T extends Game> implements Mode<T>,Searchable {
 		this.filter = filter;
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
+	
 }
