@@ -27,34 +27,41 @@
 		
 		<plugins>
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-assembly-plugin</artifactId>
-			    <executions>
-			        <execution>
-			            <phase>package</phase>
-			            <goals>
-			                <goal>single</goal>
-			            </goals>
-			            <configuration>
-			                <archive>
-			                <manifest>
-			                    <mainClass>
-			                        cz.kojotak.arx.DesktopRunner
-			                    </mainClass>
-			                </manifest>
-			                </archive>
-			                <descriptorRefs>
-			                    <descriptorRef>jar-with-dependencies</descriptorRef>
-			                </descriptorRefs>
-					    
-							<!-- next 2 lines are from https://stackoverflow.com/questions/33673260/override-maven-assembly-plugin-output-file-name -->
-							<finalName>arx</finalName>
-    						<appendAssemblyId>false</appendAssemblyId>    
-							<outputDirectory>target/assembly</outputDirectory>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-shade-plugin</artifactId>
+		        <version>3.2.4</version>
+		        <configuration>
+	              <transformers>
+	                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+	                  <mainClass>cz.kojotak.arx.DesktopRunner</mainClass>
+	                </transformer>
+					<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+	              </transformers>
+	              
+	              <filters>
+                    <filter>
+                        <artifact>org.xerial:sqlite-jdbc</artifact>
+                        <excludes>
+                            <exclude>org/sqlite/native/Mac/**</exclude>
+                            <exclude>org/sqlite/native/Linux*/**</exclude>
+                            <exclude>org/sqlite/native/*BSD/**</exclude>
+                            <exclude>org/sqlite/native/Windows/x86/**</exclude>
+                        </excludes>
+                    </filter>
+                  </filters>
+	              
+	              <!-- not working for java 16 at the moment -->
+	              <!-- minimizeJar>true</minimizeJar-->
+	            </configuration>
+		        <executions>
+		          <execution>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>shade</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		      </plugin>
 						
 		</plugins>
 	</build>
@@ -77,7 +84,7 @@
 		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
-		    <version>3.7.15-M1</version>
+		    <version>3.36.0</version>
 		</dependency>
 	</dependencies>
 </project>
