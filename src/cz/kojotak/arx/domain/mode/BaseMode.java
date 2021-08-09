@@ -8,7 +8,7 @@ import java.util.Set;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.game.Game;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.Searchable;
 import cz.kojotak.arx.properties.Localization;

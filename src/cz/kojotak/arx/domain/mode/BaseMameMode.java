@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.domain.game.CompetitiveGame;
 
 /**
  * @date 23.1.2010

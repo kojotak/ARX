@@ -8,8 +8,8 @@ import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Category;
+import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.ModeWithStatistics;
-import cz.kojotak.arx.domain.game.CompetitiveGame;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.BestPlayerColumn;

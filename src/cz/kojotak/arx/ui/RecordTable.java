@@ -19,7 +19,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
 
 import cz.kojotak.arx.domain.Competetive;
-import cz.kojotak.arx.domain.game.Game;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.WithStatistics;

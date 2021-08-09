@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.game.Game;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.ui.renderer.PercentTableCellRenderer;
 
 /**

@@ -22,7 +22,7 @@ import org.jdesktop.swingx.JXTable;
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
-import cz.kojotak.arx.domain.game.Game;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;

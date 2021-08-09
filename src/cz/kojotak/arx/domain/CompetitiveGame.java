@@ -1,16 +1,11 @@
 /**
  * 
  */
-package cz.kojotak.arx.domain.game;
+package cz.kojotak.arx.domain;
 
 import java.util.Collections;
 import java.util.List;
 
-import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Competetive;
-import cz.kojotak.arx.domain.GameStatistics;
-import cz.kojotak.arx.domain.LegacyGameMetaData;
-import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.impl.Record;
 /**

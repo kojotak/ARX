@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 import cz.kojotak.arx.LegacyImporter;
+import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.domain.game.CompetitiveGame;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;

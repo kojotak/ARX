@@ -1,11 +1,10 @@
 /**
  * 
  */
-package cz.kojotak.arx.domain.game;
+package cz.kojotak.arx.domain;
 
 import java.util.Objects;
 
-import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
