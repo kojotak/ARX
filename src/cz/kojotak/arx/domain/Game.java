@@ -18,9 +18,9 @@ public class Game {
 	private String file;
 	private String id;
 	private Float averageRatings;
-	private LegacyPlatform platform;
+	private Platform platform;
 	
-	public Game(String id, Category category, LegacyPlatform platform, String title, String file) {
+	public Game(String id, Category category, Platform platform, String title, String file) {
 		super();
 		this.category = category;
 		this.file = file;
@@ -58,11 +58,11 @@ public class Game {
 		return id;
 	}
 	
-	public LegacyPlatform getPlatform() {
+	public Platform getPlatform() {
 		return platform;
 	}
 	
-	public void setPlatform(LegacyPlatform platform){
+	public void setPlatform(Platform platform){
 		this.platform=platform;
 	}
 

@@ -22,6 +22,7 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
@@ -50,7 +51,7 @@ public class LegacyImporter implements RunnableWithProgress{
 	private Set<Category> doubleCategories=new HashSet<Category>();
 	private Set<Category> amigaCategories=new HashSet<Category>();
 	private Set<Category> noncometetiveCategories=new HashSet<Category>();
-	private Set<LegacyPlatform> noncompetetivePlatforms=new HashSet<LegacyPlatform>();
+	private Set<Platform> noncompetetivePlatforms=new HashSet<Platform>();
 	private Date lastUpdate;
 	protected Logger log;
 
@@ -147,7 +148,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		Category cat = Category.resolve(parts[3]);
 		Float hodnoceni = parseRating(parts[4]);
 		//Integer hracu = Integer.parseInt(parts[7]);
-		LegacyPlatform platform = LegacyPlatform.resolve(parts[6]);
+		Platform platform = LegacyPlatform.resolve(parts[6]).getPlatform();
 
 		Game game = new Game(id, cat, platform, title, file);
 		game.setAverageRatings(hodnoceni);
@@ -176,7 +177,7 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
-		CompetitiveGame game = new CompetitiveGame(id, cat, LegacyPlatform.AMIGA, title, file);
+		CompetitiveGame game = new CompetitiveGame(id, cat, LegacyPlatform.AMIGA.getPlatform(), title, file);
 		game.setFirstPlayerSign(prvni);
 		gamesAmiga.put(id, game);
 		game.setRules(pravidla);
@@ -209,14 +210,14 @@ public class LegacyImporter implements RunnableWithProgress{
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			CompetitiveGame singleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME, title, file);
+			CompetitiveGame singleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.getPlatform(), title, file);
 			game = singleGame;
 			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 			singleCategories.add(cat);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			CompetitiveGame doubleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME, title, file);
+			CompetitiveGame doubleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.getPlatform(), title, file);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");
@@ -370,7 +371,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		return noncometetiveCategories;
 	}
 
-	public Set<LegacyPlatform> getNoncompetetivePlatforms() {
+	public Set<Platform> getNoncompetetivePlatforms() {
 		return noncompetetivePlatforms;
 	}
 

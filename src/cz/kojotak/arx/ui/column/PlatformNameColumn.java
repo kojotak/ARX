@@ -3,7 +3,6 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Game;
 
 /**
@@ -21,7 +20,7 @@ public class PlatformNameColumn extends BaseColumn<Game, String> {
 
 	@Override
 	public String getValue(Game source) {
-		return Application.getInstance().getLocalization().getString(source.getPlatform());
+		return source.getPlatform().name();
 	}
 
 }

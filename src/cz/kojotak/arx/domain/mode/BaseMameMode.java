@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import cz.kojotak.arx.domain.CompetitiveGame;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
@@ -29,8 +30,8 @@ public abstract class BaseMameMode extends BaseMode<CompetitiveGame> {
 	}
 
 	@Override
-	public Set<LegacyPlatform> getPlatforms() {
-		return Collections.singleton(LegacyPlatform.MAME);
+	public Set<Platform> getPlatforms() {
+		return Collections.singleton(LegacyPlatform.MAME.getPlatform());
 	}
 	
 	@Override

@@ -14,7 +14,7 @@ import cz.kojotak.arx.domain.impl.Record;
  */
 public class CompetitiveGame extends Game implements LegacyGameMetaData, WithStatistics, Competetive {
 
-	public CompetitiveGame(String id, Category category, LegacyPlatform platform, String title, String file) {
+	public CompetitiveGame(String id, Category category, Platform platform, String title, String file) {
 		super(id, category, platform, title, file);
 	}
 	

@@ -6,7 +6,6 @@ package cz.kojotak.arx.domain;
 import java.util.List;
 import java.util.Set;
 
-import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.column.BaseColumn;
 /**
  * 
@@ -49,5 +48,5 @@ public interface Mode<T extends Game> {
 	 * 
 	 * @return all platforms found in all games
 	 */
-	Set<LegacyPlatform> getPlatforms();
+	Set<Platform> getPlatforms();
 }

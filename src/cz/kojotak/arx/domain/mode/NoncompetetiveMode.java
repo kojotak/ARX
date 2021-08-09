@@ -9,6 +9,7 @@ import java.util.Set;
 
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
@@ -38,7 +39,7 @@ public class NoncompetetiveMode extends BaseMode<Game> {
 	}
 
 	private List<Game> games;
-	private Set<LegacyPlatform> platforms;
+	private Set<Platform> platforms;
 
 	public NoncompetetiveMode(LegacyImporter importer) {
 		super();
@@ -51,7 +52,7 @@ public class NoncompetetiveMode extends BaseMode<Game> {
 		return games;
 	}
 
-	public Set<LegacyPlatform> getPlatforms() {
+	public Set<Platform> getPlatforms() {
 		return platforms;
 	}
 	

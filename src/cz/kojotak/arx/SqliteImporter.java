@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.User;
 
 public class SqliteImporter {
@@ -18,12 +19,6 @@ public class SqliteImporter {
 	
 	static record Category(int id, 
 			String name) {
-	}
-	
-	static record Platform(int id, 
-			String name, 
-			String link, 
-			int modeMax) {
 	}
 	
 	static record Game(int id, 

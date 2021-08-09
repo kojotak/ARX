@@ -3,6 +3,8 @@
  */
 package cz.kojotak.arx.domain.enums;
 
+import cz.kojotak.arx.domain.Platform;
+
 /**
  * Supported game platforms
  * @date 2.6.2010
@@ -41,6 +43,10 @@ public enum LegacyPlatform {
 
 	public String getEmulator() {
 		return emulator;
+	}
+	
+	public Platform getPlatform() {
+		return new Platform(this.ordinal(), this.name(), this.getEmulator(), MAME.equals(this) ? 2 : 1);
 	}
 
 	/**

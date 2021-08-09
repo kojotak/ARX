@@ -5,9 +5,6 @@ package cz.kojotak.arx.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -21,16 +18,16 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.event.FilterModel;
-import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
-import cz.kojotak.arx.util.GenericEnumComparator;
+import cz.kojotak.arx.ui.renderer.PlatformListCellRenderer;
 
 /**
  * @date 2.6.2010
  * @author Kojotak
  */
-public class PlatfromComboBox extends JComboBox<LegacyPlatform> {
+public class PlatfromComboBox extends JComboBox<Platform> {
 
 	private static final long serialVersionUID = 4089373502308114318L;
 
@@ -38,8 +35,8 @@ public class PlatfromComboBox extends JComboBox<LegacyPlatform> {
 		super();
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(LegacyPlatform.values().length);
-		this.setRenderer(new GenericEnumListRenderer<LegacyPlatform>(null,
-				LegacyPlatform.class));
+		//this.setRenderer(new GenericEnumListRenderer<Platform>(null, Platform.class));
+		this.setRenderer(new PlatformListCellRenderer());
 		this.addActionListener(new ActionListener() {
 
 			@Override
@@ -49,8 +46,7 @@ public class PlatfromComboBox extends JComboBox<LegacyPlatform> {
 				FilterModel filterModel = new FilterModel();
 				filterModel.setPlatform(selected);
 				Application app = Application.getInstance();
-				app.getLogger(PlatfromComboBox.this).info(
-						"filtering by " + selected);
+				Application.getLogger(PlatfromComboBox.this).info("filtering by " + selected);
 				EventBus.publish(filterModel);
 			}
 
@@ -61,14 +57,11 @@ public class PlatfromComboBox extends JComboBox<LegacyPlatform> {
 
 	@EventSubscriber
 	public void updateListModel(Mode<?> mode) {
-		Application app = Application.getInstance();
-		Set<LegacyPlatform> platforms = mode.getPlatforms();
-		Vector<LegacyPlatform> v = new Vector<LegacyPlatform>();
-		List<LegacyPlatform> sorted = new ArrayList<LegacyPlatform>(platforms);
-		Collections.sort(sorted, new GenericEnumComparator(app.getLanguage()));
-		v.add(LegacyPlatform.ALL);
-		v.addAll(sorted);
-		ComboBoxModel<LegacyPlatform> model = new DefaultComboBoxModel<LegacyPlatform>(v);
+		Set<Platform> platforms = mode.getPlatforms();
+		Vector<Platform> v = new Vector<Platform>();
+		v.add(LegacyPlatform.ALL.getPlatform());
+		v.addAll(platforms);
+		ComboBoxModel<Platform> model = new DefaultComboBoxModel<Platform>(v);
 		this.setModel(model);
 	}
 

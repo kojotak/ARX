@@ -6,30 +6,30 @@ package cz.kojotak.arx.ui.column;
 import javax.swing.table.TableCellRenderer;
 
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.ui.renderer.EnumIconTableCellRenderer;
+import cz.kojotak.arx.domain.Platform;
+import cz.kojotak.arx.ui.renderer.PlatformTableCellRenderer;
 
 /**
  * @date 3.6.2010
  * @author Kojotak 
  */
-public class PlatformIconColumn extends BaseColumn<Game, LegacyPlatform> {
+public class PlatformIconColumn extends BaseColumn<Game, Platform> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Class<LegacyPlatform> getType() {
-		return LegacyPlatform.class;
+	public Class<Platform> getType() {
+		return Platform.class;
 	}
 
 	@Override
-	public LegacyPlatform getValue(Game source) {
+	public Platform getValue(Game source) {
 		return source.getPlatform();
 	}
 
 	@Override
 	public TableCellRenderer getCellRenderer() {
-		return new EnumIconTableCellRenderer<LegacyPlatform>();
+		return new PlatformTableCellRenderer();
 	}
 	
 }
