@@ -9,7 +9,7 @@ import java.util.List;
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.ModeWithStatistics;
-import cz.kojotak.arx.domain.game.MameGame;
+import cz.kojotak.arx.domain.game.CompetitiveGame;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.BestPlayerColumn;
@@ -48,8 +48,8 @@ public class ArcadeMode extends BaseMameMode implements ModeWithStatistics {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BaseColumn<MameGame,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<MameGame,?>>();
+	public List<BaseColumn<CompetitiveGame,?>> getColumns() {
+		List list = new ArrayList<BaseColumn<CompetitiveGame,?>>();
 		list.add(new StatisticsPositionWithIconColumn());
 		list.add(new PlayerCountColumn());
 		list.add(new RelativePositionColumn());

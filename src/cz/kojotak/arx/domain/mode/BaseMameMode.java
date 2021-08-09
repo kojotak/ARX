@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Set;
 
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.domain.game.MameGame;
+import cz.kojotak.arx.domain.game.CompetitiveGame;
 
 /**
  * @date 23.1.2010
  * @author Kojotak 
  */
-public abstract class BaseMameMode extends BaseMode<MameGame> {
+public abstract class BaseMameMode extends BaseMode<CompetitiveGame> {
 	
-	protected List<MameGame> games;
+	protected List<CompetitiveGame> games;
 
-	public BaseMameMode(List<MameGame> games) {
+	public BaseMameMode(List<CompetitiveGame> games) {
 		super();
 		this.games = games;
 	}
 
 	@Override
-	public List<MameGame> getGames() {
+	public List<CompetitiveGame> getGames() {
 		return games;
 	}
 
@@ -34,7 +34,7 @@ public abstract class BaseMameMode extends BaseMode<MameGame> {
 	}
 	
 	@Override
-	public Class<MameGame> getGameType() {
-		return MameGame.class;
+	public Class<CompetitiveGame> getGameType() {
+		return CompetitiveGame.class;
 	}
 }

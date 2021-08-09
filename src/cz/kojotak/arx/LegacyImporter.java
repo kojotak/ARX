@@ -25,7 +25,7 @@ import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.game.CompetitiveGame;
-import cz.kojotak.arx.domain.game.MameGame;
+import cz.kojotak.arx.domain.game.CompetitiveGame;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
@@ -36,8 +36,8 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
  * @author Kojotak
  */
 public class LegacyImporter implements RunnableWithProgress{	
-	private Map<String, MameGame> gamesSingle;
-	private Map<String, MameGame> gamesDouble;
+	private Map<String, CompetitiveGame> gamesSingle;
+	private Map<String, CompetitiveGame> gamesDouble;
 	private Map<String, CompetitiveGame> gamesAmiga;
 	private Map<String, Game> gamesNoncompetetive;
 	
@@ -114,11 +114,11 @@ public class LegacyImporter implements RunnableWithProgress{
 		Record record = new Record();
 		setRecord(record, parts);
 		if ("mame".equals(emulator)) {
-			MameGame game = gamesSingle.get(id);
+			CompetitiveGame game = gamesSingle.get(id);
 			addRecord(game, record);
 			singleRecords++;
 		} else if ("mame2".equals(emulator)) {
-			MameGame game = gamesDouble.get(id);
+			CompetitiveGame game = gamesDouble.get(id);
 			addRecord(game, record);
 			doubleRecords++;
 		} else if ("amiga".equals(emulator)) {
@@ -158,7 +158,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		noncometetiveCategories.add(cat);
 	}
 
-	private void importCompetitiveGame(String[] parts) {
+	private void importAmigaGame(String[] parts) {
 		// (id,nazev,soubor,kategorie_id,pravidla,hrajesena,hodnoceni,prvni_zkratka,pocet_hracu,freeware,md5_disk1,md5_cfg,md5_start,emulator)
 		String id = parts[0];
 		String title = parts[1];
@@ -186,7 +186,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		amigaCategories.add(cat);
 	}
 
-	private void importMameGame(String[] parts) {
+	private void importCompetitiveGame(String[] parts) {
 		// (id,nazev,soubor,kategorie_id,pravidla,hrajesena,hodnoceni,prvni_zkratka,pocet_hracu,emulator)
 		if (parts.length < 10) {
 			// FIXME log
@@ -206,18 +206,18 @@ public class LegacyImporter implements RunnableWithProgress{
 		Integer hracu = Integer.parseInt(hracuStr);
 		String emulator = parts[9];
 
-		MameGame game = null;
+		CompetitiveGame game = null;
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			MameGame singleGame = new MameGame(id, cat, title, file);
+			CompetitiveGame singleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME, title, file);
 			game = singleGame;
 			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 			singleCategories.add(cat);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			MameGame doubleGame = new MameGame(id, cat, title, file);
+			CompetitiveGame doubleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME, title, file);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");
@@ -233,7 +233,6 @@ public class LegacyImporter implements RunnableWithProgress{
 		}
 
 		game.setRules(pravidla);
-		game.setCoins(hrajeSe);
 		game.setPlayerCount(hracu);
 		game.setAverageRatings(hodnoceni);
 	}
@@ -242,8 +241,8 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	public LegacyImporter(Supplier<InputStream> in){
 		log = Application.getLogger(this);
-		gamesSingle = new HashMap<String, MameGame>(2000);
-		gamesDouble = new HashMap<String, MameGame>(200);
+		gamesSingle = new HashMap<String, CompetitiveGame>(2000);
+		gamesDouble = new HashMap<String, CompetitiveGame>(200);
 		gamesAmiga = new HashMap<String, CompetitiveGame>(100);
 		gamesNoncompetetive = new HashMap<String, Game>(60000);
 
@@ -274,12 +273,12 @@ public class LegacyImporter implements RunnableWithProgress{
 		return list;
 	}
 
-	public List<MameGame> getMameSingleGames() {
-		return prepareGames(this.gamesSingle,MameGame.class);
+	public List<CompetitiveGame> getMameSingleGames() {
+		return prepareGames(this.gamesSingle,CompetitiveGame.class);
 	}
 
-	public List<MameGame> getMameDoubleGames() {
-		return prepareGames(this.gamesDouble,MameGame.class);
+	public List<CompetitiveGame> getMameDoubleGames() {
+		return prepareGames(this.gamesDouble,CompetitiveGame.class);
 	}
 
 	public List<CompetitiveGame> getCompetitiveGames() {
@@ -314,7 +313,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			
 		try {
 			String line = null;
-			int mameGames = 0, CompetitiveGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
+			int competitiveGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
 			while ((line = reader.readLine()) != null) {
 				
 				readLines++;
@@ -339,11 +338,11 @@ public class LegacyImporter implements RunnableWithProgress{
 				String data = line.substring(start + 2, end);
 				String[] parts = data.split("','");
 				if (line.startsWith("INSERT INTO hry_mame")) {
-					importMameGame(parts);
-					mameGames++;// both single and double mode
-				} else if (line.startsWith("INSERT INTO hry_amiga")) {
 					importCompetitiveGame(parts);
-					CompetitiveGames++;
+					competitiveGames++;// both single and double mode
+				} else if (line.startsWith("INSERT INTO hry_amiga")) {
+					importAmigaGame(parts);
+					competitiveGames++;
 				} else if (line.startsWith("INSERT INTO hry")) {
 					importNoncompetitiveGame(parts);
 					noncompetitiveGames++;
@@ -352,8 +351,8 @@ public class LegacyImporter implements RunnableWithProgress{
 					records++;
 				} 
 			}
-			log.info("done..., mame games=" + mameGames
-					+ ", amiga games=" + CompetitiveGames + ", noncompetitive games="
+			log.info("done..., mame games=" + competitiveGames
+					+ ", amiga games=" + competitiveGames + ", noncompetitive games="
 					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
 		} catch (IOException x) {
 			x.printStackTrace();
