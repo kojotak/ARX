@@ -8,7 +8,6 @@ import javax.swing.Icon;
 import org.jdesktop.swingx.table.TableColumnExt;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.common.Valuable;
 import cz.kojotak.arx.properties.Localization;
 
 /**
@@ -17,7 +16,7 @@ import cz.kojotak.arx.properties.Localization;
  * @date 25.3.2010
  * @author Kojotak
  */
-public abstract class BaseColumn<T, V> extends TableColumnExt implements Valuable<T, V> {
+public abstract class BaseColumn<T, V> extends TableColumnExt {
 
 	private static final long serialVersionUID = 1L;
 	private String colName = null;	
@@ -63,4 +62,13 @@ public abstract class BaseColumn<T, V> extends TableColumnExt implements Valuabl
 		return colName;
 	}
 	
+	/**
+	 * @return value from source
+	 */
+	public abstract V getValue(T source);
+	
+	/**
+	 * @return class type of {@link #getValue(Object)}
+	 */
+	public abstract Class<V> getType();
 }
