@@ -3,6 +3,9 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -12,8 +15,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bushe.swing.event.EventBus;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -27,7 +28,7 @@ import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.domain.impl.SingleGameStatistics;
+import cz.kojotak.arx.domain.impl.GameStatistics;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.event.OpponentChosen;
@@ -173,7 +174,7 @@ public class GameTable extends JXTable {
 							"This model is not suitable for non competetive game");
 				}
 				Competetive cmp = Competetive.class.cast(game);
-				SingleGameStatistics stats = new SingleGameStatistics(cmp, user, opponent);
+				GameStatistics stats = new GameStatistics(cmp, user, opponent);
 				if (!(game instanceof WithStatistics)) {
 					throw new IllegalStateException(
 							"This model is not suitable for games without statistics");

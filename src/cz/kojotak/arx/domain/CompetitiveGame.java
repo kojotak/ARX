@@ -6,7 +6,7 @@ package cz.kojotak.arx.domain;
 import java.util.Collections;
 import java.util.List;
 
-import cz.kojotak.arx.domain.enums.LegacyPlatform;
+import cz.kojotak.arx.domain.impl.GameStatistics;
 import cz.kojotak.arx.domain.impl.Record;
 /**
  * @date 25.1.2010
