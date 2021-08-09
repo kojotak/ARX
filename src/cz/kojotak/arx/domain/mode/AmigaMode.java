@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.enums.Platform;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.game.AmigaGame;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
@@ -49,8 +49,8 @@ public class AmigaMode extends BaseMode<AmigaGame> {
 	}
 
 	@Override
-	public Set<Platform> getPlatforms() {
-		return Collections.singleton(Platform.AMIGA);
+	public Set<LegacyPlatform> getPlatforms() {
+		return Collections.singleton(LegacyPlatform.AMIGA);
 	}
 
 }

@@ -7,6 +7,7 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.LegacyGameMetaData;
 import cz.kojotak.arx.domain.WithStatistics;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
  * @date 25.1.2010
@@ -14,8 +15,8 @@ import cz.kojotak.arx.domain.WithStatistics;
  */
 public abstract class LegacyCompetitiveGame extends SimpleGame implements LegacyGameMetaData,WithStatistics {
 
-	public LegacyCompetitiveGame(String id,Category category, String title, String file) {
-		super(id,category, title, file);
+	public LegacyCompetitiveGame(String id, Category category, LegacyPlatform platform, String title, String file) {
+		super(id, category, platform, title, file);
 	}
 	
 	private String rules;

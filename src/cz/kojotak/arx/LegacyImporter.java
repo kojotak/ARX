@@ -23,10 +23,10 @@ import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
-import cz.kojotak.arx.domain.enums.Platform;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.game.AmigaGame;
 import cz.kojotak.arx.domain.game.MameGame;
-import cz.kojotak.arx.domain.game.NoncompetitiveGame;
+import cz.kojotak.arx.domain.game.SimpleGame;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
@@ -40,7 +40,7 @@ public class LegacyImporter implements RunnableWithProgress{
 	private Map<String, MameGame> gamesSingle;
 	private Map<String, MameGame> gamesDouble;
 	private Map<String, AmigaGame> gamesAmiga;
-	private Map<String, NoncompetitiveGame> gamesNoncompetetive;
+	private Map<String, SimpleGame> gamesNoncompetetive;
 	
 	private Set<User> singlePlayers = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
@@ -52,7 +52,7 @@ public class LegacyImporter implements RunnableWithProgress{
 	private Set<Category> doubleCategories=new HashSet<Category>();
 	private Set<Category> amigaCategories=new HashSet<Category>();
 	private Set<Category> noncometetiveCategories=new HashSet<Category>();
-	private Set<Platform> noncompetetivePlatforms=new HashSet<Platform>();
+	private Set<LegacyPlatform> noncompetetivePlatforms=new HashSet<LegacyPlatform>();
 	private Date lastUpdate;
 	protected Logger log;
 
@@ -149,12 +149,11 @@ public class LegacyImporter implements RunnableWithProgress{
 		Category cat = Category.resolve(parts[3]);
 		Float hodnoceni = parseRating(parts[4]);
 		//Integer hracu = Integer.parseInt(parts[7]);
-		String emulator = parts[6];
+		LegacyPlatform platform = LegacyPlatform.resolve(parts[6]);
 
-		NoncompetitiveGame game = new NoncompetitiveGame(id, cat, title, file);
+		SimpleGame game = new SimpleGame(id, cat, platform, title, file);
 		game.setAverageRatings(hodnoceni);
 		//game.setPlayerCount(hracu);
-		game.setPlatform(Platform.resolve(emulator));
 		this.gamesNoncompetetive.put(id, game);
 		noncompetetivePlatforms.add(game.getPlatform());
 		noncometetiveCategories.add(cat);
@@ -251,7 +250,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		gamesSingle = new HashMap<String, MameGame>(2000);
 		gamesDouble = new HashMap<String, MameGame>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
-		gamesNoncompetetive = new HashMap<String, NoncompetitiveGame>(60000);
+		gamesNoncompetetive = new HashMap<String, SimpleGame>(60000);
 
 		this.in=in;
 	}
@@ -292,8 +291,8 @@ public class LegacyImporter implements RunnableWithProgress{
 		return prepareGames(this.gamesAmiga,AmigaGame.class);
 	}
 
-	public List<NoncompetitiveGame> getNoncompetitiveGames() {
-		return prepareGames(this.gamesNoncompetetive,NoncompetitiveGame.class);
+	public List<SimpleGame> getNoncompetitiveGames() {
+		return prepareGames(this.gamesNoncompetetive, SimpleGame.class);
 	}
 
 	
@@ -378,7 +377,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		return noncometetiveCategories;
 	}
 
-	public Set<Platform> getNoncompetetivePlatforms() {
+	public Set<LegacyPlatform> getNoncompetetivePlatforms() {
 		return noncompetetivePlatforms;
 	}
 

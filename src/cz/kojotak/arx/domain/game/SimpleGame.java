@@ -7,25 +7,28 @@ import java.util.Objects;
 
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
  * @date 25.1.2010
  * @author Kojotak 
  */
-public abstract class SimpleGame implements Game {
+public class SimpleGame implements Game {
 
 	private Category category;
 	private String title;
 	private String file;
 	private String id;
 	private Float averageRatings;
+	private LegacyPlatform platform;
 	
-	public SimpleGame(String id,Category category, String title, String file) {
+	public SimpleGame(String id, Category category, LegacyPlatform platform, String title, String file) {
 		super();
 		this.category = category;
 		this.file = file;
 		this.title = title;
 		this.id = id;
+		this.platform = platform;
 	}
 
 	@Override
@@ -55,6 +58,15 @@ public abstract class SimpleGame implements Game {
 
 	public String getId() {
 		return id;
+	}
+	
+	@Override
+	public LegacyPlatform getPlatform() {
+		return platform;
+	}
+	
+	public void setPlatform(LegacyPlatform platform){
+		this.platform=platform;
 	}
 
 	@Override

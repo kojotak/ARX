@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import cz.kojotak.arx.domain.enums.Platform;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.game.MameGame;
 
 /**
@@ -29,8 +29,8 @@ public abstract class BaseMameMode extends BaseMode<MameGame> {
 	}
 
 	@Override
-	public Set<Platform> getPlatforms() {
-		return Collections.singleton(Platform.MAME);
+	public Set<LegacyPlatform> getPlatforms() {
+		return Collections.singleton(LegacyPlatform.MAME);
 	}
 	
 	@Override

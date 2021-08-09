@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.domain;
 
-import cz.kojotak.arx.domain.enums.Platform;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
  * Minimal game contract
@@ -30,7 +30,7 @@ public interface Game {
 	 * 
 	 * @return game's platform
 	 */
-	Platform getPlatform();
+	LegacyPlatform getPlatform();
 		
 	String getId();
 }

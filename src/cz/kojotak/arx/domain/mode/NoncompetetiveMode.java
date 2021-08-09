@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.enums.Platform;
-import cz.kojotak.arx.domain.game.NoncompetitiveGame;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
+import cz.kojotak.arx.domain.game.SimpleGame;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;
@@ -20,12 +20,12 @@ import cz.kojotak.arx.ui.column.PlatformNameColumn;
  * @date 25.1.2010
  * @author Kojotak 
  */
-public class NoncompetetiveMode extends BaseMode<NoncompetitiveGame> {
+public class NoncompetetiveMode extends BaseMode<SimpleGame> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<? extends BaseColumn<NoncompetitiveGame,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<NoncompetitiveGame,?>>();
+	public List<? extends BaseColumn<SimpleGame,?>> getColumns() {
+		List list = new ArrayList<BaseColumn<SimpleGame,?>>();
 		list.add(new PlatformIconColumn());
 		list.add(new PlatformNameColumn());
 		list.add(new GameNameColumn());
@@ -34,12 +34,12 @@ public class NoncompetetiveMode extends BaseMode<NoncompetitiveGame> {
 	}
 
 	@Override
-	public Class<NoncompetitiveGame> getGameType() {
-		return NoncompetitiveGame.class;
+	public Class<SimpleGame> getGameType() {
+		return SimpleGame.class;
 	}
 
-	private List<NoncompetitiveGame> games;
-	private Set<Platform> platforms;
+	private List<SimpleGame> games;
+	private Set<LegacyPlatform> platforms;
 
 	public NoncompetetiveMode(LegacyImporter importer) {
 		super();
@@ -48,11 +48,11 @@ public class NoncompetetiveMode extends BaseMode<NoncompetitiveGame> {
 		this.platforms=importer.getNoncompetetivePlatforms();
 	}
 
-	public List<NoncompetitiveGame> getGames() {
+	public List<SimpleGame> getGames() {
 		return games;
 	}
 
-	public Set<Platform> getPlatforms() {
+	public Set<LegacyPlatform> getPlatforms() {
 		return platforms;
 	}
 	

@@ -11,7 +11,7 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.WithStatistics;
-import cz.kojotak.arx.domain.enums.Platform;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
  * @date 25.1.2010
@@ -25,13 +25,8 @@ public class AmigaGame extends LegacyCompetitiveGame implements Competetive,Amig
 	private String md5Start;
 	
 	public AmigaGame(String id,Category category, String title, String file) {
-		super(id,category, title, file);
+		super(id,category, LegacyPlatform.AMIGA, title, file);
 		records = Collections.emptyList();
-	}
-
-	@Override
-	public Platform getPlatform() {
-		return Platform.AMIGA;
 	}
 
 	public List<Record> getRecords() {

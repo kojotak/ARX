@@ -11,7 +11,7 @@ import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.LegacyGameMetaData;
 import cz.kojotak.arx.domain.impl.Record;
-import cz.kojotak.arx.domain.enums.Platform;
+import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
  * @date 23.1.2010
@@ -23,13 +23,8 @@ public class MameGame extends LegacyCompetitiveGame implements Game, Competetive
 	private Integer coins;
 		
 	public MameGame(String id,Category category, String title, String file) {
-		super(id,category,title,file);
+		super(id, category, LegacyPlatform.MAME, title, file);
 		this.records = Collections.emptyList();
-	}
-
-	@Override
-	public Platform getPlatform() {
-		return Platform.MAME;
 	}
 
 	public List<Record> getRecords() {
