@@ -22,7 +22,7 @@ import org.jdesktop.swingx.JXTable;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Competetive;
+import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.User;
@@ -155,25 +155,21 @@ public class GameTable extends JXTable {
 	 * helper method to set new table model
 	 */
 	private void recalculate() {
-		final Application app = Application.getInstance();
 		Application.getLogger(this).fine(
 				"setting new game table model for " + user + " and " + mode);
 
-		@SuppressWarnings("unchecked")
 		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
 		Application.getLogger(this).fine(
 				"new model has rows: " + model.getRowCount());
 
-		if (Competetive.class.isAssignableFrom(mode.getGameType())) {
-			Application.getLogger(this).fine(
-					"calculating statistics for user " + user + " in mode "
-							+ mode);
+		if (CompetitiveGame.class.isAssignableFrom(mode.getGameType())) {
+			Application.getLogger(this).fine("calculating statistics for user " + user + " in mode "+ mode);
 			for (Game game : mode.getGames()) {
-				if (!(game instanceof Competetive)) {
+				if (!(game instanceof CompetitiveGame)) {
 					throw new IllegalStateException(
 							"This model is not suitable for non competetive game");
 				}
-				Competetive cmp = Competetive.class.cast(game);
+				CompetitiveGame cmp = CompetitiveGame.class.cast(game);
 				GameStatistics stats = new GameStatistics(cmp, user, opponent);
 				if (!(game instanceof WithStatistics)) {
 					throw new IllegalStateException(

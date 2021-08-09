@@ -5,7 +5,7 @@ package cz.kojotak.arx.domain.impl;
 
 import java.util.List;
 
-import cz.kojotak.arx.domain.Competetive;
+import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 
@@ -32,7 +32,7 @@ public class GameStatistics {
 	User oponent=null;
 	Integer points=null;
 		
-	public GameStatistics(Competetive game,User user,User oponent) {
+	public GameStatistics(CompetitiveGame game,User user,User oponent) {
 		super();
 		List<Record> records = game.getRecords();
 		this.oponent=oponent;

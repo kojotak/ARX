@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Competetive;
 import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
@@ -92,7 +91,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		record.setFinished(dohrano);
 	}
 
-	private void addRecord(Competetive game, Record record) {
+	private void addRecord(CompetitiveGame game, Record record) {
 		if (game == null) {
 			log.fine("No game found for record " + record);
 			return;
@@ -259,11 +258,11 @@ public class LegacyImporter implements RunnableWithProgress{
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
 		log.fine("positioning "+clz.getSimpleName()+" records ...");
 		for(T t:list){
-			if(!(t instanceof Competetive)){
+			if(!(t instanceof CompetitiveGame)){
 				log.fine("skiping sorting records in non competetive game");
 				break;
 			}
-			Competetive competetive = Competetive.class.cast(t);
+			CompetitiveGame competetive = CompetitiveGame.class.cast(t);
 			Collections.sort(competetive.getRecords(),ScoreBasedRecordComparator.INSTANCE);
 			for(int i=0;i<competetive.getRecords().size();i++){
 				Record r = competetive.getRecords().get(i);
