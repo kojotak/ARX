@@ -49,8 +49,7 @@ public class PreferencesTaskPane extends JXTaskPane {
 				String text = opponentField.getText();
 				if(text==null || text.length()==0 || text.length()==3){
 					//send update only for full or empty nick name
-					OpponentChosen event = new OpponentChosen();
-					//event.setOpponent(text);//TODO fixme
+					OpponentChosen event = new OpponentChosen(null); //TODO fixme
 					EventBus.publish(event);					
 				}
 			}

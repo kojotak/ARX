@@ -138,8 +138,8 @@ public class GameTable extends JXTable {
 	}
 	
 	@EventSubscriber
-	public void updateOpponent(OpponentChosen opponent){
-		this.opponent = opponent.getOpponent();
+	public void updateOpponent(OpponentChosen event){
+		this.opponent = event.opponent();
 		logger.info("setting new opponent: "+this.opponent);
 		recalculate();
 	}
