@@ -32,7 +32,7 @@ public class GameStatistics {
 	User oponent=null;
 	Integer points=null;
 		
-	public GameStatistics(CompetitiveGame game,User user,User oponent) {
+	public GameStatistics(CompetitiveGame game, User user, User oponent) {
 		super();
 		List<Record> records = game.getRecords();
 		this.oponent=oponent;
