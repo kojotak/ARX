@@ -5,7 +5,7 @@ package cz.kojotak.arx.util;
 
 import java.util.Comparator;
 
-import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.game.Game;
 
 /**
  * @date 24.1.2010

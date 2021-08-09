@@ -18,7 +18,7 @@ import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXImagePanel.Style;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.game.Game;
 import cz.kojotak.arx.domain.enums.ImageDetail;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 

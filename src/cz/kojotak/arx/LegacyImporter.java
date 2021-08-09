@@ -20,13 +20,12 @@ import java.util.logging.Logger;
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Competetive;
-import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.game.Game;
 import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.game.AmigaGame;
 import cz.kojotak.arx.domain.game.MameGame;
-import cz.kojotak.arx.domain.game.SimpleGame;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
@@ -40,7 +39,7 @@ public class LegacyImporter implements RunnableWithProgress{
 	private Map<String, MameGame> gamesSingle;
 	private Map<String, MameGame> gamesDouble;
 	private Map<String, AmigaGame> gamesAmiga;
-	private Map<String, SimpleGame> gamesNoncompetetive;
+	private Map<String, Game> gamesNoncompetetive;
 	
 	private Set<User> singlePlayers = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
@@ -151,7 +150,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		//Integer hracu = Integer.parseInt(parts[7]);
 		LegacyPlatform platform = LegacyPlatform.resolve(parts[6]);
 
-		SimpleGame game = new SimpleGame(id, cat, platform, title, file);
+		Game game = new Game(id, cat, platform, title, file);
 		game.setAverageRatings(hodnoceni);
 		//game.setPlayerCount(hracu);
 		this.gamesNoncompetetive.put(id, game);
@@ -250,7 +249,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		gamesSingle = new HashMap<String, MameGame>(2000);
 		gamesDouble = new HashMap<String, MameGame>(200);
 		gamesAmiga = new HashMap<String, AmigaGame>(100);
-		gamesNoncompetetive = new HashMap<String, SimpleGame>(60000);
+		gamesNoncompetetive = new HashMap<String, Game>(60000);
 
 		this.in=in;
 	}
@@ -291,8 +290,8 @@ public class LegacyImporter implements RunnableWithProgress{
 		return prepareGames(this.gamesAmiga,AmigaGame.class);
 	}
 
-	public List<SimpleGame> getNoncompetitiveGames() {
-		return prepareGames(this.gamesNoncompetetive, SimpleGame.class);
+	public List<Game> getNoncompetitiveGames() {
+		return prepareGames(this.gamesNoncompetetive, Game.class);
 	}
 
 	

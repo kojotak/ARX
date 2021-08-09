@@ -3,14 +3,14 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.game.SimpleGame;
+import cz.kojotak.arx.domain.game.Game;
 import cz.kojotak.arx.ui.renderer.PercentTableCellRenderer;
 
 /**
  * @date 7.2.2010
  * @author Kojotak
  */
-public class AverageRatingsColumn extends BaseColumn<SimpleGame,Float> {
+public class AverageRatingsColumn extends BaseColumn<Game,Float> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -20,7 +20,7 @@ public class AverageRatingsColumn extends BaseColumn<SimpleGame,Float> {
 	}
 
 	@Override
-	public Float getValue(SimpleGame game) {
+	public Float getValue(Game game) {
 		return game.getAverageRatings();
 	}
 	

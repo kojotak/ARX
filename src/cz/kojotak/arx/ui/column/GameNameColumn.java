@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.game.Game;
 
 /**
  * @date 25.3.2010

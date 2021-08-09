@@ -7,7 +7,7 @@ import cz.kojotak.arx.domain.AmigaMetaData;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-
+import cz.kojotak.arx.domain.game.Game;
 /**
  * @date 25.1.2010
  * @author Kojotak 

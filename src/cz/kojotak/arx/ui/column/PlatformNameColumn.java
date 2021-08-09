@@ -4,7 +4,7 @@
 package cz.kojotak.arx.ui.column;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.game.Game;
 
 /**
  * @date 3.6.2010

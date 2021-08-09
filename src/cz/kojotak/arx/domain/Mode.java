@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
+import cz.kojotak.arx.domain.game.Game;
 import cz.kojotak.arx.ui.column.BaseColumn;
 /**
  * 

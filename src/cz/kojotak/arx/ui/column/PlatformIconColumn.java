@@ -5,7 +5,7 @@ package cz.kojotak.arx.ui.column;
 
 import javax.swing.table.TableCellRenderer;
 
-import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.game.Game;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.renderer.EnumIconTableCellRenderer;
 

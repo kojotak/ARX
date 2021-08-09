@@ -4,15 +4,13 @@
 package cz.kojotak.arx.domain.game;
 
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.LegacyGameMetaData;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-
 /**
  * @date 23.1.2010
  * @author Kojotak 
  */
-public class MameGame extends CompetitiveGame implements Game, LegacyGameMetaData {
+public class MameGame extends CompetitiveGame implements LegacyGameMetaData {
 	
 	private Integer coins;
 		
