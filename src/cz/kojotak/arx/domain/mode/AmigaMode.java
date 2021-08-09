@@ -51,7 +51,7 @@ public class AmigaMode extends BaseMode<CompetitiveGame> {
 
 	@Override
 	public Set<Platform> getPlatforms() {
-		return Collections.singleton(LegacyPlatform.AMIGA.getPlatform());
+		return Collections.singleton(LegacyPlatform.AMIGA.toPlatform());
 	}
 
 }

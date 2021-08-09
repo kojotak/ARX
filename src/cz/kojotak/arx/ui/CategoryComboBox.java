@@ -48,9 +48,7 @@ public class CategoryComboBox extends JComboBox<Category> {
 				Category selected = (Category) box.getSelectedItem();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setCategory(selected);
-				Application app = Application.getInstance();
-				app.getLogger(CategoryComboBox.this).info(
-						"filtering by " + selected);
+				Application.getLogger(CategoryComboBox.this).info("filtering by " + selected);
 				EventBus.publish(filterModel);
 			}
 

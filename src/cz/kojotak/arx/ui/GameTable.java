@@ -47,7 +47,7 @@ public class GameTable extends JXTable {
 	public GameTable(GenericTableModel<?> dm, TableColumnModel cm) {
 		super(dm, cm);
 		AnnotationProcessor.process(this);
-		logger =Application.getInstance().getLogger(this);
+		logger =Application.getLogger(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.getSelectionModel().setSelectionInterval(0, 0);

@@ -45,7 +45,7 @@ public enum LegacyPlatform {
 		return emulator;
 	}
 	
-	public Platform getPlatform() {
+	public Platform toPlatform() {
 		return new Platform(this.ordinal(), this.name(), this.getEmulator(), MAME.equals(this) ? 2 : 1);
 	}
 

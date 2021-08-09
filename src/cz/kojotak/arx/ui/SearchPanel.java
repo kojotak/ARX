@@ -40,8 +40,7 @@ public class SearchPanel extends JPanel {
 				String str = SearchPanel.this.input.getText();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setSearch(str);
-				Application app = Application.getInstance();
-				app.getLogger(this).info("filtering by search string: " + str);
+				Application.getLogger(this).info("filtering by search string: " + str);
 				EventBus.publish(filterModel);
 			}
 

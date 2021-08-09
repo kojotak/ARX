@@ -12,7 +12,6 @@ import javax.swing.ListCellRenderer;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.User;
-import cz.kojotak.arx.ui.PlayerComboBox;
 import cz.kojotak.arx.ui.icon.EmptyIcon;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 

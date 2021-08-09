@@ -39,8 +39,7 @@ public class PlayerComboBox extends JComboBox<User> {
 				User usrName = (User) cb.getSelectedItem();
 				Application.getInstance().setCurrentUser(usrName);
 				EventBus.publish(Application.getInstance().getCurrentUser());
-				Application.getInstance().getLogger(this).info(
-						"selected user " + usrName);
+				Application.getLogger(this).info("selected user " + usrName);
 
 			}
 

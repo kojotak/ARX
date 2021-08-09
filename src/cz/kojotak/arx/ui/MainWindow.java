@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

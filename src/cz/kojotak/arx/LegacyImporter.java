@@ -147,7 +147,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		Category cat = Category.resolve(parts[3]);
 		Float hodnoceni = parseRating(parts[4]);
 		//Integer hracu = Integer.parseInt(parts[7]);
-		Platform platform = LegacyPlatform.resolve(parts[6]).getPlatform();
+		Platform platform = LegacyPlatform.resolve(parts[6]).toPlatform();
 
 		Game game = new Game(id, cat, platform, title, file);
 		game.setAverageRatings(hodnoceni);
@@ -176,7 +176,7 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
-		CompetitiveGame game = new CompetitiveGame(id, cat, LegacyPlatform.AMIGA.getPlatform(), title, file);
+		CompetitiveGame game = new CompetitiveGame(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file);
 		game.setFirstPlayerSign(prvni);
 		gamesAmiga.put(id, game);
 		game.setRules(pravidla);
@@ -196,7 +196,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		String file = parts[2];
 		Category cat = Category.resolve(parts[3]);
 		String pravidla = parts[4];
-		Integer hrajeSe = Integer.parseInt(parts[5]);
+//		Integer hrajeSe = Integer.parseInt(parts[5]);
 		Float hodnoceni = parseRating(parts[6]);
 		String prvniStr = parts[7];
 		String prvni = (prvniStr != null && !prvniStr.contains("---")) ? prvniStr
@@ -209,14 +209,14 @@ public class LegacyImporter implements RunnableWithProgress{
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			CompetitiveGame singleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.getPlatform(), title, file);
+			CompetitiveGame singleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
 			game = singleGame;
 			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 			singleCategories.add(cat);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			CompetitiveGame doubleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.getPlatform(), title, file);
+			CompetitiveGame doubleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");

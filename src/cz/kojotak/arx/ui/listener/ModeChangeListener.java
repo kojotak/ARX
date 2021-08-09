@@ -33,7 +33,7 @@ public class ModeChangeListener implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		JComboBox cb = (JComboBox) event.getSource();
+		JComboBox<String> cb = (JComboBox<String>) event.getSource();
 		String name = (String) cb.getSelectedItem();
 		Application app = Application.getInstance();
 		Mode<?> mode = app.resolveMode(name);
@@ -45,7 +45,7 @@ public class ModeChangeListener implements ActionListener {
 		filter.arrangeFilter();
 		//window.switchRecordPanel();
 		EventBus.publish(mode);
-		Application.getInstance().getLogger(this).info("selected mode " + name);
+		Application.getLogger(this).info("selected mode " + name);
 	}
 
 }

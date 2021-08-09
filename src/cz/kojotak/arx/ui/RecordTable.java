@@ -18,7 +18,7 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
 
-import cz.kojotak.arx.domain.Competetive;
+import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.WithStatistics;
@@ -94,10 +94,10 @@ public class RecordTable extends JXTable {
 	 */
 	@EventSubscriber
 	public void onGameChange(Game event){
-		if(!(event instanceof Competetive)){
+		if(!(event instanceof CompetitiveGame)){
 			return;
 		}
-		Competetive game = Competetive.class.cast(event); 
+		CompetitiveGame game = CompetitiveGame.class.cast(event); 
 		List<?> records = game!=null?game.getRecords():Collections.emptyList();
 		@SuppressWarnings("unchecked")GenericTableModel<?> tableModel = new GenericTableModel(records,cols);
 		this.setModel(tableModel);

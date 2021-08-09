@@ -31,7 +31,7 @@ public abstract class BaseMameMode extends BaseMode<CompetitiveGame> {
 
 	@Override
 	public Set<Platform> getPlatforms() {
-		return Collections.singleton(LegacyPlatform.MAME.getPlatform());
+		return Collections.singleton(LegacyPlatform.MAME.toPlatform());
 	}
 	
 	@Override

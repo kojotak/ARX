@@ -41,7 +41,7 @@ public class AvailibilityComboBox extends JComboBox<Availibility> {
 				Availibility av = (Availibility) box.getSelectedItem();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setAvailibility(av);
-				Application.getInstance().getLogger(AvailibilityComboBox.this)
+				Application.getLogger(AvailibilityComboBox.this)
 						.info("availibility set to " + av);
 				EventBus.publish(filterModel);				
 			}

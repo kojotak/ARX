@@ -45,7 +45,6 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 				LegacyPlatform selected = (LegacyPlatform) box.getSelectedItem();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setPlatform(selected);
-				Application app = Application.getInstance();
 				Application.getLogger(PlatfromComboBox.this).info("filtering by " + selected);
 				EventBus.publish(filterModel);
 			}
@@ -59,7 +58,7 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 	public void updateListModel(Mode<?> mode) {
 		Set<Platform> platforms = mode.getPlatforms();
 		Vector<Platform> v = new Vector<Platform>();
-		v.add(LegacyPlatform.ALL.getPlatform());
+		v.add(LegacyPlatform.ALL.toPlatform());
 		v.addAll(platforms);
 		ComboBoxModel<Platform> model = new DefaultComboBoxModel<Platform>(v);
 		this.setModel(model);

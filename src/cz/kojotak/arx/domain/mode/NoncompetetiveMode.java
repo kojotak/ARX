@@ -10,7 +10,6 @@ import java.util.Set;
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
-import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;
@@ -22,10 +21,9 @@ import cz.kojotak.arx.ui.column.PlatformNameColumn;
  */
 public class NoncompetetiveMode extends BaseMode<Game> {
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends BaseColumn<Game,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<Game,?>>();
+		var list = new ArrayList<BaseColumn<Game,?>>();
 		list.add(new PlatformIconColumn());
 		list.add(new PlatformNameColumn());
 		list.add(new GameNameColumn());
