@@ -24,7 +24,7 @@ import cz.kojotak.arx.domain.game.Game;
 import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.domain.game.AmigaGame;
+import cz.kojotak.arx.domain.game.CompetitiveGame;
 import cz.kojotak.arx.domain.game.MameGame;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
@@ -38,7 +38,7 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
 public class LegacyImporter implements RunnableWithProgress{	
 	private Map<String, MameGame> gamesSingle;
 	private Map<String, MameGame> gamesDouble;
-	private Map<String, AmigaGame> gamesAmiga;
+	private Map<String, CompetitiveGame> gamesAmiga;
 	private Map<String, Game> gamesNoncompetetive;
 	
 	private Set<User> singlePlayers = new HashSet<User>();
@@ -122,7 +122,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			addRecord(game, record);
 			doubleRecords++;
 		} else if ("amiga".equals(emulator)) {
-			AmigaGame game = gamesAmiga.get(id);
+			CompetitiveGame game = gamesAmiga.get(id);
 			addRecord(game, record);
 			amigaRecords++;
 		} else {
@@ -158,7 +158,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		noncometetiveCategories.add(cat);
 	}
 
-	private void importAmigaGame(String[] parts) {
+	private void importCompetitiveGame(String[] parts) {
 		// (id,nazev,soubor,kategorie_id,pravidla,hrajesena,hodnoceni,prvni_zkratka,pocet_hracu,freeware,md5_disk1,md5_cfg,md5_start,emulator)
 		String id = parts[0];
 		String title = parts[1];
@@ -173,20 +173,16 @@ public class LegacyImporter implements RunnableWithProgress{
 				: null;
 		String hracuStr = parts[8];
 		Integer hracu = Integer.parseInt(hracuStr);
-		// String freeware = parts[9];//nezajima me
-		String md5disk1 = parts[10];
-		String md5cfg = parts[11];
-		String md5start = parts[12];
-		// String emulator = parts[13];
-		AmigaGame game = new AmigaGame(id, cat, title, file);
+//		String freeware = parts[9];
+//		String md5disk1 = parts[10];
+//		String md5cfg = parts[11];
+//		String md5start = parts[12];
+		CompetitiveGame game = new CompetitiveGame(id, cat, LegacyPlatform.AMIGA, title, file);
 		game.setFirstPlayerSign(prvni);
 		gamesAmiga.put(id, game);
 		game.setRules(pravidla);
 		game.setPlayerCount(hracu);
 		game.setAverageRatings(hodnoceni);
-		game.setMd5Cfg(md5cfg);
-		game.setMd5Disk1(md5disk1);
-		game.setMd5Start(md5start);
 		amigaCategories.add(cat);
 	}
 
@@ -248,7 +244,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		log = Application.getLogger(this);
 		gamesSingle = new HashMap<String, MameGame>(2000);
 		gamesDouble = new HashMap<String, MameGame>(200);
-		gamesAmiga = new HashMap<String, AmigaGame>(100);
+		gamesAmiga = new HashMap<String, CompetitiveGame>(100);
 		gamesNoncompetetive = new HashMap<String, Game>(60000);
 
 		this.in=in;
@@ -286,8 +282,8 @@ public class LegacyImporter implements RunnableWithProgress{
 		return prepareGames(this.gamesDouble,MameGame.class);
 	}
 
-	public List<AmigaGame> getAmigaGames() {
-		return prepareGames(this.gamesAmiga,AmigaGame.class);
+	public List<CompetitiveGame> getCompetitiveGames() {
+		return prepareGames(this.gamesAmiga,CompetitiveGame.class);
 	}
 
 	public List<Game> getNoncompetitiveGames() {
@@ -318,7 +314,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			
 		try {
 			String line = null;
-			int mameGames = 0, amigaGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
+			int mameGames = 0, CompetitiveGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
 			while ((line = reader.readLine()) != null) {
 				
 				readLines++;
@@ -346,8 +342,8 @@ public class LegacyImporter implements RunnableWithProgress{
 					importMameGame(parts);
 					mameGames++;// both single and double mode
 				} else if (line.startsWith("INSERT INTO hry_amiga")) {
-					importAmigaGame(parts);
-					amigaGames++;
+					importCompetitiveGame(parts);
+					CompetitiveGames++;
 				} else if (line.startsWith("INSERT INTO hry")) {
 					importNoncompetitiveGame(parts);
 					noncompetitiveGames++;
@@ -357,7 +353,7 @@ public class LegacyImporter implements RunnableWithProgress{
 				} 
 			}
 			log.info("done..., mame games=" + mameGames
-					+ ", amiga games=" + amigaGames + ", noncompetitive games="
+					+ ", amiga games=" + CompetitiveGames + ", noncompetitive games="
 					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
 		} catch (IOException x) {
 			x.printStackTrace();

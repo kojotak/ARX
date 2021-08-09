@@ -10,7 +10,7 @@ import java.util.Set;
 
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
-import cz.kojotak.arx.domain.game.AmigaGame;
+import cz.kojotak.arx.domain.game.CompetitiveGame;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;
@@ -19,32 +19,32 @@ import cz.kojotak.arx.ui.column.GameNameColumn;
  * @date 25.1.2010
  * @author Kojotak 
  */
-public class AmigaMode extends BaseMode<AmigaGame> {
+public class AmigaMode extends BaseMode<CompetitiveGame> {
 
 	@Override
-	public List<AmigaGame> getGames() {
+	public List<CompetitiveGame> getGames() {
 		return games;
 	}
 		
 	@Override
-	public Class<AmigaGame> getGameType() {
-		return AmigaGame.class;
+	public Class<CompetitiveGame> getGameType() {
+		return CompetitiveGame.class;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<? extends BaseColumn<AmigaGame,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<AmigaGame,?>>();
+	public List<? extends BaseColumn<CompetitiveGame,?>> getColumns() {
+		List list = new ArrayList<BaseColumn<CompetitiveGame,?>>();
 		list.add(new GameNameColumn());
 		list.add(new CategoryColumn());
 		return list;
 	}
 
-	private List<AmigaGame> games;
+	private List<CompetitiveGame> games;
 
 	public AmigaMode(LegacyImporter importer) {
 		super();
-		this.games = importer.getAmigaGames();
+		this.games = importer.getCompetitiveGames();
 		this.cats = importer.getAmigaCategories();
 	}
 
