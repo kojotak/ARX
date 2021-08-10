@@ -70,6 +70,7 @@ public class SqliteImporter {
 					User u2 = users.get(rs.getObject("user_id"));
 					Score s = new Score(
 							rs.getLong("score"),
+							null, //points
 							null, //rating
 							rs.getBoolean("finished"),
 							rs.getInt("play_time"),

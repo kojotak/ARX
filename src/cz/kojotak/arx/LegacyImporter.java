@@ -98,7 +98,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		String dobaStr = parts[4];
 		int duration = (dobaStr != null && dobaStr.length() > 0) ? Integer.parseInt(dobaStr) : 0;
 		
-		Score score = new Score(scoreLong, null, dohrano, duration, null, p1, p2);
+		Score score = new Score(scoreLong, null, null, dohrano, duration, null, p1, p2);
 		
 		if ("mame".equals(emulator)) {
 			CompetitiveGame game = gamesSingle.get(id);
@@ -235,16 +235,30 @@ public class LegacyImporter implements RunnableWithProgress{
 		List<CompetitiveGame> list = new ArrayList<CompetitiveGame>(collection);
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
 		for(CompetitiveGame game:list){
+			if(game.getRecords().isEmpty()) {
+				continue;
+			}
 			Collections.sort(game.getRecords(),ScoreBasedRecordComparator.INSTANCE);
+			long topScore = game.getRecords().get(0).score();
+			int players = game.getRecords().size();
 			List<Score> positioned = new ArrayList<>();
 			for(int i=0;i<game.getRecords().size();i++){
 				Score r = game.getRecords().get(i);
-				Score ns = new Score(r.score(), r.rating(), r.finished(), r.duration(), i+1, r.player(), r.secondPlayer());
+				int pos = i+1;
+				Integer points = points(r.score(), topScore, pos, players);
+				Score ns = new Score(r.score(), points, r.rating(), r.finished(), r.duration(), pos, r.player(), r.secondPlayer());
 				positioned.add(ns);
 			}
 			game.setRecords(positioned);
 		}
 		return list;
+	}
+	
+	private Integer points(long score, long topScore, int position, int players) {
+		int points = 0;
+		points += 100.0 * score / topScore;
+		points += (players-position) * 10;
+		return points;
 	}
 
 	public List<CompetitiveGame> getSinglePlayerGames() {

@@ -32,6 +32,7 @@ import cz.kojotak.arx.ui.column.PositionColumn;
 import cz.kojotak.arx.ui.column.Record2PFirstPlayerColumn;
 import cz.kojotak.arx.ui.column.RecordDurationColumn;
 import cz.kojotak.arx.ui.column.RecordPlayerColumn;
+import cz.kojotak.arx.ui.column.ScorePointsColumn;
 import cz.kojotak.arx.ui.column.ScoreRecordColumn;
 import cz.kojotak.arx.ui.event.ResizeRecordPanel;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
@@ -72,6 +73,7 @@ public class RecordTable extends JXTable {
 			cols.add(new RecordPlayerColumn());
 		}
 		cols.add(new ScoreRecordColumn());
+		cols.add(new ScorePointsColumn());
 		cols.add(new RecordDurationColumn());
 		cols.add(new FinishedRecordColumn());
 		return cols;
