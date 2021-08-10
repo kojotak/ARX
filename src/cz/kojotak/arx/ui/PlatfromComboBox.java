@@ -42,7 +42,7 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PlatfromComboBox box = (PlatfromComboBox) e.getSource();
-				LegacyPlatform selected = (LegacyPlatform) box.getSelectedItem();
+				Platform selected = (Platform) box.getSelectedItem();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setPlatform(selected);
 				Application.getLogger(PlatfromComboBox.this).info("filtering by " + selected);

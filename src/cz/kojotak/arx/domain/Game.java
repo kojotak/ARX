@@ -5,6 +5,8 @@ package cz.kojotak.arx.domain;
 
 import java.util.Objects;
 
+import cz.kojotak.arx.domain.enums.LegacyCategory;
+
 /**
  * @date 25.1.2010
  * @author Kojotak 

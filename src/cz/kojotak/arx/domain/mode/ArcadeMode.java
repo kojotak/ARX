@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.ModeWithStatistics;
+import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.BestPlayerColumn;
@@ -32,7 +32,7 @@ public class ArcadeMode extends BaseMameMode implements ModeWithStatistics {
 
 	private int playerCount = 0;
 	private int recordCount = 0;
-	private Category category=null;
+	private LegacyCategory category=null;
 
 	@Override
 	public int getGameCount() {
@@ -74,7 +74,7 @@ public class ArcadeMode extends BaseMameMode implements ModeWithStatistics {
 		return recordCount;
 	}
 
-	public Category getCategory() {
+	public LegacyCategory getCategory() {
 		return category;
 	}
 

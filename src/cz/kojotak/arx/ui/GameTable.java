@@ -25,8 +25,10 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
+import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.impl.GameStatistics;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
@@ -86,11 +88,11 @@ public class GameTable extends JXTable {
 					Entry<? extends GenericTableModel<?>, ? extends Integer> entry) {
 
 				Category filterCat = filterModel.getCategory();
-				if (Category.VSECHNY.equals(filterCat)) {
+				if (LegacyCategory.VSECHNY.toCategory().equals(filterCat)) {
 					filterCat = null;
 				}
-				LegacyPlatform platform = filterModel.getPlatform();
-				if (LegacyPlatform.ALL.equals(platform)) {
+				Platform platform = filterModel.getPlatform();
+				if (LegacyPlatform.ALL.toPlatform().equals(platform)) {
 					platform = null;
 				}
 				GenericTableModel<?> m = entry.getModel();

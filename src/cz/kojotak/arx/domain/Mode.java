@@ -6,6 +6,7 @@ package cz.kojotak.arx.domain;
 import java.util.List;
 import java.util.Set;
 
+import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.ui.column.BaseColumn;
 /**
  * 

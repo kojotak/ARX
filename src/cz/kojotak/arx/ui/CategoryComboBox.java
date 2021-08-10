@@ -22,7 +22,9 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.ui.event.FilterModel;
+import cz.kojotak.arx.ui.renderer.CategoryListCellRenderer;
 import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
 import cz.kojotak.arx.util.GenericEnumComparator;
 
@@ -38,8 +40,7 @@ public class CategoryComboBox extends JComboBox<Category> {
 		super();
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(20);
-		this.setRenderer(new GenericEnumListRenderer<Category>(null,
-				Category.class));
+		this.setRenderer(new CategoryListCellRenderer());
 		this.addActionListener(new ActionListener() {
 
 			@Override
@@ -61,11 +62,9 @@ public class CategoryComboBox extends JComboBox<Category> {
 		Application app = Application.getInstance();
 		Set<Category> catSet = mode.getCategories();
 		Vector<Category> v = new Vector<Category>();
-		v.add(Category.VSECHNY);
-		List<Category> sorted = new ArrayList<Category>(catSet);
-		Collections.sort(sorted, new GenericEnumComparator(app.getLanguage()));
-		v.addAll(sorted);
-		ComboBoxModel<Category> model = new DefaultComboBoxModel<Category>(v);
+		v.add(LegacyCategory.VSECHNY.toCategory());
+		v.addAll(catSet);
+		ComboBoxModel<Category> model = new DefaultComboBoxModel<>(v);
 		this.setModel(model);
 	}
 

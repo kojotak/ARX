@@ -11,14 +11,15 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.ui.icon.EmptyIcon;
 
-public class PlatformListCellRenderer extends JLabel implements ListCellRenderer<Platform> {
+public class CategoryListCellRenderer extends JLabel implements ListCellRenderer<Category> {
 
 	private static final long serialVersionUID = 1L;
 
-	public PlatformListCellRenderer() {
+	public CategoryListCellRenderer() {
 		super();
 		setOpaque(true);
 		setHorizontalAlignment(LEFT);
@@ -26,7 +27,7 @@ public class PlatformListCellRenderer extends JLabel implements ListCellRenderer
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Platform> list, Platform value, int index,
+	public Component getListCellRendererComponent(JList<? extends Category> list, Category value, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		Application app = Application.getInstance();
 		if (value == null) {
@@ -42,7 +43,7 @@ public class PlatformListCellRenderer extends JLabel implements ListCellRenderer
 		}
 
 		Icon icon = null;
-		String icoName = app.getIcons().getOptionalString("Platform", ""+value.id());
+		String icoName = app.getIcons().getOptionalString("Category", ""+value.id());
 		if (icoName != null) {
 			icon = app.getIconLoader().loadIcon(icoName);
 		} else {

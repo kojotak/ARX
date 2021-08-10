@@ -12,28 +12,28 @@ import cz.kojotak.arx.domain.Platform;
  * @author Kojotak 
  */
 public enum LegacyPlatform {
-	ALL(null),
-	ATARI("atari"),
-	ATARI2600("atari2600"),
-	AMIGA("amiga"),
-	C64("c64"),
-	COLECO("coleco"),
-	PC_DOS("pc"),
-	FLASH("flash"),
-	GAMEGEAR("gamegear"),
-	INTELLIVISION("intellivision"),
-	GAMEBOY("gameboy"),
-	LYNX("lynx"),
-	MAME("mame"),
-	MASTERSYSTEM("mastersystem"),
-	MEGADRIVE("megadrive"),
-	MSX("msx"),
-	N64("n64"),
-	NEOGEO("neogeop"),
-	NES("nes"),
-	PCENGINE("pcengine"),
-	SNES("snes"),
-	ZX("zx")
+	ALL(null), //0
+	ATARI("atari"), //1
+	ATARI2600("atari2600"), //2
+	AMIGA("amiga"), //3
+	C64("c64"), //4
+	COLECO("coleco"), //5
+	PC_DOS("pc"), //6
+	FLASH("flash"), //7
+	GAMEGEAR("gamegear"), //8
+	INTELLIVISION("intellivision"), //9
+	GAMEBOY("gameboy"), //10
+	LYNX("lynx"), //11
+	MAME("mame"), //12
+	MASTERSYSTEM("mastersystem"), //13
+	MEGADRIVE("megadrive"), //14
+	MSX("msx"), //15
+	N64("n64"), //16
+	NEOGEO("neogeop"), //17
+	NES("nes"), //18
+	PCENGINE("pcengine"), //18
+	SNES("snes"), //19
+	ZX("zx") //20
 	;
 	
 	private String emulator;

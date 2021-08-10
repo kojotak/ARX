@@ -5,7 +5,7 @@ package cz.kojotak.arx.ui.column;
 
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.ui.renderer.EnumIconTableCellRenderer;
+import cz.kojotak.arx.ui.renderer.CategoryTableCellRenderer;
 
 /**
  * @date 25.3.2010
@@ -22,7 +22,7 @@ public class CategoryColumn extends BaseColumn<Game,Category> {
 		
 	public CategoryColumn() {
 		super();
-		this.setCellRenderer(new EnumIconTableCellRenderer<Category>());
+		this.setCellRenderer(new CategoryTableCellRenderer());
 	}
 	
 	@Override

@@ -10,16 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.User;
 
 public class SqliteImporter {
 
 	final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
-	
-	static record Category(int id, 
-			String name) {
-	}
 	
 	static record Game(int id, 
 			String name, 

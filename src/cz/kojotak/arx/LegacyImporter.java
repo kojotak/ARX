@@ -24,6 +24,7 @@ import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.impl.Record;
 import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.util.ProgressInputStream;
 import cz.kojotak.arx.util.ScoreBasedRecordComparator;
@@ -46,11 +47,11 @@ public class LegacyImporter implements RunnableWithProgress{
 	int singleRecords=0;
 	int doubleRecords=0;
 	int amigaRecords=0;
-	private Set<Category> singleCategories=new HashSet<Category>();
-	private Set<Category> doubleCategories=new HashSet<Category>();
-	private Set<Category> amigaCategories=new HashSet<Category>();
-	private Set<Category> noncometetiveCategories=new HashSet<Category>();
-	private Set<Platform> noncompetetivePlatforms=new HashSet<Platform>();
+	private Set<Category> singleCategories=new HashSet<>();
+	private Set<Category> doubleCategories=new HashSet<>();
+	private Set<Category> amigaCategories=new HashSet<>();
+	private Set<Category> noncometetiveCategories=new HashSet<>();
+	private Set<Platform> noncompetetivePlatforms=new HashSet<>();
 	private Date lastUpdate;
 	protected Logger log;
 
@@ -144,7 +145,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		String id = parts[0];
 		String title = parts[1];
 		String file = parts[2];
-		Category cat = Category.resolve(parts[3]);
+		Category cat = LegacyCategory.resolve(parts[3]).toCategory();
 		Float hodnoceni = parseRating(parts[4]);
 		//Integer hracu = Integer.parseInt(parts[7]);
 		Platform platform = LegacyPlatform.resolve(parts[6]).toPlatform();
@@ -162,7 +163,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		String id = parts[0];
 		String title = parts[1];
 		String file = parts[2];
-		Category cat = Category.resolve(parts[3]);
+		Category cat = LegacyCategory.resolve(parts[3]).toCategory();
 		String pravidla = parts[4];
 		// String hrajeSeStr = parts[5];
 		// Integer hrajeSe = Integer.parseInt(hrajeSeStr);
@@ -194,7 +195,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		String id = parts[0];
 		String title = parts[1];
 		String file = parts[2];
-		Category cat = Category.resolve(parts[3]);
+		Category cat = LegacyCategory.resolve(parts[3]).toCategory();
 		String pravidla = parts[4];
 //		Integer hrajeSe = Integer.parseInt(parts[5]);
 		Float hodnoceni = parseRating(parts[6]);

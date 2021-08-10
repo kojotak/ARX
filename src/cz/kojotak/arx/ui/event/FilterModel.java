@@ -6,8 +6,8 @@ package cz.kojotak.arx.ui.event;
 import java.util.Objects;
 
 import cz.kojotak.arx.domain.Category;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.enums.Availibility;
-import cz.kojotak.arx.domain.enums.LegacyPlatform;
 
 /**
  * Contains filtering information
@@ -17,7 +17,7 @@ import cz.kojotak.arx.domain.enums.LegacyPlatform;
 public class FilterModel {
 	
 	private Category category;
-	private LegacyPlatform platform;
+	private Platform platform;
 	private Availibility availibility;
 	private String search;
 
@@ -48,11 +48,11 @@ public class FilterModel {
 		this.category = category;
 	}
 
-	public LegacyPlatform getPlatform() {
+	public Platform getPlatform() {
 		return platform;
 	}
 
-	public void setPlatform(LegacyPlatform platform) {
+	public void setPlatform(Platform platform) {
 		this.platform = platform;
 	}
 
