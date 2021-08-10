@@ -25,7 +25,6 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.mode.Mode;
-import cz.kojotak.arx.domain.mode.ModeWithStatistics;
 import cz.kojotak.arx.properties.Localization;
 import cz.kojotak.arx.ui.icon.ResizeIcon;
 

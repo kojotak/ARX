@@ -53,11 +53,6 @@ public final class Application {
 	private MainWindow mainWindow;
 	private List<Mode> modes;
 	List<User> players = new ArrayList<User>();
-
-	public static String getRmDbUrl() {
-		return RM_DB_URL;
-	}
-
 	User currentUser = null;
 
 	private static Application app = new Application();
@@ -93,7 +88,7 @@ public final class Application {
 		localization = new Localization(language);
 		icons = new Icons(language);
 		licence = new Licence(language);
-		downloader = new Downloader(RM_DB_URL);
+		downloader = new Downloader(LegacyImporter.RM_DB_URL);
 		//importer = new LegacyImporter(this::getDBInputStream); 
 		importer = new LegacyImporter(downloader::getDBInputStream);
 
@@ -110,7 +105,7 @@ public final class Application {
 		return currentDir + File.separator + "tmp";
 	}
 
-//	@EventSubscriber
+//	@EventSubscriber //chybi volani annotation processoru
 	public void setCurrentUser(User user) {
 		this.currentUser = user;
 	}
@@ -186,8 +181,6 @@ public final class Application {
 	}
 
 	public AtomicLong bytesToImport = new AtomicLong(0);
-
-	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/rotaxmame_databaze.gz?raw=true";
 
 	public static class DownloaderJob extends Job {
 

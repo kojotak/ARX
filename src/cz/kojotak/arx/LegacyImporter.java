@@ -35,6 +35,9 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
  * @author Kojotak
  */
 public class LegacyImporter implements RunnableWithProgress{	
+	
+	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/rotaxmame_databaze.gz?raw=true";
+	
 	private Map<String, Game> gamesSingle;
 	private Map<String, Game> gamesDouble;
 	
