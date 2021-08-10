@@ -10,6 +10,9 @@
 		<maven.compiler.source>16</maven.compiler.source>
 		<maven.compiler.target>16</maven.compiler.target>
 		<java.version>16</java.version>
+		<timestamp>${maven.build.timestamp}</timestamp>
+   		<maven.build.timestamp.format>yyMMdd</maven.build.timestamp.format>
+   		<finalName>${project.artifactId}-${timestamp}</finalName>
 	</properties>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -27,13 +30,40 @@
 		
 		<plugins>
 			<plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.4</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
+                </configuration>
+            </plugin>
+		
+			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-shade-plugin</artifactId>
 		        <version>3.2.4</version>
 		        <configuration>
 	              <transformers>
 	                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-	                  <mainClass>cz.kojotak.arx.DesktopRunner</mainClass>
+	                  <manifestEntries>
+	                  	<Main-Class>cz.kojotak.arx.DesktopRunner</Main-Class>
+						<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
+                    	<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
+                    	<Implementation-Version>${timestamp}</Implementation-Version>
+                    	<Build-Jdk>${java.version} (${java.vendor} ${java.vm.version})</Build-Jdk>
+                        <Build-Timestamp>${git.build.time}</Build-Timestamp>
+                        <Build-Revision>${git.commit.id}</Build-Revision>
+                        <Build-OS>${os.name} ${os.arch} ${os.version}</Build-OS>
+	                  </manifestEntries>
 	                </transformer>
 					<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
 	              </transformers>

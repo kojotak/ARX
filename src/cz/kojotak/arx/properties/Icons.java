@@ -3,7 +3,6 @@
  */
 package cz.kojotak.arx.properties;
 
-import cz.kojotak.arx.Properties;
 import cz.kojotak.arx.domain.Language;
 
 /**

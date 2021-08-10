@@ -8,17 +8,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.SystemColor;
+import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+import java.util.logging.Level;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.Properties;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.ModeWithStatistics;
 import cz.kojotak.arx.properties.Localization;
+import cz.kojotak.arx.properties.Properties;
 import cz.kojotak.arx.ui.icon.ResizeIcon;
 
 /**
@@ -46,9 +51,8 @@ public class StatusBar extends JPanel {
 		Application app=Application.getInstance();
 		
 		Localization loc = app.getLocalization();
-		Properties props = app.getProperties();
 		String version = new StringBuilder(loc.getString(this, "VERSION_TITLE"))
-			.append(" ").append(props.getString(this,"VERSION")).toString();
+			.append(" ").append(readAppVersion()).toString();
 		
 		Date updated = app.getImporter().getLastUpdate();
 		String dbversion = updated!=null?new StringBuilder(loc.getString(this, "DB_VERSION"))
@@ -76,6 +80,26 @@ public class StatusBar extends JPanel {
 		contentPanel.add(new JLabel(version));
 		contentPanel.setOpaque(false);
 		add(contentPanel, BorderLayout.WEST);
+	}
+	
+	private String readAppVersion() {
+		URL url = getClass().getClassLoader().getResource("META-INF/MANIFEST.MF");
+		if(url!=null) {
+		    try {
+		        Manifest manifest = new Manifest(url.openStream());
+		        Attributes attrs = manifest.getMainAttributes();
+		        if(attrs!=null) {
+		        	Object attr = attrs.getValue("Build-Timestamp");
+		        	if(attr instanceof String vs) {
+		        		return vs;
+		        	}
+		        }
+		        Application.getLogger(this).log(Level.WARNING, "Application version not found in manifest");
+		      } catch (IOException e) {
+		        Application.getLogger(this).log(Level.WARNING, "Failed to read manifest", e);
+		      }
+		}
+		return "DEVEL";
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.properties.Icons;
 import cz.kojotak.arx.properties.Licence;
 import cz.kojotak.arx.properties.Localization;
+import cz.kojotak.arx.properties.Properties;
 import cz.kojotak.arx.ui.MainWindow;
 import cz.kojotak.arx.util.Downloader;
 import cz.kojotak.arx.util.StorageUnit;
