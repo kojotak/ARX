@@ -13,7 +13,7 @@ import cz.kojotak.arx.domain.impl.GameStatistics;
  * @date 25.1.2010
  * @author Kojotak 
  */
-public class Game implements LegacyGameMetaData, WithStatistics {
+public class Game implements WithStatistics {
 
 	private Category category;
 	private String title;
