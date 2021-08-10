@@ -3,8 +3,8 @@
  */
 package cz.kojotak.arx.ui.column;
 
+import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.WithStatistics;
-import cz.kojotak.arx.domain.impl.GameStatistics;
 
 /**
  * How many points can a player earn?

@@ -19,10 +19,10 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
 
 import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.WithStatistics;
-import cz.kojotak.arx.domain.impl.GameStatistics;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CoplayerColumn;

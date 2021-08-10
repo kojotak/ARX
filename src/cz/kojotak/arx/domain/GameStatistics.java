@@ -1,13 +1,10 @@
 /**
  * 
  */
-package cz.kojotak.arx.domain.impl;
+package cz.kojotak.arx.domain;
 
 import java.util.List;
 
-import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.Score;
-import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 
 public class GameStatistics {

@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import cz.kojotak.arx.domain.impl.GameStatistics;
-
 /**
  * @date 25.1.2010
  * @author Kojotak 
