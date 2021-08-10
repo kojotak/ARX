@@ -34,7 +34,7 @@ public class FilterTaskPane extends JXTaskPane {
 		Application app = Application.getInstance();
 		String title = app.getLocalization().getString(this, "TITLE");
 		this.setTitle(title);
-		this.setCollapsed(true);
+		this.setCollapsed(false);
 		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.FILTER));
 		
 
@@ -90,7 +90,7 @@ public class FilterTaskPane extends JXTaskPane {
 		this.add(panel);
 	}
 
-	private static final long serialVersionUID = -1038522044254134838L;
+	private static final long serialVersionUID = 1L;
 
 	public CategoryComboBox getCategoryComboBox() {
 		return categoryComboBox;

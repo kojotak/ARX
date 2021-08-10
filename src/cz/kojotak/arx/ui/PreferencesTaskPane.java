@@ -38,7 +38,7 @@ public class PreferencesTaskPane extends JXTaskPane {
 		app = Application.getInstance();
 		String title = app.getLocalization().getString(this, "TITLE");
 		setTitle(title);
-		setCollapsed(true);
+		setCollapsed(false);
 		setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.PREFERENCES));
 		opponentLabel = new JLabel(app.getLocalization().getString(this, "OPPONENT"));
 		opponentField=new JTextField(3);
