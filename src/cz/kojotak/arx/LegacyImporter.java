@@ -38,7 +38,6 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
 public class LegacyImporter implements RunnableWithProgress{	
 	private Map<String, CompetitiveGame> gamesSingle;
 	private Map<String, CompetitiveGame> gamesDouble;
-//	private Map<String, CompetitiveGame> gamesAmiga;
 	
 	private Set<User> singlePlayers = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
@@ -232,26 +231,17 @@ public class LegacyImporter implements RunnableWithProgress{
 		log = Application.getLogger(this);
 		gamesSingle = new HashMap<String, CompetitiveGame>(2000);
 		gamesDouble = new HashMap<String, CompetitiveGame>(200);
-//		gamesAmiga = new HashMap<String, CompetitiveGame>(100);
-
 		this.in=in;
 	}
 	
-	<T extends Game> List<T> prepareGames(Map<String, T> map,Class<T> clz) {
+	List<CompetitiveGame> prepareGames(Map<String, CompetitiveGame> map) {
 		if(map==null || map.isEmpty()){
 			return Collections.emptyList();
 		}
-		Collection<T> collection = map.values();
-		List<T> list = new ArrayList<T>(collection);
-		log.fine("sorting "+clz.getSimpleName()+" ...");
+		Collection<CompetitiveGame> collection = map.values();
+		List<CompetitiveGame> list = new ArrayList<CompetitiveGame>(collection);
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
-		log.fine("positioning "+clz.getSimpleName()+" records ...");
-		for(T t:list){
-			if(!(t instanceof CompetitiveGame)){
-				log.fine("skiping sorting records in non competetive game");
-				break;
-			}
-			CompetitiveGame competetive = CompetitiveGame.class.cast(t);
+		for(CompetitiveGame competetive:list){
 			Collections.sort(competetive.getRecords(),ScoreBasedRecordComparator.INSTANCE);
 			for(int i=0;i<competetive.getRecords().size();i++){
 				Record r = competetive.getRecords().get(i);
@@ -262,11 +252,11 @@ public class LegacyImporter implements RunnableWithProgress{
 	}
 
 	public List<CompetitiveGame> getSinglePlayerGames() {
-		return prepareGames(this.gamesSingle, CompetitiveGame.class);
+		return prepareGames(this.gamesSingle);
 	}
 
 	public List<CompetitiveGame> getDoublePlayerGames() {
-		return prepareGames(this.gamesDouble, CompetitiveGame.class);
+		return prepareGames(this.gamesDouble);
 	}
 
 	@Override
