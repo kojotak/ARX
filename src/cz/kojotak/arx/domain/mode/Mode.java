@@ -9,7 +9,7 @@ import java.util.Set;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.CompetitiveGame;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Searchable;
 import cz.kojotak.arx.properties.Localization;
@@ -20,13 +20,13 @@ public abstract class Mode implements Searchable {
 
 	protected String desc;
 	protected String name;
-	protected final List<CompetitiveGame> games;
+	protected final List<Game> games;
 	protected final Set<Category> cats=new HashSet<>();
 	protected final Set<Platform> platforms = new HashSet<>();
 	
 	protected FilterModel filter;
 	
-	public Mode(List<CompetitiveGame> games) {
+	public Mode(List<Game> games) {
 		this.games=games;
 		this.games.forEach(g->{
 			cats.add(g.getCategory());
@@ -38,7 +38,7 @@ public abstract class Mode implements Searchable {
 		this.filter = new FilterModel();
 	}
 	
-	public abstract List<BaseColumn<CompetitiveGame,?>> getColumns();
+	public abstract List<BaseColumn<Game,?>> getColumns();
 
 	public String getDescription() {
 		return desc;
@@ -64,7 +64,7 @@ public abstract class Mode implements Searchable {
 		this.filter = filter;
 	}
 	
-	public List<CompetitiveGame> getGames() {
+	public List<Game> getGames() {
 		return games;
 	}
 

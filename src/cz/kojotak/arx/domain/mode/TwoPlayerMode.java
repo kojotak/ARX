@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.CompetitiveGame;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.CategoryColumn;
 import cz.kojotak.arx.ui.column.GameNameColumn;
@@ -23,8 +23,8 @@ public class TwoPlayerMode extends Mode {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BaseColumn<CompetitiveGame,?>> getColumns() {
-		List list = new ArrayList<BaseColumn<CompetitiveGame,?>>();
+	public List<BaseColumn<Game,?>> getColumns() {
+		List list = new ArrayList<BaseColumn<Game,?>>();
 
 		list.add(new GameNameColumn());
 		list.add(new CategoryColumn());

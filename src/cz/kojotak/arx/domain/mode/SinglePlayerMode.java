@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
-import cz.kojotak.arx.domain.CompetitiveGame;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.ModeWithStatistics;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
@@ -48,11 +48,11 @@ public class SinglePlayerMode extends Mode implements ModeWithStatistics {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BaseColumn<CompetitiveGame,?>> getColumns() {
+	public List<BaseColumn<Game,?>> getColumns() {
 		PlatformIconColumn platformIcon = new PlatformIconColumn();
 		platformIcon.setVisible(false);
 		
-		List list = new ArrayList<BaseColumn<CompetitiveGame,?>>();
+		List list = new ArrayList<BaseColumn<Game,?>>();
 		list.add(platformIcon);
 		list.add(new StatisticsPositionWithIconColumn());
 		list.add(new PlayerCountColumn());

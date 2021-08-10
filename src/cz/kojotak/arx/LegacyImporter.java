@@ -19,7 +19,7 @@ import java.util.zip.GZIPInputStream;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.CompetitiveGame;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
@@ -35,8 +35,8 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
  * @author Kojotak
  */
 public class LegacyImporter implements RunnableWithProgress{	
-	private Map<String, CompetitiveGame> gamesSingle;
-	private Map<String, CompetitiveGame> gamesDouble;
+	private Map<String, Game> gamesSingle;
+	private Map<String, Game> gamesDouble;
 	
 	private Set<User> singlePlayers = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
@@ -60,7 +60,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		return new User(id, playerSign);
 	}
 
-	private void addRecord(CompetitiveGame game, Score record) {
+	private void addRecord(Game game, Score record) {
 		if (game == null) {
 			log.fine("No game found for record " + record);
 			return;
@@ -101,15 +101,15 @@ public class LegacyImporter implements RunnableWithProgress{
 		Score score = new Score(scoreLong, null, null, dohrano, duration, null, p1, p2);
 		
 		if ("mame".equals(emulator)) {
-			CompetitiveGame game = gamesSingle.get(id);
+			Game game = gamesSingle.get(id);
 			addRecord(game, score);
 			singleRecords++;
 		} else if ("mame2".equals(emulator)) {
-			CompetitiveGame game = gamesDouble.get(id);
+			Game game = gamesDouble.get(id);
 			addRecord(game, score);
 			doubleRecords++;
 		} else if ("amiga".equals(emulator)) {
-			CompetitiveGame game = gamesSingle.get(id);
+			Game game = gamesSingle.get(id);
 			addRecord(game, score);
 			singleRecords++;
 		} else {
@@ -126,7 +126,7 @@ public class LegacyImporter implements RunnableWithProgress{
 				.parseFloat(hodnoceniPercent) / 100;
 	}
 
-	private void importNoncompetitiveGame(String[] parts) {
+	private void importNonGame(String[] parts) {
 		// id,nazev,soubor,kategorie_id,hodnoceni,freeware,emulator,pocet_hracu)
 		String id = parts[0];
 		String title = parts[1];
@@ -136,7 +136,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		//Integer hracu = Integer.parseInt(parts[7]);
 		Platform platform = LegacyPlatform.resolve(parts[6]).toPlatform();
 
-		CompetitiveGame game = new CompetitiveGame(id, cat, platform, title, file);
+		Game game = new Game(id, cat, platform, title, file);
 		game.setAverageRatings(hodnoceni);
 		//game.setPlayerCount(hracu);
 		this.gamesSingle.put(id, game);
@@ -161,7 +161,7 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
-		CompetitiveGame game = new CompetitiveGame(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file);
+		Game game = new Game(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file);
 		game.setFirstPlayerSign(prvni);
 		gamesSingle.put(id, game);
 		game.setRules(pravidla);
@@ -169,7 +169,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		game.setAverageRatings(hodnoceni);
 	}
 
-	private void importCompetitiveGame(String[] parts) {
+	private void importGame(String[] parts) {
 		// (id,nazev,soubor,kategorie_id,pravidla,hrajesena,hodnoceni,prvni_zkratka,pocet_hracu,emulator)
 		if (parts.length < 10) {
 			// FIXME log
@@ -189,17 +189,17 @@ public class LegacyImporter implements RunnableWithProgress{
 		Integer hracu = Integer.parseInt(hracuStr);
 		String emulator = parts[9];
 
-		CompetitiveGame game = null;
+		Game game = null;
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			CompetitiveGame singleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
+			Game singleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
 			game = singleGame;
 			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			CompetitiveGame doubleGame = new CompetitiveGame(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
+			Game doubleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");
@@ -222,19 +222,19 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	public LegacyImporter(Supplier<InputStream> in){
 		log = Application.getLogger(this);
-		gamesSingle = new HashMap<String, CompetitiveGame>(2000);
-		gamesDouble = new HashMap<String, CompetitiveGame>(200);
+		gamesSingle = new HashMap<String, Game>(2000);
+		gamesDouble = new HashMap<String, Game>(200);
 		this.in=in;
 	}
 	
-	List<CompetitiveGame> prepareGames(Map<String, CompetitiveGame> map) {
+	List<Game> prepareGames(Map<String, Game> map) {
 		if(map==null || map.isEmpty()){
 			return Collections.emptyList();
 		}
-		Collection<CompetitiveGame> collection = map.values();
-		List<CompetitiveGame> list = new ArrayList<CompetitiveGame>(collection);
+		Collection<Game> collection = map.values();
+		List<Game> list = new ArrayList<Game>(collection);
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
-		for(CompetitiveGame game:list){
+		for(Game game:list){
 			if(game.getRecords().isEmpty()) {
 				continue;
 			}
@@ -261,11 +261,11 @@ public class LegacyImporter implements RunnableWithProgress{
 		return points;
 	}
 
-	public List<CompetitiveGame> getSinglePlayerGames() {
+	public List<Game> getSinglePlayerGames() {
 		return prepareGames(this.gamesSingle);
 	}
 
-	public List<CompetitiveGame> getDoublePlayerGames() {
+	public List<Game> getDoublePlayerGames() {
 		return prepareGames(this.gamesDouble);
 	}
 
@@ -292,7 +292,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			
 		try {
 			String line = null;
-			int mameGames = 0, amigaGames =0, noncompetitiveGames = 0, records = 0,readLines=0;
+			int mameGames = 0, amigaGames =0, nonGames = 0, records = 0,readLines=0;
 			while ((line = reader.readLine()) != null) {
 				
 				readLines++;
@@ -317,14 +317,14 @@ public class LegacyImporter implements RunnableWithProgress{
 				String data = line.substring(start + 2, end);
 				String[] parts = data.split("','");
 				if (line.startsWith("INSERT INTO hry_mame")) {
-					importCompetitiveGame(parts);
+					importGame(parts);
 					mameGames++;// both single and double mode
 				} else if (line.startsWith("INSERT INTO hry_amiga")) {
 					importAmigaGame(parts);
 					amigaGames++;
 				} else if (line.startsWith("INSERT INTO hry")) {
-					importNoncompetitiveGame(parts);
-					noncompetitiveGames++;
+					importNonGame(parts);
+					nonGames++;
 				} else if (line.startsWith("INSERT INTO rekordy")) {
 					importRecord(parts);
 					records++;
@@ -332,7 +332,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			}
 			log.info("done..., mame games=" + mameGames
 					+ ", amiga games=" + amigaGames + ", noncompetitive games="
-					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
+					+ nonGames + ", records=" + records+", read lines="+readLines);
 		} catch (IOException x) {
 			x.printStackTrace();
 		} 
