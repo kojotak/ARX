@@ -28,7 +28,7 @@ public class PlatformTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		this.setIcon(icon);
 		if(t!=null){
-			this.setToolTipText(app.getLocalization().getString("LegacyPlatform",t.name()));		
+			this.setToolTipText(t.name());		
 		}
 	}
 

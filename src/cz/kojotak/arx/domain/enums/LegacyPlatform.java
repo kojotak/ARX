@@ -3,6 +3,7 @@
  */
 package cz.kojotak.arx.domain.enums;
 
+import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Platform;
 
 /**
@@ -46,7 +47,8 @@ public enum LegacyPlatform {
 	}
 	
 	public Platform toPlatform() {
-		return new Platform(this.ordinal(), this.name(), this.getEmulator(), MAME.equals(this) ? 2 : 1);
+		String text = Application.getInstance().getLocalization().getString("LegacyPlatform", this.name());
+		return new Platform(this.ordinal(), text, this.getEmulator(), MAME.equals(this) ? 2 : 1);
 	}
 
 	/**

@@ -48,10 +48,9 @@ public class PlatformListCellRenderer extends JLabel implements ListCellRenderer
 		} else {
 			icon = new EmptyIcon();
 		}
-		String text = Application.getInstance().getLocalization().getString("LegacyPlatform", value.name());
 
 		setIcon(icon);
-		setText(text);
+		setText(value.name());
 		return this;
 	}
 
