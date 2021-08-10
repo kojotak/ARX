@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Platform;
+import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
 
 public class SqliteImporter {
@@ -29,26 +31,18 @@ public class SqliteImporter {
 			String command) {
 	}
 	
-	static record Score(int id, 
-			User user, 
-			User user2, 
-			long score, 
-			int position,
-			boolean finished, 
-			long duration) {
-	}
-	
 	public static void main(String[] args) {
+		SqliteImporter importer = new SqliteImporter();
         try (Connection conn = DriverManager.getConnection(url)) {
             System.out.println("Connection to SQLite has been established.");
             
-            Map<Integer, Platform> platforms = loadPlatforms(conn);
-            Map<Integer, Category> categories = loadCategories(conn);
-            Map<Integer, User> users = loadUsers(conn);
-            Map<Integer, Game> games = loadGames(conn, platforms, categories);
+            Map<Integer, Platform> platforms = importer.loadPlatforms(conn);
+            Map<Integer, Category> categories = importer.loadCategories(conn);
+            Map<Integer, User> users = importer.loadUsers(conn);
+            Map<Integer, Game> games = importer.loadGames(conn, platforms, categories);
             
             //game id -> list of scores
-            Map<Integer, List<Score>> scores = loadScores(conn, games, users);
+            Map<Integer, List<Score>> scores = importer.loadScores(conn, games, users);
             
             for(Integer gameId : games.keySet()) {
             	System.out.println("Game: " + games.get(gameId) + "\n\tscores: " + scores.get(gameId));
@@ -59,15 +53,15 @@ public class SqliteImporter {
 		
 	}
 	
-	private static Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
+	private Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
 		Map<Integer, List<Score>> map = new HashMap<>();
-		String sql = "select id, game_id, user_id, user2_id, score, finished, play_time from score order by game_id asc, score desc";
+		String sql = "select game_id, user_id, user2_id, score, finished, play_time from score order by game_id asc, score desc";
 		try(PreparedStatement stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
-				int lastGameId = -1, lastPosition = -1;
+				Integer lastGameId = -1, lastPosition = -1;
 				while(rs.next()) {
 					int gameId = rs.getInt("game_id");
-					if(gameId!=lastGameId) {
+					if(gameId != lastGameId) {
 						lastPosition=0;
 						lastGameId=gameId;
 					}
@@ -75,13 +69,13 @@ public class SqliteImporter {
 					User u1 = users.get(rs.getObject("user_id"));
 					User u2 = users.get(rs.getObject("user_id"));
 					Score s = new Score(
-							rs.getInt("id"),
-							u1,
-							u2,
 							rs.getLong("score"),
-							++lastPosition,
+							null, //rating
 							rs.getBoolean("finished"),
-							rs.getLong("play_time")
+							rs.getInt("play_time"),
+							++lastPosition,
+							u1,
+							u2
 							);
 					List<Score> scores = map.getOrDefault(g.id(), new ArrayList<>());
 					scores.add(s);
@@ -89,12 +83,12 @@ public class SqliteImporter {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("failed to load scores " + e);
+		 	Application.getLogger(this).log(Level.SEVERE,"Can not load scores",e);
 		}
 		return map;
 	}
 
-	static Map<Integer, User> loadUsers(Connection conn) {
+	private Map<Integer, User> loadUsers(Connection conn) {
 		Map<Integer,User> map = new HashMap<>();
 		String sql = "select id, nick from user";
 		try(PreparedStatement  stm = conn.prepareStatement(sql)){
@@ -107,12 +101,12 @@ public class SqliteImporter {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("failed to load users " + e);
+			Application.getLogger(this).log(Level.SEVERE,"Can not load users",e);
 		}
 		return map;
 	}
 
-	static Map<Integer, Game> loadGames(Connection conn, Map<Integer, Platform> platforms, Map<Integer, Category> categories){
+	private Map<Integer, Game> loadGames(Connection conn, Map<Integer, Platform> platforms, Map<Integer, Category> categories){
 		Map<Integer, Game> map = new HashMap<>();
 		//hash - sorting by parent descending, so we'll get null games with no parents first
 		String sql = "select id, name, rules, game_platform_id, game_category_id, file_command, mode_max, parent_id, rm_commands from game order by parent_id desc";
@@ -138,12 +132,12 @@ public class SqliteImporter {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("failed to load games " + e);
+			Application.getLogger(this).log(Level.SEVERE,"Can not load games",e);
 		}
 		return map;
 	}
 	
-	static Map<Integer,Platform> loadPlatforms(Connection conn){
+	private Map<Integer,Platform> loadPlatforms(Connection conn){
 		Map<Integer,Platform> map = new HashMap<>();
 		String sql = "select id, name, link, mode_max from game_platform";
 		try(PreparedStatement  stm = conn.prepareStatement(sql)){
@@ -158,12 +152,12 @@ public class SqliteImporter {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("failed to load platforms " + e);
+			Application.getLogger(this).log(Level.SEVERE,"Can not load platforms",e);
 		}
 		return map;
 	}
 	
-	static Map<Integer,Category> loadCategories(Connection conn){
+	private Map<Integer,Category> loadCategories(Connection conn){
 		Map<Integer,Category> map = new HashMap<>();
 		String sql = "select id, name from game_category";
 		try(PreparedStatement  stm = conn.prepareStatement(sql)){
@@ -176,7 +170,7 @@ public class SqliteImporter {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("failed to load categories " + e);
+			Application.getLogger(this).log(Level.SEVERE,"Can not load categories",e);
 		}
 		return map;
 	}

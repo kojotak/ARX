@@ -6,6 +6,7 @@ package cz.kojotak.arx.domain.impl;
 import java.util.List;
 
 import cz.kojotak.arx.domain.CompetitiveGame;
+import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 
@@ -34,42 +35,42 @@ public class GameStatistics {
 		
 	public GameStatistics(CompetitiveGame game, User user, User oponent) {
 		super();
-		List<Record> records = game.getRecords();
+		List<Score> records = game.getRecords();
 		this.oponent=oponent;
 		if(records!=null && records.size()>0){
 			init(records,user,oponent);
 		}
 	}
 
-	private void init(List<Record> records,User user,User oponent){
+	private void init(List<Score> records,User user,User oponent){
 		recordsCount=records.size();
 		Float ratingsSum=0F;
 		Long highest = 0L;
 		playerSign = user.nick();
 		Integer oponentPosition=null;
 		for(int i=0;i<records.size();i++){
-			Record record = records.get(i);
-			User  player = record.getPlayer();
-			Long score=record.getScore();
+			Score record = records.get(i);
+			User  player = record.player();
+			Long score=record.score();
 			if(player.id() == user.id()){
 				playerPosition=i+1;
-				playerRating = record.getRating();
-				playerFinished = record.isFinished();
+				playerRating = record.rating();
+				playerFinished = record.finished();
 				userScore = score;
 			}
 			if(score>highest){
 				highest=score;
 				bestPlayer=player;
 			}
-			if(record.isFinished()){
+			if(record.finished()){
 				somebodyFinished=true;
 			}
-			if(record.getRating()!=null){
+			if(record.rating()!=null){
 				ratingsCount++;
-				ratingsSum+=record.getRating();
+				ratingsSum+=record.rating();
 			}
 			if(oponent!=null && player.id() == oponent.id()){
-				oponentPosition=record.getPosition();
+				oponentPosition=record.position();
 			}
 		}
 		if(ratingsCount>0){

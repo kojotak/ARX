@@ -14,15 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.zip.GZIPInputStream;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.CompetitiveGame;
-import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
-import cz.kojotak.arx.domain.impl.Record;
+import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
@@ -61,37 +60,12 @@ public class LegacyImporter implements RunnableWithProgress{
 		return new User(id, playerSign);
 	}
 
-	private void setRecord(Record record, String[] parts) {
-		String userParts = parts[1];
-		
-		String[] players = userParts.split("\\s");
-		if(players.length==2) {
-			boolean reverse = players[0].compareTo(players[1]) > 0;
-			record.setPlayer(getOrFakeUser(players[reverse ? 1 : 0]));
-			record.setSecondPlayer(getOrFakeUser(players[reverse ? 0 : 1]));
-		} else {
-			User player = getOrFakeUser(userParts);
-			record.setPlayer(player);
-		}
-		
-		String scoreStr = parts[2];
-		Long score = Long.parseLong(scoreStr);
-		String dohranoStr = parts[3];
-		Boolean dohrano = "1".equals(dohranoStr);
-		String dobaStr = parts[4];
-		Integer doba = (dobaStr != null && dobaStr.length() > 0) ? Integer
-				.parseInt(dobaStr) : 0;
-		record.setScore(score);
-		record.setDuration(doba);
-		record.setFinished(dohrano);
-	}
-
-	private void addRecord(CompetitiveGame game, Record record) {
+	private void addRecord(CompetitiveGame game, Score record) {
 		if (game == null) {
 			log.fine("No game found for record " + record);
 			return;
 		}
-		List<Record> records = game.getRecords();
+		List<Score> records = game.getRecords();
 		if (records == null || records.size() == 0) {
 			// null or maybe imutable
 			records = new ArrayList<>();
@@ -105,25 +79,44 @@ public class LegacyImporter implements RunnableWithProgress{
 		// ('39663','VLD','29200','0','93','mame')
 		String emulator = parts[5];
 		String id = parts[0];
-		Record record = new Record();
-		setRecord(record, parts);
+		String userParts = parts[1];
+		
+		String[] players = userParts.split("\\s");
+		User p1=null, p2=null;
+		if(players.length==2) {
+			boolean reverse = players[0].compareTo(players[1]) > 0;
+			p1 = getOrFakeUser(players[reverse ? 1 : 0]);
+			p2 = getOrFakeUser(players[reverse ? 0 : 1]);
+		} else {
+			p1 = getOrFakeUser(userParts);
+		}
+		
+		String scoreStr = parts[2];
+		Long scoreLong = Long.parseLong(scoreStr);
+		String dohranoStr = parts[3];
+		Boolean dohrano = "1".equals(dohranoStr);
+		String dobaStr = parts[4];
+		int duration = (dobaStr != null && dobaStr.length() > 0) ? Integer.parseInt(dobaStr) : 0;
+		
+		Score score = new Score(scoreLong, null, dohrano, duration, null, p1, p2);
+		
 		if ("mame".equals(emulator)) {
 			CompetitiveGame game = gamesSingle.get(id);
-			addRecord(game, record);
+			addRecord(game, score);
 			singleRecords++;
 		} else if ("mame2".equals(emulator)) {
 			CompetitiveGame game = gamesDouble.get(id);
-			addRecord(game, record);
+			addRecord(game, score);
 			doubleRecords++;
 		} else if ("amiga".equals(emulator)) {
 			CompetitiveGame game = gamesSingle.get(id);
-			addRecord(game, record);
+			addRecord(game, score);
 			singleRecords++;
 		} else {
 			return;
 		}
 		if("mame".equals(emulator)){
-			singlePlayers.add(record.getPlayer());
+			singlePlayers.add(score.player());
 		}
 	}
 
@@ -241,12 +234,15 @@ public class LegacyImporter implements RunnableWithProgress{
 		Collection<CompetitiveGame> collection = map.values();
 		List<CompetitiveGame> list = new ArrayList<CompetitiveGame>(collection);
 		Collections.sort(list, TitleBasedGameComparator.INSTANCE);
-		for(CompetitiveGame competetive:list){
-			Collections.sort(competetive.getRecords(),ScoreBasedRecordComparator.INSTANCE);
-			for(int i=0;i<competetive.getRecords().size();i++){
-				Record r = competetive.getRecords().get(i);
-				r.setPosition(i+1);
+		for(CompetitiveGame game:list){
+			Collections.sort(game.getRecords(),ScoreBasedRecordComparator.INSTANCE);
+			List<Score> positioned = new ArrayList<>();
+			for(int i=0;i<game.getRecords().size();i++){
+				Score r = game.getRecords().get(i);
+				Score ns = new Score(r.score(), r.rating(), r.finished(), r.duration(), i+1, r.player(), r.secondPlayer());
+				positioned.add(ns);
 			}
+			game.setRecords(positioned);
 		}
 		return list;
 	}

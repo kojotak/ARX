@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.impl.Record;
+import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.enums.FinishedStatus;
 import cz.kojotak.arx.ui.renderer.FinishedTableCellRenderer;
 
@@ -11,7 +11,7 @@ import cz.kojotak.arx.ui.renderer.FinishedTableCellRenderer;
  * @date 6.10.2010
  * @author Kojotak 
  */
-public class FinishedRecordColumn extends BaseColumn<Record,FinishedStatus> {
+public class FinishedRecordColumn extends BaseColumn<Score,FinishedStatus> {
 
 	/**
 	 * generated
@@ -29,8 +29,8 @@ public class FinishedRecordColumn extends BaseColumn<Record,FinishedStatus> {
 	}
 
 	@Override
-	public FinishedStatus getValue(Record source) {
-		return source.isFinished()?FinishedStatus.SOME_BODY_FINISHED:FinishedStatus.NONE_FINISHED;
+	public FinishedStatus getValue(Score source) {
+		return source.finished()?FinishedStatus.SOME_BODY_FINISHED:FinishedStatus.NONE_FINISHED;
 	}
 
 }

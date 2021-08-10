@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import cz.kojotak.arx.domain.impl.GameStatistics;
-import cz.kojotak.arx.domain.impl.Record;
 /**
  * @date 25.1.2010
  * @author Kojotak 
@@ -23,12 +22,12 @@ public class CompetitiveGame extends Game implements LegacyGameMetaData, WithSta
 	private String firstPlayerSign;
 	private String secondPlayerSign;
 	protected GameStatistics statistics;
-	protected List<Record> records = Collections.emptyList();
+	protected List<Score> records = Collections.emptyList();
 
-	public List<Record> getRecords() {
+	public List<Score> getRecords() {
 		return records;
 	}
-	public void setRecords(List<Record> records) {
+	public void setRecords(List<Score> records) {
 		this.records = records;
 	}
 	public String getRules() {

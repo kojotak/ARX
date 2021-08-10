@@ -3,13 +3,13 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.impl.Record;
+import cz.kojotak.arx.domain.Score;
 
 /**
  * @date 4.10.2010
  * @author Kojotak 
  */
-public class RecordDurationColumn extends BaseColumn<Record, String> {
+public class RecordDurationColumn extends BaseColumn<Score, String> {
 
 	public RecordDurationColumn() {
 		super();
@@ -26,8 +26,8 @@ public class RecordDurationColumn extends BaseColumn<Record, String> {
 	}
 
 	@Override
-	public String getValue(Record source) {
-		Integer duration=source.getDuration();
+	public String getValue(Score source) {
+		Integer duration=source.duration();
 		if(duration==null){
 			return "";
 		}
