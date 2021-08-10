@@ -21,7 +21,6 @@ public class Game implements WithStatistics {
 	private Platform platform;
 	
 	private String rules;
-	private Integer playerCount;
 	private String firstPlayerSign;
 	private String secondPlayerSign;
 	protected GameStatistics statistics;
@@ -54,10 +53,7 @@ public class Game implements WithStatistics {
 		this.rules = rules;
 	}
 	public Integer getPlayerCount() {
-		return playerCount;
-	}
-	public void setPlayerCount(Integer playerCount) {
-		this.playerCount = playerCount;
+		return records.size();
 	}
 	public String getFirstPlayerSign() {
 		return firstPlayerSign;

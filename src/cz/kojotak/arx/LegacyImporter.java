@@ -156,7 +156,6 @@ public class LegacyImporter implements RunnableWithProgress{
 		String prvni = (prvniStr != null && !prvniStr.contains("---")) ? prvniStr
 				: null;
 		String hracuStr = parts[8];
-		Integer hracu = Integer.parseInt(hracuStr);
 //		String freeware = parts[9];
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
@@ -165,7 +164,6 @@ public class LegacyImporter implements RunnableWithProgress{
 		game.setFirstPlayerSign(prvni);
 		gamesSingle.put(id, game);
 		game.setRules(pravidla);
-		game.setPlayerCount(hracu);
 		game.setAverageRatings(hodnoceni);
 	}
 
@@ -186,7 +184,6 @@ public class LegacyImporter implements RunnableWithProgress{
 		String prvni = (prvniStr != null && !prvniStr.contains("---")) ? prvniStr
 				: null;
 		String hracuStr = parts[8];
-		Integer hracu = Integer.parseInt(hracuStr);
 		String emulator = parts[9];
 
 		Game game = null;
@@ -214,7 +211,6 @@ public class LegacyImporter implements RunnableWithProgress{
 		}
 
 		game.setRules(pravidla);
-		game.setPlayerCount(hracu);
 		game.setAverageRatings(hodnoceni);
 	}
 	

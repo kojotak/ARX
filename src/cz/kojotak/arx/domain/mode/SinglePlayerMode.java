@@ -8,7 +8,6 @@ import java.util.List;
 
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.ModeWithStatistics;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
 import cz.kojotak.arx.ui.column.BaseColumn;
@@ -29,21 +28,12 @@ import cz.kojotak.arx.ui.column.StatisticsPositionWithIconColumn;
  * @date 24.1.2010
  * @author Kojotak
  */
-public class SinglePlayerMode extends Mode implements ModeWithStatistics {
+public class SinglePlayerMode extends Mode  {
 
-	private int playerCount = 0;
-	private int recordCount = 0;
 	private LegacyCategory category=null;
-
-	@Override
-	public int getGameCount() {
-		return games.size();
-	}
 
 	public SinglePlayerMode(LegacyImporter importer) {
 		super(importer.getSinglePlayerGames());
-		playerCount=importer.getSinglePlayers().size();
-		recordCount=importer.getSingleRecords();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -68,14 +58,6 @@ public class SinglePlayerMode extends Mode implements ModeWithStatistics {
 		list.add(new FinishedColumn());
 
 		return list;
-	}
-
-	public int getPlayerCount() {
-		return playerCount;
-	}
-
-	public int getRecordCount() {
-		return recordCount;
 	}
 
 	public LegacyCategory getCategory() {

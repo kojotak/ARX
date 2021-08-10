@@ -18,10 +18,14 @@ import java.util.logging.Level;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.mode.Mode;
-import cz.kojotak.arx.domain.ModeWithStatistics;
+import cz.kojotak.arx.domain.mode.ModeWithStatistics;
 import cz.kojotak.arx.properties.Localization;
 import cz.kojotak.arx.ui.icon.ResizeIcon;
 
@@ -35,8 +39,12 @@ public class StatusBar extends JPanel {
 	private static final long serialVersionUID = -3597115112954423753L;
 	protected JPanel contentPanel;
 	SimpleDateFormat DB_VERSION = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+	JLabel gamesLabel = new JLabel();
+	JLabel playersLabel = new JLabel();
+	JLabel scoresLabel = new JLabel();
 	
 	public StatusBar() {
+		AnnotationProcessor.process(this);
 		setPreferredSize(new Dimension(getWidth(), 23));
 		setLayout(new BorderLayout());
 
@@ -58,27 +66,31 @@ public class StatusBar extends JPanel {
 			.append(" ").append(DB_VERSION.format(updated)).toString():"?";
 		
 		contentPanel = new JPanel();
-		Mode mode = app.getCurrentMode();
-		if(mode instanceof ModeWithStatistics){
-			ModeWithStatistics mws = ModeWithStatistics.class.cast(mode);
-			String games = new StringBuilder(loc.getString(this, "GAMES"))
-			.append(" ").append(mws.getGameCount()).toString();
-			String players = new StringBuilder(loc.getString(this, "PLAYERS"))
-			.append(" ").append(mws.getPlayerCount()).toString();
-			String recs = new StringBuilder(loc.getString(this, "RECORDS"))
-			.append(" ").append(mws.getRecordCount()).toString();
-			contentPanel.add(new JLabel(games));
-			contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
-			contentPanel.add(new JLabel(players));
-			contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
-			contentPanel.add(new JLabel(recs));
-			contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
-		}
+			
+		contentPanel.add(gamesLabel);
+		contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
+		contentPanel.add(playersLabel);
+		contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
+		contentPanel.add(scoresLabel);
+		contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
 		contentPanel.add(new JLabel(dbversion));
 		contentPanel.add(new SeparatorPanel(Color.GRAY, Color.WHITE));
 		contentPanel.add(new JLabel(version));
 		contentPanel.setOpaque(false);
+		updateLabels(app.getCurrentMode());
 		add(contentPanel, BorderLayout.WEST);
+	}
+	
+	@EventSubscriber
+	public void updateLabels(Mode mode) {
+		Application.getLogger(this).fine("updating labels for " + mode);
+		Localization loc = Application.getInstance().getLocalization();
+		String games = loc.getString(this, "GAMES") + " " + mode.getGameCount();
+		String players = loc.getString(this, "PLAYERS") + " " + mode.getPlayerCount();
+		String recs = loc.getString(this, "RECORDS") + " " + mode.getRecordCount();
+		gamesLabel.setText(games);
+		playersLabel.setText(players);
+		scoresLabel.setText(recs);
 	}
 	
 	private String readAppVersion() {
