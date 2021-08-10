@@ -54,6 +54,9 @@ public class SqliteImporter {
 	}
 	
 	private Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
+		Map<Integer, GameStats> stats = loadGameStats(conn);
+		
+		//game_id -> list<Score>
 		Map<Integer, List<Score>> map = new HashMap<>();
 		String sql = "select game_id, user_id, user2_id, score, finished, play_time from score order by game_id asc, score desc";
 		try(PreparedStatement stm = conn.prepareStatement(sql)){
@@ -66,15 +69,19 @@ public class SqliteImporter {
 						lastGameId=gameId;
 					}
 					Game g = games.get(gameId);
+					GameStats stat = stats.get(gameId);
+					long score = rs.getLong("score");
 					User u1 = users.get(rs.getObject("user_id"));
 					User u2 = users.get(rs.getObject("user_id"));
+					Integer position = ++lastPosition;
+					Integer points = points(score, position, stat);
 					Score s = new Score(
-							rs.getLong("score"),
-							null, //points
+							score,
+							points,
 							null, //rating
 							rs.getBoolean("finished"),
 							rs.getInt("play_time"),
-							++lastPosition,
+							position,
 							u1,
 							u2
 							);
@@ -85,6 +92,34 @@ public class SqliteImporter {
 			}
 		} catch (SQLException e) {
 		 	Application.getLogger(this).log(Level.SEVERE,"Can not load scores",e);
+		}
+		return map;
+	}
+	
+	private Integer points(long score, int position, GameStats stat) {
+		if(stat==null) {
+			return null;
+		}
+		int points = 0;
+		points += 100.0 * score / stat.topScore;
+		points += (stat.players-position) * 10;
+		return points;
+	}
+	
+	static record GameStats (int players, long topScore) {};
+	
+	private Map<Integer, GameStats> loadGameStats(Connection conn){
+		Map<Integer, GameStats> map = new HashMap<>();
+		String sql = "select game_id, count(1) as players, max(score) as topScore from score group by game_id";
+		try(PreparedStatement stm = conn.prepareStatement(sql)){
+			try(ResultSet rs = stm.executeQuery()){
+				while(rs.next()) {
+					GameStats stats = new GameStats(rs.getInt("players"), rs.getLong("topScore"));
+					map.put(rs.getInt("game_id"), stats);
+				}
+			}
+		} catch (SQLException e) {
+		 	Application.getLogger(this).log(Level.SEVERE,"Can not load players per game",e);
 		}
 		return map;
 	}
