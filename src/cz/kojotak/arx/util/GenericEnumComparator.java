@@ -7,7 +7,7 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 
-import cz.kojotak.arx.domain.Language;
+import cz.kojotak.arx.domain.enums.Language;
 
 /**
  * Enum comparator based on enum's names

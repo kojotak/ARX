@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
-import cz.kojotak.arx.domain.Language;
 import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.enums.Language;
 import cz.kojotak.arx.domain.mode.SinglePlayerMode;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.properties.Icons;

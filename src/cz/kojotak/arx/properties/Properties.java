@@ -7,7 +7,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Language;
+import cz.kojotak.arx.domain.enums.Language;
 import cz.kojotak.arx.util.NullResourceBundle;
 
 /**

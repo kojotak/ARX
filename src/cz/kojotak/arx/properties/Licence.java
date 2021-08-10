@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.properties;
 
-import cz.kojotak.arx.domain.Language;
+import cz.kojotak.arx.domain.enums.Language;
 
 
 
