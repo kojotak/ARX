@@ -33,6 +33,7 @@ public class SqliteImporter {
 			User user, 
 			User user2, 
 			long score, 
+			int position,
 			boolean finished, 
 			long duration) {
 	}
@@ -60,11 +61,17 @@ public class SqliteImporter {
 	
 	private static Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
 		Map<Integer, List<Score>> map = new HashMap<>();
-		String sql = "select id, game_id, user_id, user2_id, score, finished, play_time from score";
+		String sql = "select id, game_id, user_id, user2_id, score, finished, play_time from score order by game_id asc, score desc";
 		try(PreparedStatement stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
+				int lastGameId = -1, lastPosition = -1;
 				while(rs.next()) {
-					Game g = games.get(rs.getInt("game_id"));
+					int gameId = rs.getInt("game_id");
+					if(gameId!=lastGameId) {
+						lastPosition=0;
+						lastGameId=gameId;
+					}
+					Game g = games.get(gameId);
 					User u1 = users.get(rs.getObject("user_id"));
 					User u2 = users.get(rs.getObject("user_id"));
 					Score s = new Score(
@@ -72,6 +79,7 @@ public class SqliteImporter {
 							u1,
 							u2,
 							rs.getLong("score"),
+							++lastPosition,
 							rs.getBoolean("finished"),
 							rs.getLong("play_time")
 							);

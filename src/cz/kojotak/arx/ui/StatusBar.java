@@ -23,7 +23,6 @@ import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Mode;
 import cz.kojotak.arx.domain.ModeWithStatistics;
 import cz.kojotak.arx.properties.Localization;
-import cz.kojotak.arx.properties.Properties;
 import cz.kojotak.arx.ui.icon.ResizeIcon;
 
 /**
