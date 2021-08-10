@@ -313,7 +313,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			
 		try {
 			String line = null;
-			int competitiveGames = 0, noncompetitiveGames = 0, records = 0,readLines=0;
+			int mameGames = 0, amigaGames =0, noncompetitiveGames = 0, records = 0,readLines=0;
 			while ((line = reader.readLine()) != null) {
 				
 				readLines++;
@@ -339,10 +339,10 @@ public class LegacyImporter implements RunnableWithProgress{
 				String[] parts = data.split("','");
 				if (line.startsWith("INSERT INTO hry_mame")) {
 					importCompetitiveGame(parts);
-					competitiveGames++;// both single and double mode
+					mameGames++;// both single and double mode
 				} else if (line.startsWith("INSERT INTO hry_amiga")) {
 					importAmigaGame(parts);
-					competitiveGames++;
+					amigaGames++;
 				} else if (line.startsWith("INSERT INTO hry")) {
 					importNoncompetitiveGame(parts);
 					noncompetitiveGames++;
@@ -351,8 +351,8 @@ public class LegacyImporter implements RunnableWithProgress{
 					records++;
 				} 
 			}
-			log.info("done..., mame games=" + competitiveGames
-					+ ", amiga games=" + competitiveGames + ", noncompetitive games="
+			log.info("done..., mame games=" + mameGames
+					+ ", amiga games=" + amigaGames + ", noncompetitive games="
 					+ noncompetitiveGames + ", records=" + records+", read lines="+readLines);
 		} catch (IOException x) {
 			x.printStackTrace();
