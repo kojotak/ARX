@@ -78,11 +78,11 @@ public final class Application {
 	private Application() {
 		currentDir = System.getProperty("user.dir");
 
-//		try {
-//			LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
-//		} catch (Exception ex) {
-//			log.log(Level.SEVERE, "cannot reconfigure java.util.LogManager", ex);
-//		}
+		try {
+			java.util.logging.LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
+		} catch (Exception ex) {
+			log.log(Level.SEVERE, "cannot reconfigure java.util.LogManager", ex);
+		}
 		
 		log = getLogger(Application.class);
 		log.info("logger ready");
