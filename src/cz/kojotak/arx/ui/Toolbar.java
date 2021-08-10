@@ -12,7 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 import cz.kojotak.arx.ui.listener.ModeChangeListener;
 import cz.kojotak.arx.ui.renderer.IconizedTextListRenderer;
@@ -64,7 +64,7 @@ public class Toolbar extends JPanel {
 
 	private ComboBoxModel getGameModeComboBox() {
 		Application app = Application.getInstance();
-		List<Mode<?>> modes = app.getModes();
+		List<Mode> modes = app.getModes();
 		String[] names = new String[modes.size()];
 		for (int i = 0; i < modes.size(); i++) {
 			names[i] = modes.get(i).getName();

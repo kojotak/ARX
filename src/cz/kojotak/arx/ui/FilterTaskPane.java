@@ -12,7 +12,6 @@ import javax.swing.GroupLayout.ParallelGroup;
 import org.jdesktop.swingx.JXTaskPane;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
 /**
@@ -56,7 +55,6 @@ public class FilterTaskPane extends JXTaskPane {
 	
 	public void arrangeFilter(){
 		this.removeAll();
-		boolean showPlatformFilter=Application.getInstance().getCurrentMode() instanceof NoncompetetiveMode;
 		JPanel panel = new JPanel();
 		GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
@@ -65,10 +63,8 @@ public class FilterTaskPane extends JXTaskPane {
 		GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
 		ParallelGroup firstCol = layout.createParallelGroup();
 		ParallelGroup secondCol = layout.createParallelGroup();
-		if(showPlatformFilter){
-			firstCol.addComponent(platLab);
-			secondCol.addComponent(platformComboBox);
-		}
+		firstCol.addComponent(platLab);
+		secondCol.addComponent(platformComboBox);
 		firstCol.addComponent(catLab).addComponent(avaLab);
 		secondCol.addComponent(categoryComboBox).addComponent(availibilityComboBox);
 		hGroup.addGroup(firstCol);
@@ -81,10 +77,8 @@ public class FilterTaskPane extends JXTaskPane {
 				.addComponent(catLab).addComponent(categoryComboBox));
 		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 				.addComponent(avaLab).addComponent(availibilityComboBox));
-		if(showPlatformFilter){
-			vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
 					.addComponent(platLab).addComponent(platformComboBox));
-		}
 		layout.setVerticalGroup(vGroup);
 
 		this.add(panel);

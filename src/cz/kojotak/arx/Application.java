@@ -16,15 +16,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.LogManager;
+
+import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Language;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.User;
-import cz.kojotak.arx.domain.mode.AmigaMode;
-import cz.kojotak.arx.domain.mode.ArcadeMode;
-import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
+import cz.kojotak.arx.domain.mode.SinglePlayerMode;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
 import cz.kojotak.arx.properties.Icons;
 import cz.kojotak.arx.properties.Licence;
@@ -48,13 +47,11 @@ public final class Application {
 	private LegacyImporter importer;
 	private Language language;
 	private IconLoader iconLoader;
-	private AmigaMode amigaMode;
-	private ArcadeMode arcadeMode;
+	private SinglePlayerMode singlePlayerMode;
 	private TwoPlayerMode arcadeTwoPlayerMode;
-	private NoncompetetiveMode noncompetetiveMode;
-	private Mode<?> currentMode;
+	private Mode currentMode;
 	private MainWindow mainWindow;
-	private List<Mode<?>> modes;
+	private List<Mode> modes;
 	List<User> players = new ArrayList<User>();
 
 	public static String getRmDbUrl() {
@@ -70,26 +67,22 @@ public final class Application {
 	}
 
 	public void finishInitialization() {
-		this.arcadeMode = new ArcadeMode(importer);
+		this.singlePlayerMode = new SinglePlayerMode(importer);
 		this.arcadeTwoPlayerMode = new TwoPlayerMode(importer);
-		this.amigaMode = new AmigaMode(importer);
-		this.noncompetetiveMode = new NoncompetetiveMode(importer);
-		this.currentMode = arcadeMode;// FIXME
-		this.modes = new ArrayList<Mode<?>>();
-		this.modes.add(arcadeMode);
+		this.currentMode = singlePlayerMode;
+		this.modes = new ArrayList<Mode>();
+		this.modes.add(singlePlayerMode);
 		this.modes.add(arcadeTwoPlayerMode);
-		this.modes.add(amigaMode);
-		this.modes.add(noncompetetiveMode);
 	}
 
 	private Application() {
 		currentDir = System.getProperty("user.dir");
 
-		try {
-			LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
-		} catch (Exception ex) {
-			log.log(Level.SEVERE, "cannot reconfigure java.util.LogManager", ex);
-		}
+//		try {
+//			LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
+//		} catch (Exception ex) {
+//			log.log(Level.SEVERE, "cannot reconfigure java.util.LogManager", ex);
+//		}
 		
 		log = getLogger(Application.class);
 		log.info("logger ready");
@@ -117,6 +110,7 @@ public final class Application {
 		return currentDir + File.separator + "tmp";
 	}
 
+//	@EventSubscriber
 	public void setCurrentUser(User user) {
 		this.currentUser = user;
 	}
@@ -133,9 +127,9 @@ public final class Application {
 		return Logger.getLogger(whoCalls.getName());
 	}
 
-	public Mode<?> resolveMode(String str) {
-		Mode<?> mode = arcadeMode;// default
-		for (Mode<?> m : modes) {
+	public Mode resolveMode(String str) {
+		Mode mode = singlePlayerMode;// default
+		for (Mode m : modes) {
 			if (m.getName().equals(str)) {
 				mode = m;
 				break;
@@ -252,7 +246,7 @@ public final class Application {
 		return icons;
 	}
 
-	public Mode<?> getCurrentMode() {
+	public Mode getCurrentMode() {
 		return currentMode;
 	}
 
@@ -280,11 +274,11 @@ public final class Application {
 		return mainWindow;
 	}
 
-	public List<Mode<?>> getModes() {
+	public List<Mode> getModes() {
 		return modes;
 	}
 
-	public void setCurrentMode(Mode<?> currentMode) {
+	public void setCurrentMode(Mode currentMode) {
 		this.currentMode = currentMode;
 	}
 

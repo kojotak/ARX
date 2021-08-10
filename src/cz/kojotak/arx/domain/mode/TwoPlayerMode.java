@@ -15,11 +15,10 @@ import cz.kojotak.arx.ui.column.GameNameColumn;
  * @date 24.1.2010
  * @author Kojotak
  */
-public class TwoPlayerMode extends BaseMameMode {
+public class TwoPlayerMode extends Mode {
 
 	public TwoPlayerMode(LegacyImporter importer) {
-		super(importer.getMameDoubleGames());
-		this.cats = importer.getDoubleCategories();
+		super(importer.getDoublePlayerGames());
 	}
 	
 	@SuppressWarnings("unchecked")

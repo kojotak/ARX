@@ -12,7 +12,7 @@ import javax.swing.JScrollPane;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.event.ResizeRecordPanel;
 
 /**
@@ -28,7 +28,7 @@ public class RecordPanel extends JPanel {
 	JScrollPane scrollbars;
 	MainWindow window;
 
-	public RecordPanel(final MainWindow window,Mode<?> initMode) {
+	public RecordPanel(final MainWindow window,Mode initMode) {
 		super();
 		AnnotationProcessor.process(this);
 		//this.setPreferredSize(new Dimension(182,this.getHeight()));
@@ -38,7 +38,7 @@ public class RecordPanel extends JPanel {
 		setRecordTable(initMode);	
 	}
 	
-	public void setRecordTable(Mode<?> mode){
+	public void setRecordTable(Mode mode){
 		if(table!=null){
 			this.remove(table);
 			System.err.println("removing old record table");

@@ -24,7 +24,7 @@ import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.WithStatistics;
@@ -126,17 +126,17 @@ public class GameTable extends JXTable {
 		this.setRowSorter(sorter);
 	}
 
-	private Mode<?> mode=null;
+	private Mode mode=null;
 	private User user=null;
 	private User opponent=null;
 	
 	@EventSubscriber
-	public void updateMode(Mode<?> mode){
+	public void updateMode(Mode mode){
 		this.mode=mode;
 		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
 		this.setColumnModel(cm);//got new column model
 		logger.info("setting new mode: "+this.mode);
-		this.recalculate();
+		recalculate();
 	}
 	
 	@EventSubscriber
@@ -157,32 +157,31 @@ public class GameTable extends JXTable {
 	 * helper method to set new table model
 	 */
 	private void recalculate() {
-		Application.getLogger(this).fine(
-				"setting new game table model for " + user + " and " + mode);
+		Application.getLogger(this).fine("setting new game table model for " + user + " and " + mode);
 
 		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
 		Application.getLogger(this).fine(
 				"new model has rows: " + model.getRowCount());
 
-		if (CompetitiveGame.class.isAssignableFrom(mode.getGameType())) {
-			Application.getLogger(this).fine("calculating statistics for user " + user + " in mode "+ mode);
-			for (Game game : mode.getGames()) {
-				if (!(game instanceof CompetitiveGame)) {
-					throw new IllegalStateException(
-							"This model is not suitable for non competetive game");
-				}
-				CompetitiveGame cmp = CompetitiveGame.class.cast(game);
-				GameStatistics stats = new GameStatistics(cmp, user, opponent);
-				if (!(game instanceof WithStatistics)) {
-					throw new IllegalStateException(
-							"This model is not suitable for games without statistics");
-				}
-				WithStatistics ws = WithStatistics.class.cast(game);
-				ws.setStatistics(stats);
+		Application.getLogger(this).fine("calculating statistics for user " + user + " in mode "+ mode);
+		for (Game game : mode.getGames()) {
+			if (!(game instanceof CompetitiveGame)) {
+				throw new IllegalStateException(
+						"This model is not suitable for non competetive game");
 			}
+			CompetitiveGame cmp = CompetitiveGame.class.cast(game);
+			GameStatistics stats = new GameStatistics(cmp, user, opponent);
+			if (!(game instanceof WithStatistics)) {
+				throw new IllegalStateException(
+						"This model is not suitable for games without statistics");
+			}
+			WithStatistics ws = WithStatistics.class.cast(game);
+			ws.setStatistics(stats);
 		}
 		this.setModel(model);
-		this.updateGameFilter(null);// have to apply filter on update table model
+		FilterModel filter = new FilterModel();
+		filterModel.setPlatform(LegacyPlatform.MAME.toPlatform());
+		this.updateGameFilter(filter);
 	}
 
 	@Override

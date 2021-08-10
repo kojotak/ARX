@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 import org.bushe.swing.event.EventBus;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.FilterTaskPane;
 import cz.kojotak.arx.ui.MainWindow;
 
@@ -36,7 +36,7 @@ public class ModeChangeListener implements ActionListener {
 		JComboBox<String> cb = (JComboBox<String>) event.getSource();
 		String name = (String) cb.getSelectedItem();
 		Application app = Application.getInstance();
-		Mode<?> mode = app.resolveMode(name);
+		Mode mode = app.resolveMode(name);
 		Application.getInstance().setCurrentMode(mode);
 		//window.changeTable();//getGameTable().updateTableModel();
 		FilterTaskPane filter = window.getSidebar().getFilter();

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.column.BaseColumn;
 
 /**
@@ -18,7 +18,7 @@ public class GenericTableColumnModel extends DefaultTableColumnModelExt {
 
 	private static final long serialVersionUID = -2691309236663415142L;
 	
-	public GenericTableColumnModel(Mode<?> mode) {
+	public GenericTableColumnModel(Mode mode) {
 		this(mode.getColumns());
 	}
 	

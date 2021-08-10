@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.ModeWithStatistics;
 import cz.kojotak.arx.properties.Localization;
 import cz.kojotak.arx.ui.icon.ResizeIcon;
@@ -58,7 +58,7 @@ public class StatusBar extends JPanel {
 			.append(" ").append(DB_VERSION.format(updated)).toString():"?";
 		
 		contentPanel = new JPanel();
-		Mode<?> mode = app.getCurrentMode();
+		Mode mode = app.getCurrentMode();
 		if(mode instanceof ModeWithStatistics){
 			ModeWithStatistics mws = ModeWithStatistics.class.cast(mode);
 			String games = new StringBuilder(loc.getString(this, "GAMES"))

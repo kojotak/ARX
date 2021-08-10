@@ -75,7 +75,7 @@ public class DetailTaskPane extends JXTaskPane{
 		try{
 			link.setURI(new URI(uri));
 		}catch(URISyntaxException ex){
-			Application.getLogger(this).log(Level.SEVERE, "cannot set uri "+uri,ex);
+			Application.getLogger(this).log(Level.WARNING, "cannot set uri "+uri);
 		}
 		setHyperlink();
 		

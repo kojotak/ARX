@@ -20,7 +20,7 @@ import org.jdesktop.swingx.JXTable;
 
 import cz.kojotak.arx.domain.CompetitiveGame;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.impl.GameStatistics;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
@@ -55,13 +55,13 @@ public class RecordTable extends JXTable {
 		this.setColumnControlVisible(true);
 	}
 	
-	public static RecordTable createRecordTable(Mode<?> mode){
+	public static RecordTable createRecordTable(Mode mode){
 		List<BaseColumn<?,?>> cols = getColumns(mode);
 		RecordTable rt = new RecordTable(cols);
 		return rt;
 	}
 	
-	private static List<BaseColumn<?,?>> getColumns(Mode<?> mode){
+	private static List<BaseColumn<?,?>> getColumns(Mode mode){
 		List<BaseColumn<?,?>> cols = new ArrayList<BaseColumn<?,?>>();
 		cols.add(new PositionColumn());
 		
@@ -78,7 +78,7 @@ public class RecordTable extends JXTable {
 	}
 
 	@EventSubscriber
-	public void onModeChange(Mode<?> mode){
+	public void onModeChange(Mode mode){
 		List<BaseColumn<?,?>> cols = getColumns(mode);
 		this.cols=cols;
 		@SuppressWarnings("unchecked")TableModel tm = new GenericTableModel(Collections.emptyList(),cols);

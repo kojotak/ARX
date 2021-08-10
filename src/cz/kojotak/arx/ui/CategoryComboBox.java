@@ -21,7 +21,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.renderer.CategoryListCellRenderer;
@@ -58,7 +58,7 @@ public class CategoryComboBox extends JComboBox<Category> {
 	}
 
 	@EventSubscriber
-	public void updateCategoryListModel(Mode<?> mode) {
+	public void updateCategoryListModel(Mode mode) {
 		Application app = Application.getInstance();
 		Set<Category> catSet = mode.getCategories();
 		Vector<Category> v = new Vector<Category>();

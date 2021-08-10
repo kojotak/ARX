@@ -30,26 +30,21 @@ public class PlayerComboBox extends JComboBox<User> {
 
 	public PlayerComboBox() {
 		super();
-		this.setModel(getUsersComboBox());
+		this.setModel(createModel());
 		this.setEditable(false);
-		this.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				JComboBox<User> cb = (JComboBox) event.getSource();
-				User usrName = (User) cb.getSelectedItem();
-				Application.getInstance().setCurrentUser(usrName);
-				EventBus.publish(Application.getInstance().getCurrentUser());
-				Application.getLogger(this).info("selected user " + usrName);
-
-			}
-
+		this.addActionListener(event->{
+			JComboBox<User> cb = (JComboBox) event.getSource();
+			User usrName = (User) cb.getSelectedItem();
+			Application.getInstance().setCurrentUser(usrName);
+			EventBus.publish(Application.getInstance().getCurrentUser());
+			Application.getLogger(this).info("selected user " + usrName);
 		});
 		this.setRenderer(new PlayerListRenderer());
 		this.setPreferredSize(new Dimension(this.getPreferredSize().width,28));
 	}
 
 
-	private ComboBoxModel<User> getUsersComboBox() {
+	private ComboBoxModel<User> createModel() {
 		Application app = Application.getInstance();
 		List<User> usrNames = app.getPlayers();
 		//usrNames.add(ADD_NEW);

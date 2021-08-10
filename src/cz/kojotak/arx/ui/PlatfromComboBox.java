@@ -17,7 +17,7 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.event.FilterModel;
@@ -55,13 +55,19 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 	}
 
 	@EventSubscriber
-	public void updateListModel(Mode<?> mode) {
+	public void updateListModel(Mode mode) {
 		Set<Platform> platforms = mode.getPlatforms();
 		Vector<Platform> v = new Vector<Platform>();
 		v.add(LegacyPlatform.ALL.toPlatform());
 		v.addAll(platforms);
 		ComboBoxModel<Platform> model = new DefaultComboBoxModel<Platform>(v);
 		this.setModel(model);
+		for(Platform p: platforms) {
+			//preselect arcade platform
+			if(LegacyPlatform.MAME.toPlatform().equals(p)) {
+				model.setSelectedItem(p);
+			}
+		}
 	}
 
 }

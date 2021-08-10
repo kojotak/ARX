@@ -15,8 +15,7 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Mode;
-import cz.kojotak.arx.domain.mode.NoncompetetiveMode;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
 
@@ -63,7 +62,7 @@ public class MainWindow extends JFrame {
 
 		
 		//changeTable();
-		Mode<?> mode = app.getCurrentMode();
+		Mode mode = app.getCurrentMode();
 		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
 		@SuppressWarnings("unchecked")GenericTableModel<?> tm = new GenericTableModel(mode.getGames(),mode.getColumns());
 		table = new GameTable(tm,cm);
@@ -97,8 +96,8 @@ public class MainWindow extends JFrame {
 	}
 	
 	@EventSubscriber
-	public void switchRecordPanel(Mode<?> mode){
-		boolean showRecords = !(mode instanceof NoncompetetiveMode);
+	public void switchRecordPanel(Mode mode){
+		boolean showRecords = true;
 		boolean added=false;
 		for(Component c:upperPanel.getComponents()){
 			if(c.equals(records)){
@@ -106,9 +105,6 @@ public class MainWindow extends JFrame {
 				break;
 			}
 		}
-//		if(showRecords){
-//			records.setRecordTable(mode);
-//		}
 		if(showRecords && !added){
 			upperPanel.add(records, BorderLayout.EAST);
 		}else if(!showRecords && added){
@@ -117,7 +113,7 @@ public class MainWindow extends JFrame {
 	}
 
 //	@EventSubscriber
-//	public void changeTable(Mode<?> mode){
+//	public void changeTable(Mode mode){
 //		GenericTableColumnModel cm=new GenericTableColumnModel(mode);
 //		@SuppressWarnings("unchecked")GenericTableModel<?> tm = new GenericTableModel(mode.getGames(),mode.getColumns());
 //		if(table!=null){
