@@ -40,6 +40,7 @@ public class LegacyImporter implements RunnableWithProgress{
 	
 	private Map<String, Game> gamesSingle;
 	private Map<String, Game> gamesDouble;
+	private Map<String, Float> avgRatings = new HashMap<>();
 	
 	private Set<User> singlePlayers = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
@@ -139,8 +140,8 @@ public class LegacyImporter implements RunnableWithProgress{
 		//Integer hracu = Integer.parseInt(parts[7]);
 		Platform platform = LegacyPlatform.resolve(parts[6]).toPlatform();
 
-		Game game = new Game(id, cat, platform, title, file);
-		game.setAverageRatings(hodnoceni);
+		Game game = new Game(id, cat, platform, title, file, null);
+		avgRatings.put(id, hodnoceni);
 		//game.setPlayerCount(hracu);
 		this.gamesSingle.put(id, game);
 	}
@@ -163,11 +164,10 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
-		Game game = new Game(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file);
+		Game game = new Game(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file, pravidla);
 		game.setFirstPlayerSign(prvni);
 		gamesSingle.put(id, game);
-		game.setRules(pravidla);
-		game.setAverageRatings(hodnoceni);
+		avgRatings.put(id, hodnoceni);
 	}
 
 	private void importGame(String[] parts) {
@@ -193,13 +193,13 @@ public class LegacyImporter implements RunnableWithProgress{
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			Game singleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
+			Game singleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
 			game = singleGame;
 			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			Game doubleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file);
+			Game doubleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");
@@ -213,8 +213,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			gamesDouble.put(id, doubleGame);
 		}
 
-		game.setRules(pravidla);
-		game.setAverageRatings(hodnoceni);
+		avgRatings.put(id, hodnoceni);
 	}
 	
 	private Supplier<InputStream> in;
@@ -245,7 +244,12 @@ public class LegacyImporter implements RunnableWithProgress{
 				Score r = game.getRecords().get(i);
 				int pos = i+1;
 				Integer points = points(r.score(), topScore, pos, players);
-				Score ns = new Score(r.score(), points, r.rating(), r.finished(), r.duration(), pos, r.player(), r.secondPlayer());
+				Float rating = r.rating();
+				if(rating == null) {
+					//workaround for missing ratings
+					rating = avgRatings.get(game.getId());
+				}
+				Score ns = new Score(r.score(), points, rating, r.finished(), r.duration(), pos, r.player(), r.secondPlayer());
 				positioned.add(ns);
 			}
 			game.setRecords(positioned);

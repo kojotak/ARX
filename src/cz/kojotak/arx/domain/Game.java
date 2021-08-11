@@ -13,26 +13,26 @@ import java.util.Objects;
  */
 public class Game implements WithStatistics {
 
-	private Category category;
-	private String title;
-	private String file;
-	private String id;
-	private Float averageRatings;
-	private Platform platform;
+	private final Category category;
+	private final String title;
+	private final String file;
+	private final String id;
+	private final Platform platform;
 	
-	private String rules;
+	private final String rules;
 	private String firstPlayerSign;
 	private String secondPlayerSign;
 	protected GameStatistics statistics;
 	protected List<Score> records = Collections.emptyList();
 
-	public Game(String id, Category category, Platform platform, String title, String file) {
+	public Game(String id, Category category, Platform platform, String title, String file, String rules) {
 		super();
 		this.category = category;
 		this.file = file;
 		this.title = title;
 		this.id = id;
 		this.platform = platform;
+		this.rules = rules;
 	}
 	
 	@Override
@@ -48,9 +48,6 @@ public class Game implements WithStatistics {
 	}
 	public String getRules() {
 		return rules;
-	}
-	public void setRules(String rules) {
-		this.rules = rules;
 	}
 	public Integer getPlayerCount() {
 		return records.size();
@@ -73,15 +70,6 @@ public class Game implements WithStatistics {
 	public void setSecondPlayerSign(String secondPlayerSign) {
 		this.secondPlayerSign = secondPlayerSign;
 	}	
-
-	public Float getAverageRatings() {
-		return averageRatings;
-	}
-
-	public void setAverageRatings(Float averageRatings) {
-		this.averageRatings = averageRatings;
-	}
-
 	public Category getCategory() {
 		return category;
 	}
@@ -102,10 +90,6 @@ public class Game implements WithStatistics {
 		return platform;
 	}
 	
-	public void setPlatform(Platform platform){
-		this.platform=platform;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -121,6 +105,18 @@ public class Game implements WithStatistics {
 			return false;
 		Game other = (Game) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public Float getAverageRatings() {
+		Float sum = 0F;
+		int cnt = 0;
+		for(Score s: records) {
+			if(s.rating()!=null) {
+				cnt++;
+				sum+=s.rating();
+			}
+		}
+		return cnt > 0 ? sum / cnt : null;
 	}
 	
 }

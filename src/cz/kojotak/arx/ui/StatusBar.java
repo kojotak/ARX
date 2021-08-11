@@ -18,7 +18,6 @@ import java.util.logging.Level;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -35,7 +34,7 @@ import cz.kojotak.arx.ui.icon.ResizeIcon;
  */
 public class StatusBar extends JPanel {
 
-	private static final long serialVersionUID = -3597115112954423753L;
+	private static final long serialVersionUID = 1L;
 	protected JPanel contentPanel;
 	SimpleDateFormat DB_VERSION = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 	JLabel gamesLabel = new JLabel();
