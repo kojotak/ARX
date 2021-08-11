@@ -103,8 +103,6 @@ public class SqliteImporter implements Importer {
 	
 	private Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
 		Map<Integer, GameStats> stats = loadGameStats(conn);
-		
-		//game_id -> list<Score>
 		Map<Integer, List<Score>> map = new HashMap<>();
 		String sql = "select game_id, user_id, user2_id, score, finished, play_time from score order by game_id asc, score desc";
 		try(PreparedStatement stm = conn.prepareStatement(sql)){
@@ -119,19 +117,16 @@ public class SqliteImporter implements Importer {
 					Game g = games.get(gameId);
 					GameStats stat = stats.get(gameId);
 					long score = rs.getLong("score");
-					User u1 = users.get(rs.getObject("user_id"));
-					User u2 = users.get(rs.getObject("user_id"));
 					Integer position = ++lastPosition;
-					Integer points = points(score, position, stat);
 					Score s = new Score(
 							score,
-							points,
+							points(score, position, stat),
 							null, //rating
 							rs.getBoolean("finished"),
 							rs.getInt("play_time"),
 							position,
-							u1,
-							u2
+							users.get(rs.getObject("user_id")),
+							users.get(rs.getObject("user_id"))
 							);
 					List<Score> scores = map.getOrDefault(g.getId(), new ArrayList<>());
 					scores.add(s);
