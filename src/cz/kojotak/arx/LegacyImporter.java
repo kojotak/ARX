@@ -38,9 +38,9 @@ public class LegacyImporter implements RunnableWithProgress{
 	
 	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/rotaxmame_databaze.gz?raw=true";
 	
-	private Map<String, Game> gamesSingle;
-	private Map<String, Game> gamesDouble;
-	private Map<String, Float> avgRatings = new HashMap<>();
+	private Map<Integer, Game> gamesSingle;
+	private Map<Integer, Game> gamesDouble;
+	private Map<Integer, Float> avgRatings = new HashMap<>();
 	
 	private Set<User> singlePlayers = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
@@ -76,7 +76,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		// (hra_id,zkratka,skore,dohrano,doba,emulator)
 		// ('39663','VLD','29200','0','93','mame')
 		String emulator = parts[5];
-		String id = parts[0];
+		int id = Integer.parseInt(parts[0]);
 		String userParts = parts[1];
 		
 		String[] players = userParts.split("\\s");
@@ -126,7 +126,7 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	private void importNonGame(String[] parts) {
 		// id,nazev,soubor,kategorie_id,hodnoceni,freeware,emulator,pocet_hracu)
-		String id = parts[0];
+		int id = Integer.parseInt(parts[0]);
 		String title = parts[1];
 		String file = parts[2];
 		Category cat = LegacyCategory.resolve(parts[3]).toCategory();
@@ -134,7 +134,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		//Integer hracu = Integer.parseInt(parts[7]);
 		Platform platform = LegacyPlatform.resolve(parts[6]).toPlatform();
 
-		Game game = new Game(id, cat, platform, title, file, null);
+		Game game = new Game(id, null, cat, platform, title, file, null);
 		avgRatings.put(id, hodnoceni);
 		//game.setPlayerCount(hracu);
 		this.gamesSingle.put(id, game);
@@ -142,7 +142,7 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	private void importAmigaGame(String[] parts) {
 		// (id,nazev,soubor,kategorie_id,pravidla,hrajesena,hodnoceni,prvni_zkratka,pocet_hracu,freeware,md5_disk1,md5_cfg,md5_start,emulator)
-		String id = parts[0];
+		int id = Integer.parseInt(parts[0]);
 		String title = parts[1];
 		String file = parts[2];
 		Category cat = LegacyCategory.resolve(parts[3]).toCategory();
@@ -158,7 +158,7 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
-		Game game = new Game(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file, pravidla);
+		Game game = new Game(id, null, cat, LegacyPlatform.AMIGA.toPlatform(), title, file, pravidla);
 		gamesSingle.put(id, game);
 		avgRatings.put(id, hodnoceni);
 	}
@@ -169,7 +169,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			// FIXME log
 			return;
 		}
-		String id = parts[0];
+		int id = Integer.parseInt(parts[0]);
 		String title = parts[1];
 		String file = parts[2];
 		Category cat = LegacyCategory.resolve(parts[3]).toCategory();
@@ -186,12 +186,12 @@ public class LegacyImporter implements RunnableWithProgress{
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			Game singleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
+			Game singleGame = new Game(id, null, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
 			game = singleGame;
 			gamesSingle.put(id, singleGame);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			Game doubleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
+			Game doubleGame = new Game(id, null, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");
@@ -210,12 +210,12 @@ public class LegacyImporter implements RunnableWithProgress{
 
 	public LegacyImporter(Supplier<InputStream> in){
 		log = Application.getLogger(this);
-		gamesSingle = new HashMap<String, Game>(2000);
-		gamesDouble = new HashMap<String, Game>(200);
+		gamesSingle = new HashMap<Integer, Game>(2000);
+		gamesDouble = new HashMap<Integer, Game>(200);
 		this.in=in;
 	}
 	
-	List<Game> prepareGames(Map<String, Game> map) {
+	List<Game> prepareGames(Map<Integer, Game> map) {
 		if(map==null || map.isEmpty()){
 			return Collections.emptyList();
 		}

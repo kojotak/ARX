@@ -16,15 +16,17 @@ public class Game implements WithStatistics {
 	private final Category category;
 	private final String title;
 	private final String file;
-	private final String id;
+	private final int id;
 	private final Platform platform;
 	private final String rules;
+	private final Game parent;
 	protected final List<Score> records = new ArrayList<>();
 	
 	protected GameStatistics statistics;
 
-	public Game(String id, Category category, Platform platform, String title, String file, String rules) {
+	public Game(int id, Game parent, Category category, Platform platform, String title, String file, String rules) {
 		super();
+		this.parent = parent;
 		this.category = category;
 		this.file = file;
 		this.title = title;
@@ -38,6 +40,9 @@ public class Game implements WithStatistics {
 		return getClass().getSimpleName()+":"+title;
 	}
 
+	public Game getParent() {
+		return parent;
+	}
 	public List<Score> getRecords() {
 		return records;
 	}
@@ -65,7 +70,7 @@ public class Game implements WithStatistics {
 		return file;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 	

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import cz.kojotak.arx.domain.Category;
+import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
@@ -19,17 +20,6 @@ import cz.kojotak.arx.domain.User;
 public class SqliteImporter {
 
 	final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
-	
-	static record Game(int id, 
-			String name, 
-			String rules, 
-			Platform platform, 
-			Category category, 
-			String file,
-			int modeMax,
-			Game parent,
-			String command) {
-	}
 	
 	public static void main(String[] args) {
 		SqliteImporter importer = new SqliteImporter();
@@ -85,9 +75,9 @@ public class SqliteImporter {
 							u1,
 							u2
 							);
-					List<Score> scores = map.getOrDefault(g.id(), new ArrayList<>());
+					List<Score> scores = map.getOrDefault(g.getId(), new ArrayList<>());
 					scores.add(s);
-					map.put(g.id(), scores);
+					map.put(g.getId(), scores);
 				}
 			}
 		} catch (SQLException e) {
@@ -155,16 +145,16 @@ public class SqliteImporter {
 					Game parent = map.get(rs.getInt("parent_id"));
 					Game g = new Game(
 							rs.getInt("id"),
-							rs.getString("name"), 
-							rs.getString("rules"), 
-							p,
-							c,
-							rs.getString("file_command"),
-							rs.getInt("mode_max"),
 							parent,
-							rs.getString("rm_commands")
+							c,
+							p,
+							rs.getString("name"), 
+							rs.getString("file_command"),
+							rs.getString("rules")//, 
+//							rs.getInt("mode_max"),
+//							rs.getString("rm_commands")
 							);
-					map.put(g.id(), g);
+					map.put(g.getId(), g);
 				}
 			}
 		} catch (SQLException e) {
