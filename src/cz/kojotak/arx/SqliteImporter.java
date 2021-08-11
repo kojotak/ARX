@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -29,9 +32,9 @@ public class SqliteImporter implements Importer {
 		SqliteImporter importer = new SqliteImporter();
 		importer.run();
 		
-		for(Integer gameId : importer.games.keySet()) {
-			System.out.println("Game: " + importer.games.get(gameId) + "\n\tscores: " + importer.scores.get(gameId));
-		}
+//		for(Integer gameId : importer.games.keySet()) {
+//			System.out.println("Game: " + importer.games.get(gameId) + "\n\tscores: " + importer.scores.get(gameId));
+//		}
 	}
 	
 	@Override
@@ -56,8 +59,7 @@ public class SqliteImporter implements Importer {
 
 	@Override
 	public Date getLastUpdate() {
-		// TODO Auto-generated method stub
-		return null;
+		return lastUpdate;
 	}
 
 	@Override
@@ -85,20 +87,19 @@ public class SqliteImporter implements Importer {
 			log.info("...imported " + games.size() + " games");
 			scores = loadScores(conn, games, users);
 			log.info("...imported " + scores.size() + " scores");
+			lastUpdate = loadLastUpdated(conn);
+			log.info("...imported " + lastUpdate + " as last update");
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to import DB from " + url);
 		}
 	}
 
+	private Date lastUpdate;
 	private Map<Integer, Platform> platforms;
 	private Map<Integer, Category> categories;
 	private Map<Integer, User> users;
 	private Map<Integer, Game> games;
 	private Map<Integer, List<Score>> scores;
-	
-	public SqliteImporter() {
-		 
-	}
 	
 	private Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
 		Map<Integer, GameStats> stats = loadGameStats(conn);
@@ -258,4 +259,23 @@ public class SqliteImporter implements Importer {
 		return map;
 	}
 
+	private Date loadLastUpdated(Connection conn) {
+		String sql = "select max(last_update_time) as lastUpdate from info";
+		try(PreparedStatement stm = conn.prepareStatement(sql)){
+			try(ResultSet rs = stm.executeQuery()){
+				String str = rs.getString("lastUpdate");
+				if(str!=null) {
+					DateFormat df = new SimpleDateFormat("d.M.yyyy mm:HH:ss");
+					try {
+						return df.parse(str);
+					} catch (ParseException e) {
+						Application.getLogger(this).log(Level.SEVERE,"Can not parse last update time: " +str,e);
+					}
+				}
+			} 
+		} catch (SQLException e) {
+			Application.getLogger(this).log(Level.SEVERE,"Can not load last update time",e);
+		} 
+		return null;
+	}
 }
