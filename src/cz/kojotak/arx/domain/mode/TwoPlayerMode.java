@@ -6,6 +6,7 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.kojotak.arx.Importer;
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.ui.column.BaseColumn;
@@ -17,7 +18,7 @@ import cz.kojotak.arx.ui.column.GameNameColumn;
  */
 public class TwoPlayerMode extends Mode {
 
-	public TwoPlayerMode(LegacyImporter importer) {
+	public TwoPlayerMode(Importer importer) {
 		super(importer.getDoublePlayerGames());
 	}
 	

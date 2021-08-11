@@ -6,6 +6,7 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.kojotak.arx.Importer;
 import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
@@ -32,7 +33,7 @@ public class SinglePlayerMode extends Mode  {
 
 	private LegacyCategory category=null;
 
-	public SinglePlayerMode(LegacyImporter importer) {
+	public SinglePlayerMode(Importer importer) {
 		super(importer.getSinglePlayerGames());
 	}
 	

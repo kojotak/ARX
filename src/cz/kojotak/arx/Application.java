@@ -19,8 +19,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bushe.swing.event.annotation.EventSubscriber;
-
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.User;
@@ -46,7 +44,7 @@ public final class Application {
 	private Licence licence;
 	private Icons icons;
 	private final Downloader downloader;
-	private LegacyImporter importer;
+	private Importer importer;
 	private Language language;
 	private IconLoader iconLoader;
 	private SinglePlayerMode singlePlayerMode;
@@ -103,6 +101,7 @@ public final class Application {
 		downloader = new Downloader(LegacyImporter.RM_DB_URL);
 		//importer = new LegacyImporter(this::getDBInputStream); 
 		importer = new LegacyImporter(downloader::getDBInputStream);
+		//importer = new SqliteImporter();//TODO make it work
 	}
 
 	public String getTmpDir() {
@@ -259,7 +258,7 @@ public final class Application {
 		return licence;
 	}
 
-	public LegacyImporter getImporter() {
+	public Importer getImporter() {
 		return importer;
 	}
 

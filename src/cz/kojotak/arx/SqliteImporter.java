@@ -6,10 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
@@ -17,30 +21,83 @@ import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
 
-public class SqliteImporter {
+public class SqliteImporter implements Importer {
 
 	final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
 	
 	public static void main(String[] args) {
 		SqliteImporter importer = new SqliteImporter();
-        try (Connection conn = DriverManager.getConnection(url)) {
-            System.out.println("Connection to SQLite has been established.");
-            
-            Map<Integer, Platform> platforms = importer.loadPlatforms(conn);
-            Map<Integer, Category> categories = importer.loadCategories(conn);
-            Map<Integer, User> users = importer.loadUsers(conn);
-            Map<Integer, Game> games = importer.loadGames(conn, platforms, categories);
-            
-            //game id -> list of scores
-            Map<Integer, List<Score>> scores = importer.loadScores(conn, games, users);
-            
-            for(Integer gameId : games.keySet()) {
-            	System.out.println("Game: " + games.get(gameId) + "\n\tscores: " + scores.get(gameId));
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        } 
+		importer.run();
 		
+		for(Integer gameId : importer.games.keySet()) {
+			System.out.println("Game: " + importer.games.get(gameId) + "\n\tscores: " + importer.scores.get(gameId));
+		}
+	}
+	
+	@Override
+	public Collection<User> getPlayers() {
+		return users.values();
+	}
+	
+	@Override
+	public List<Game> getSinglePlayerGames() {
+		return games.values().stream()
+				.sorted(Comparator.comparing(Game::getTitle))
+				.toList();
+	}
+
+	@Override
+	public List<Game> getDoublePlayerGames() {
+		return games.values().stream()
+				.filter(g->g.getModeMax()>1)
+				.sorted(Comparator.comparing(Game::getTitle))
+				.toList();
+	}
+
+	@Override
+	public Date getLastUpdate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long max() {
+		return -1;
+	}
+
+	@Override
+	public long current() {
+		return -1;
+	}
+
+	@Override
+	public void run() {
+		Logger log = Application.getLogger(this);
+		try (Connection conn = DriverManager.getConnection(url)) {
+			log.info("Connection to SQLite has been established.");
+			platforms = loadPlatforms(conn);
+			log.info("...imported " + platforms.size() + " platforms");
+			categories = loadCategories(conn);
+			log.info("...imported " + categories.size() + " categories");
+			users = loadUsers(conn);
+			log.info("...imported " + users.size() + " players");
+			games = loadGames(conn, platforms, categories);
+			log.info("...imported " + games.size() + " games");
+			scores = loadScores(conn, games, users);
+			log.info("...imported " + scores.size() + " scores");
+		} catch (SQLException e) {
+			throw new RuntimeException("Failed to import DB from " + url);
+		}
+	}
+
+	private Map<Integer, Platform> platforms;
+	private Map<Integer, Category> categories;
+	private Map<Integer, User> users;
+	private Map<Integer, Game> games;
+	private Map<Integer, List<Score>> scores;
+	
+	public SqliteImporter() {
+		 
 	}
 	
 	private Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
@@ -150,8 +207,8 @@ public class SqliteImporter {
 							p,
 							rs.getString("name"), 
 							rs.getString("file_command"),
-							rs.getString("rules")//, 
-//							rs.getInt("mode_max"),
+							rs.getString("rules"), 
+							rs.getInt("mode_max")
 //							rs.getString("rm_commands")
 							);
 					map.put(g.getId(), g);

@@ -34,7 +34,7 @@ import cz.kojotak.arx.util.TitleBasedGameComparator;
  * @date 26.9.2010
  * @author Kojotak
  */
-public class LegacyImporter implements RunnableWithProgress{	
+public class LegacyImporter implements RunnableWithProgress, Importer{	
 	
 	public static final String RM_DB_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/rotaxmame_databaze.gz?raw=true";
 	
@@ -135,7 +135,7 @@ public class LegacyImporter implements RunnableWithProgress{
 		//Integer hracu = Integer.parseInt(parts[7]);
 		Platform platform = LegacyPlatform.resolve(parts[6]).toPlatform();
 
-		Game game = new Game(id, null, cat, platform, title, file, null);
+		Game game = new Game(id, null, cat, platform, title, file, null,1);
 		avgRatings.put(id, hodnoceni);
 		//game.setPlayerCount(hracu);
 		this.gamesSingle.put(id, game);
@@ -159,7 +159,7 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5disk1 = parts[10];
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
-		Game game = new Game(id, null, cat, LegacyPlatform.AMIGA.toPlatform(), title, file, pravidla);
+		Game game = new Game(id, null, cat, LegacyPlatform.AMIGA.toPlatform(), title, file, pravidla,1);
 		gamesSingle.put(id, game);
 		avgRatings.put(id, hodnoceni);
 	}
@@ -187,12 +187,12 @@ public class LegacyImporter implements RunnableWithProgress{
 
 		if ("mame".equals(emulator)) {
 			// do single mame game specific stuff
-			Game singleGame = new Game(id, null, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
+			Game singleGame = new Game(id, null, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla,1);
 			game = singleGame;
 			gamesSingle.put(id, singleGame);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
-			Game doubleGame = new Game(id, null, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
+			Game doubleGame = new Game(id, null, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla,2);
 			game = doubleGame;
 			if (prvni != null) {
 				String[] players = prvni.split("\\s");

@@ -20,11 +20,12 @@ public class Game implements WithStatistics {
 	private final Platform platform;
 	private final String rules;
 	private final Game parent;
+	private final int modeMax;
 	protected final List<Score> records = new ArrayList<>();
 	
 	protected GameStatistics statistics;
 
-	public Game(int id, Game parent, Category category, Platform platform, String title, String file, String rules) {
+	public Game(int id, Game parent, Category category, Platform platform, String title, String file, String rules, int modeMax) {
 		super();
 		this.parent = parent;
 		this.category = category;
@@ -33,13 +34,16 @@ public class Game implements WithStatistics {
 		this.id = id;
 		this.platform = platform;
 		this.rules = rules;
+		this.modeMax = modeMax;
 	}
 	
 	@Override
 	public String toString() {
 		return getClass().getSimpleName()+":"+title;
 	}
-
+	public int getModeMax() {
+		return modeMax;
+	}
 	public Game getParent() {
 		return parent;
 	}
