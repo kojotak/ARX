@@ -69,13 +69,7 @@ public class LegacyImporter implements RunnableWithProgress{
 			log.fine("No game found for record " + record);
 			return;
 		}
-		List<Score> records = game.getRecords();
-		if (records == null || records.size() == 0) {
-			// null or maybe imutable
-			records = new ArrayList<>();
-			game.setRecords(records);
-		}
-		records.add(record);
+		game.getRecords().add(record);
 	}
 
 	private void importRecord(String[] parts) {
@@ -165,7 +159,6 @@ public class LegacyImporter implements RunnableWithProgress{
 //		String md5cfg = parts[11];
 //		String md5start = parts[12];
 		Game game = new Game(id, cat, LegacyPlatform.AMIGA.toPlatform(), title, file, pravidla);
-		game.setFirstPlayerSign(prvni);
 		gamesSingle.put(id, game);
 		avgRatings.put(id, hodnoceni);
 	}
@@ -195,7 +188,6 @@ public class LegacyImporter implements RunnableWithProgress{
 			// do single mame game specific stuff
 			Game singleGame = new Game(id, cat, LegacyPlatform.MAME.toPlatform(), title, file, pravidla);
 			game = singleGame;
-			game.setFirstPlayerSign(prvni);
 			gamesSingle.put(id, singleGame);
 		} else if ("mame2".equals(emulator)) {
 			// do double mame game specific stuff
@@ -206,8 +198,6 @@ public class LegacyImporter implements RunnableWithProgress{
 				if (players.length == 2) {
 					// prvni bude ten, kdo je drive v abecede
 					boolean reverse = players[0].compareTo(players[1]) > 0;
-					doubleGame.setFirstPlayerSign(players[reverse ? 1 : 0]);
-					doubleGame.setSecondPlayerSign(players[reverse ? 0 : 1]);
 				}
 			}
 			gamesDouble.put(id, doubleGame);
@@ -252,7 +242,8 @@ public class LegacyImporter implements RunnableWithProgress{
 				Score ns = new Score(r.score(), points, rating, r.finished(), r.duration(), pos, r.player(), r.secondPlayer());
 				positioned.add(ns);
 			}
-			game.setRecords(positioned);
+			game.getRecords().clear();
+			game.getRecords().addAll(positioned);
 		}
 		return list;
 	}

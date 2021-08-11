@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.domain;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,12 +18,10 @@ public class Game implements WithStatistics {
 	private final String file;
 	private final String id;
 	private final Platform platform;
-	
 	private final String rules;
-	private String firstPlayerSign;
-	private String secondPlayerSign;
+	protected final List<Score> records = new ArrayList<>();
+	
 	protected GameStatistics statistics;
-	protected List<Score> records = Collections.emptyList();
 
 	public Game(String id, Category category, Platform platform, String title, String file, String rules) {
 		super();
@@ -43,20 +41,11 @@ public class Game implements WithStatistics {
 	public List<Score> getRecords() {
 		return records;
 	}
-	public void setRecords(List<Score> records) {
-		this.records = records;
-	}
 	public String getRules() {
 		return rules;
 	}
 	public Integer getPlayerCount() {
 		return records.size();
-	}
-	public String getFirstPlayerSign() {
-		return firstPlayerSign;
-	}
-	public void setFirstPlayerSign(String firstPlayerSign) {
-		this.firstPlayerSign = firstPlayerSign;
 	}
 	public GameStatistics getStatistics() {
 		return statistics;
@@ -64,12 +53,6 @@ public class Game implements WithStatistics {
 	public void setStatistics(GameStatistics statistics) {
 		this.statistics = statistics;
 	}
-	public String getSecondPlayerSign() {
-		return secondPlayerSign;
-	}
-	public void setSecondPlayerSign(String secondPlayerSign) {
-		this.secondPlayerSign = secondPlayerSign;
-	}	
 	public Category getCategory() {
 		return category;
 	}
