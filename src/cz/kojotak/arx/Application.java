@@ -12,6 +12,8 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -52,7 +54,7 @@ public final class Application {
 	private Mode currentMode;
 	private MainWindow mainWindow;
 	private List<Mode> modes;
-	List<User> players = new ArrayList<User>();
+	private final List<User> players = new ArrayList<User>();
 	User currentUser = null;
 
 	private static Application app = new Application();
@@ -62,6 +64,16 @@ public final class Application {
 	}
 
 	public void finishInitialization() {
+		this.players.addAll(importer.getPlayers());
+		Collections.sort(players, Comparator.comparing(u->{
+			return u.nick();
+		}));
+		//TODO proper user selection
+		for(User u : this.players) {
+			if("COY".equals(u.nick()) || u.nick().startsWith("Coy")){
+				setCurrentUser(u);
+			}
+		}
 		this.singlePlayerMode = new SinglePlayerMode(importer);
 		this.arcadeTwoPlayerMode = new TwoPlayerMode(importer);
 		this.currentMode = singlePlayerMode;
@@ -91,14 +103,6 @@ public final class Application {
 		downloader = new Downloader(LegacyImporter.RM_DB_URL);
 		//importer = new LegacyImporter(this::getDBInputStream); 
 		importer = new LegacyImporter(downloader::getDBInputStream);
-
-		//TODO remove this mock someday
-		this.players.add(importer.getOrFakeUser("COY"));
-		this.players.add(importer.getOrFakeUser("VLD"));
-		this.players.add(importer.getOrFakeUser("MIR"));
-		this.players.add(importer.getOrFakeUser("SCH"));
-		this.players.add(importer.getOrFakeUser("ORI"));
-		setCurrentUser(players.get(0));
 	}
 
 	public String getTmpDir() {

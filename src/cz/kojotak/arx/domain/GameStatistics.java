@@ -43,6 +43,9 @@ public class GameStatistics {
 		recordsCount=records.size();
 		Float ratingsSum=0F;
 		Long highest = 0L;
+		if(user==null) {
+			return;
+		}
 		playerSign = user.nick();
 		Integer oponentPosition=null;
 		for(int i=0;i<records.size();i++){

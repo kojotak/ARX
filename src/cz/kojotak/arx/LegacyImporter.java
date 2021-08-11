@@ -42,7 +42,7 @@ public class LegacyImporter implements RunnableWithProgress{
 	private Map<Integer, Game> gamesDouble;
 	private Map<Integer, Float> avgRatings = new HashMap<>();
 	
-	private Set<User> singlePlayers = new HashSet<User>();
+	private Set<User> users = new HashSet<User>();
 	//old user id (3 letters) -> fake integer id
 	private Map<String,Integer> fakeUserIds = new HashMap<>();
 
@@ -113,8 +113,9 @@ public class LegacyImporter implements RunnableWithProgress{
 		} else {
 			return;
 		}
-		if("mame".equals(emulator)){
-			singlePlayers.add(score.player());
+		users.add(p1);
+		if(p2!=null) {
+			users.add(p2);
 		}
 	}
 
@@ -332,8 +333,8 @@ public class LegacyImporter implements RunnableWithProgress{
 		} 
 	}
 
-	public Set<User> getSinglePlayers() {
-		return singlePlayers;
+	public Set<User> getPlayers() {
+		return users;
 	}
 
 	public int getSingleRecords() {
