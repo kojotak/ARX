@@ -10,11 +10,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +61,7 @@ public class SqliteImporter implements Importer {
 	public List<Game> getSinglePlayerGames() {
 		return games.values().stream()
 				.sorted(Comparator.comparing(Game::getTitle))
+				.peek(g->g.getRecords().addAll(scores.getOrDefault(g.getId(), Collections.emptyList())))
 				.toList();
 	}
 
@@ -66,9 +70,10 @@ public class SqliteImporter implements Importer {
 		return games.values().stream()
 				.filter(g->g.getModeMax()>1)
 				.sorted(Comparator.comparing(Game::getTitle))
+				.peek(g->g.getRecords().addAll(scores.getOrDefault(g.getId(), Collections.emptyList())))
 				.toList();
 	}
-
+	
 	@Override
 	public Date getLastUpdate() {
 		return lastUpdate;
