@@ -62,10 +62,12 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 		v.addAll(platforms);
 		ComboBoxModel<Platform> model = new DefaultComboBoxModel<Platform>(v);
 		this.setModel(model);
+		
+		Platform defaultPlatform = Application.getInstance().getImporter().getDefaultPlatform();
 		for(Platform p: platforms) {
-			//preselect arcade platform
-			if(LegacyPlatform.MAME.toPlatform().equals(p)) {
+			if(defaultPlatform.equals(p)) {
 				model.setSelectedItem(p);
+				break;
 			}
 		}
 	}

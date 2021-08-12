@@ -344,5 +344,10 @@ public class LegacyImporter implements RunnableWithProgress, Importer{
 	public Date getLastUpdate() {
 		return lastUpdate;
 	}
+
+	@Override
+	public Platform getDefaultPlatform() {
+		return LegacyPlatform.MAME.toPlatform();
+	}
 	
 }

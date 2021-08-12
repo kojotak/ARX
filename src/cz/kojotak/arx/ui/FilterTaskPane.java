@@ -73,12 +73,9 @@ public class FilterTaskPane extends JXTaskPane {
 
 		GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
 
-		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-				.addComponent(catLab).addComponent(categoryComboBox));
-		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-				.addComponent(avaLab).addComponent(availibilityComboBox));
-		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-					.addComponent(platLab).addComponent(platformComboBox));
+		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(catLab).addComponent(categoryComboBox));
+		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(avaLab).addComponent(availibilityComboBox));
+		vGroup.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(platLab).addComponent(platformComboBox));
 		layout.setVerticalGroup(vGroup);
 
 		this.add(panel);

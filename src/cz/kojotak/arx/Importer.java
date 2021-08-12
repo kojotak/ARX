@@ -6,6 +6,7 @@ import java.util.List;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Game;
+import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.User;
 
 public interface Importer extends RunnableWithProgress {
@@ -17,4 +18,6 @@ public interface Importer extends RunnableWithProgress {
 	List<Game> getDoublePlayerGames();
 
 	Date getLastUpdate();
+
+	Platform getDefaultPlatform();
 }

@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 import cz.kojotak.arx.ui.listener.ModeChangeListener;
@@ -20,14 +21,14 @@ import cz.kojotak.arx.ui.renderer.IconizedTextListRenderer;
 public class Toolbar extends JPanel {
 
 	private static final long serialVersionUID = -1150251988753412200L;
-	private JComboBox vyberModu;
-	private JComboBox vyberHrace;
+	private JComboBox<String> vyberModu;
+	private JComboBox<User> vyberHrace;
 
 	public Toolbar(final MainWindow window,final CategoryComboBox combo) {
 		super();
 
 		//initialize combos
-		ComboBoxModel modelVyberModu = getGameModeComboBox();
+		ComboBoxModel<String> modelVyberModu = createGameModeComboBox();
 		vyberModu = new JComboBox();
 		vyberModu.setModel(modelVyberModu);
 		Icon joyIcon = Application.getInstance().getIconLoader().tryLoadIcon(GUIIcons.JOY);
@@ -44,7 +45,7 @@ public class Toolbar extends JPanel {
 		leftPart.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		middlePart.setLayout(new FlowLayout(FlowLayout.LEFT));
 		rightPart.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		leftPart.setPreferredSize(new Dimension(225,leftPart.getPreferredSize().height));
+		leftPart.setPreferredSize(new Dimension(256,leftPart.getPreferredSize().height));
 
 		//assemble components
 		leftPart.add(vyberModu);
@@ -62,14 +63,14 @@ public class Toolbar extends JPanel {
 		this.add(rightPart, BorderLayout.EAST);
 	}
 
-	private ComboBoxModel getGameModeComboBox() {
+	private ComboBoxModel<String> createGameModeComboBox() {
 		Application app = Application.getInstance();
 		List<Mode> modes = app.getModes();
 		String[] names = new String[modes.size()];
 		for (int i = 0; i < modes.size(); i++) {
 			names[i] = modes.get(i).getName();
 		}
-		ComboBoxModel model = new DefaultComboBoxModel(names);
+		ComboBoxModel<String> model = new DefaultComboBoxModel(names);
 		model.setSelectedItem(app.getCurrentMode().getName());
 		return model;
 	}

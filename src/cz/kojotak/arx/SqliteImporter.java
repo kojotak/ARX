@@ -43,6 +43,18 @@ public class SqliteImporter implements Importer {
 	}
 	
 	@Override
+	public Platform getDefaultPlatform() {
+		if(platforms!=null) {
+			for(Platform p : platforms.values()) {
+				if("arcade".equals(p.link())) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public List<Game> getSinglePlayerGames() {
 		return games.values().stream()
 				.sorted(Comparator.comparing(Game::getTitle))

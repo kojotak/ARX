@@ -159,23 +159,11 @@ public class GameTable extends JXTable {
 		Application.getLogger(this).fine("setting new game table model for " + user + " and " + mode);
 
 		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
-		Application.getLogger(this).fine(
-				"new model has rows: " + model.getRowCount());
-
+		Application.getLogger(this).fine("new model has rows: " + model.getRowCount());
 		Application.getLogger(this).fine("calculating statistics for user " + user + " in mode "+ mode);
 		for (Game game : mode.getGames()) {
-			if (!(game instanceof Game)) {
-				throw new IllegalStateException(
-						"This model is not suitable for non competetive game");
-			}
-			Game cmp = Game.class.cast(game);
-			GameStatistics stats = new GameStatistics(cmp, user, opponent);
-			if (!(game instanceof WithStatistics)) {
-				throw new IllegalStateException(
-						"This model is not suitable for games without statistics");
-			}
-			WithStatistics ws = WithStatistics.class.cast(game);
-			ws.setStatistics(stats);
+			GameStatistics stats = new GameStatistics(game, user, opponent);
+			game.setStatistics(stats);
 		}
 		this.setModel(model);
 		FilterModel filter = new FilterModel();

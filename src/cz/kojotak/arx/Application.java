@@ -66,8 +66,8 @@ public final class Application {
 		Collections.sort(players, Comparator.comparing(u->{
 			return u.nick();
 		}));
-		//TODO proper user selection
 		for(User u : this.players) {
+			//TODO proper user selection
 			if("COY".equals(u.nick()) || u.nick().startsWith("Coy")){
 				setCurrentUser(u);
 			}
@@ -100,8 +100,8 @@ public final class Application {
 		licence = new Licence(language);
 		downloader = new Downloader(LegacyImporter.RM_DB_URL);
 		//importer = new LegacyImporter(this::getDBInputStream); 
-		importer = new LegacyImporter(downloader::getDBInputStream);
-		//importer = new SqliteImporter();//TODO make it work
+//		importer = new LegacyImporter(downloader::getDBInputStream);
+		importer = new SqliteImporter();//TODO make it work
 	}
 
 	public String getTmpDir() {
