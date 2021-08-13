@@ -43,7 +43,7 @@ public final class Application {
 	private Localization localization;
 	private Licence licence;
 	private Icons icons;
-	private final Downloader downloader;
+	private final Downloader downloader = null;
 	private Importer importer;
 	private Language language;
 	private IconLoader iconLoader;
@@ -98,7 +98,7 @@ public final class Application {
 		localization = new Localization(language);
 		icons = new Icons(language);
 		licence = new Licence(language);
-		downloader = new Downloader(LegacyImporter.RM_DB_URL);
+//		downloader = new Downloader(LegacyImporter.RM_DB_URL);
 		//importer = new LegacyImporter(this::getDBInputStream); 
 //		importer = new LegacyImporter(downloader::getDBInputStream);
 		importer = new SqliteImporter();//TODO make it work

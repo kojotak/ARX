@@ -72,8 +72,10 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 		for (Job job : jobs) {
 			log.info("working on "+job+", so far "+Double.longBitsToDouble(soFar.get()));
 			RunnableWithProgress runnable = job.getRunnable();
-			currentJob.setHolded(job);
-			runnable.run();
+			if(runnable!=null) {
+				currentJob.setHolded(job);
+				runnable.run();
+			}
 			double soFarDouble = 100.0*job.getWeight()/totalWeight + Double.longBitsToDouble(soFar.get());
 			soFar.set(Double.doubleToLongBits(soFarDouble));
 		}

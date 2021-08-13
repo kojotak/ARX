@@ -26,7 +26,8 @@ import cz.kojotak.arx.domain.User;
 
 public class SqliteImporter implements Importer {
 
-	final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
+	public final static String url = "jdbc:sqlite:D:/Rotaxmame/-/db.db";
+	public final static String BACKUP_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/db.db?raw=true";
 	
 	public static void main(String[] args) {
 		SqliteImporter importer = new SqliteImporter();
