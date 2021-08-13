@@ -30,7 +30,7 @@ import cz.kojotak.arx.util.ScoreBasedRecordComparator;
 import cz.kojotak.arx.util.TitleBasedGameComparator;
 
 /**
- * Needs refactoring!
+ * @deprecated
  * @date 26.9.2010
  * @author Kojotak
  */

@@ -11,15 +11,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.bushe.swing.event.EventBus;
-
 import cz.kojotak.arx.common.RunnableWithProgress;
-import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.ui.MainWindow;
-import cz.kojotak.arx.ui.PlatfromComboBox;
 import cz.kojotak.arx.ui.SplashScreen;
 import cz.kojotak.arx.ui.SplashWorker;
-import cz.kojotak.arx.ui.event.FilterModel;
 
 /**
  * @date 26.9.2010
