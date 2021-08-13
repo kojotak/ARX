@@ -13,9 +13,7 @@ public interface Importer extends RunnableWithProgress {
 
 	Collection<User> getPlayers();
 
-	List<Game> getSinglePlayerGames();
-
-	List<Game> getDoublePlayerGames();
+	List<Game> getGames();
 
 	Date getLastUpdate();
 

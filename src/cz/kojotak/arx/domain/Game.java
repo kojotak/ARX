@@ -21,7 +21,8 @@ public class Game implements WithStatistics {
 	private final String rules;
 	private final Game parent;
 	private final int modeMax;
-	protected final List<Score> records = new ArrayList<>();
+	protected final List<Score> records1P = new ArrayList<>();
+	protected final List<Score> records2P = new ArrayList<>();
 	
 	protected GameStatistics statistics;
 
@@ -36,25 +37,27 @@ public class Game implements WithStatistics {
 		this.rules = rules;
 		this.modeMax = modeMax;
 	}
-	
+
 	@Override
 	public String toString() {
-		return getClass().getSimpleName()+":"+title;
+		return "Game [id=" + id + ", title=" + title + "]";
 	}
+
 	public int getModeMax() {
 		return modeMax;
 	}
 	public Game getParent() {
 		return parent;
 	}
-	public List<Score> getRecords() {
-		return records;
+	public List<Score> getRecords1P() {
+		return records1P;
 	}
+	public List<Score> getRecords2P() {
+		return records2P;
+	}
+
 	public String getRules() {
 		return rules;
-	}
-	public Integer getPlayerCount() {
-		return records.size();
 	}
 	public GameStatistics getStatistics() {
 		return statistics;
@@ -102,7 +105,7 @@ public class Game implements WithStatistics {
 	public Float getAverageRatings() {
 		Float sum = 0F;
 		int cnt = 0;
-		for(Score s: records) {
+		for(Score s: records1P) {
 			if(s.rating()!=null) {
 				cnt++;
 				sum+=s.rating();

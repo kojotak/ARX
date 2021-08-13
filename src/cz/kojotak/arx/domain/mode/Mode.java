@@ -12,6 +12,7 @@ import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
+import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.Searchable;
 import cz.kojotak.arx.domain.User;
 import cz.kojotak.arx.properties.Localization;
@@ -36,8 +37,8 @@ public abstract class Mode implements Searchable {
 		this.games.forEach(g->{
 			cats.add(g.getCategory());
 			platforms.add(g.getPlatform());
-			scores += g.getRecords().size();
-			users.addAll(g.getRecords().stream().flatMap(s -> Stream.of(s.player(), s.secondPlayer())).toList());
+			scores += g.getRecords1P().size();
+			users.addAll(g.getRecords1P().stream().flatMap(s -> Stream.of(s.player(), s.secondPlayer())).toList());
 		});
 		Localization loc = Application.getInstance().getLocalization();
 		this.desc = loc.getString(this, "DESC");
@@ -48,6 +49,7 @@ public abstract class Mode implements Searchable {
 	}
 	
 	public abstract List<BaseColumn<Game,?>> getColumns();
+	public abstract List<Score> getScores(Game g);
 	
 	public int getPlayerCount() {
 		return players;

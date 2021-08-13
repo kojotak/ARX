@@ -6,6 +6,7 @@ package cz.kojotak.arx.domain;
 import java.util.List;
 
 import cz.kojotak.arx.domain.enums.FinishedStatus;
+import cz.kojotak.arx.domain.mode.Mode;
 
 public class GameStatistics {
 	
@@ -27,12 +28,11 @@ public class GameStatistics {
 	
 	Integer oponentDiff=null;
 	
-	User oponent=null;
 	Integer points=null;
+	final User oponent;
 		
-	public GameStatistics(Game game, User user, User oponent) {
+	public GameStatistics(List<Score> records, User user, User oponent) {
 		super();
-		List<Score> records = game.getRecords();
 		this.oponent=oponent;
 		if(records!=null && records.size()>0){
 			init(records,user,oponent);

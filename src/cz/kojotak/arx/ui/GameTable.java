@@ -162,7 +162,7 @@ public class GameTable extends JXTable {
 		Application.getLogger(this).fine("new model has rows: " + model.getRowCount());
 		Application.getLogger(this).fine("calculating statistics for user " + user + " in mode "+ mode);
 		for (Game game : mode.getGames()) {
-			GameStatistics stats = new GameStatistics(game, user, opponent);
+			GameStatistics stats = new GameStatistics(mode.getScores(game), user, opponent);
 			game.setStatistics(stats);
 		}
 		this.setModel(model);

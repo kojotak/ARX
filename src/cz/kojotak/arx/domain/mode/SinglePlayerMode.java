@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.kojotak.arx.Importer;
-import cz.kojotak.arx.LegacyImporter;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.enums.LegacyCategory;
+import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.column.BestPlayerColumn;
@@ -31,12 +30,15 @@ import cz.kojotak.arx.ui.column.StatisticsPositionWithIconColumn;
  */
 public class SinglePlayerMode extends Mode  {
 
-	private LegacyCategory category=null;
-
 	public SinglePlayerMode(Importer importer) {
-		super(importer.getSinglePlayerGames());
+		super(importer.getGames());
 	}
 	
+	@Override
+	public List<Score> getScores(Game g) {
+		return g.getRecords1P();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<BaseColumn<Game,?>> getColumns() {
@@ -59,10 +61,6 @@ public class SinglePlayerMode extends Mode  {
 		list.add(new FinishedColumn());
 
 		return list;
-	}
-
-	public LegacyCategory getCategory() {
-		return category;
 	}
 
 }

@@ -10,14 +10,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,19 +55,9 @@ public class SqliteImporter implements Importer {
 	}
 
 	@Override
-	public List<Game> getSinglePlayerGames() {
+	public List<Game> getGames() {
 		return games.values().stream()
 				.sorted(Comparator.comparing(Game::getTitle))
-				.peek(g->g.getRecords().addAll(scores.getOrDefault(g.getId(), Collections.emptyList())))
-				.toList();
-	}
-
-	@Override
-	public List<Game> getDoublePlayerGames() {
-		return games.values().stream()
-				.filter(g->g.getModeMax()>1)
-				.sorted(Comparator.comparing(Game::getTitle))
-				.peek(g->g.getRecords().addAll(scores.getOrDefault(g.getId(), Collections.emptyList())))
 				.toList();
 	}
 	
@@ -102,8 +89,8 @@ public class SqliteImporter implements Importer {
 			log.info("...imported " + users.size() + " players");
 			games = loadGames(conn, platforms, categories);
 			log.info("...imported " + games.size() + " games");
-			scores = loadScores(conn, games, users);
-			log.info("...imported " + scores.size() + " scores");
+			Integer scores = loadScores(conn, games, users);
+			log.info("...imported " + scores + " scores");
 			lastUpdate = loadLastUpdated(conn);
 			log.info("...imported " + lastUpdate + " as last update");
 		} catch (SQLException e) {
@@ -116,12 +103,31 @@ public class SqliteImporter implements Importer {
 	private Map<Integer, Category> categories;
 	private Map<Integer, User> users;
 	private Map<Integer, Game> games;
-	private Map<Integer, List<Score>> scores;
 	
-	private Map<Integer, List<Score>> loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
-		Map<Integer, GameStats> stats = loadGameStats(conn);
-		Map<Integer, List<Score>> map = new HashMap<>();
-		String sql = "select game_id, user_id, user2_id, score, finished, play_time from score order by game_id asc, score desc";
+	private Integer loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
+		Map<Integer, List<Score>> scoresP1 = loadScores("user2_id == '' ", conn, users);
+		Map<Integer, List<Score>> scoresP2 = loadScores("user2_id != '' ", conn, users);
+		for(Integer gameId : games.keySet()) {
+			Game game = games.get(gameId);
+			List<Score> p1 = scoresP1.get(gameId);
+			if(p1!=null) {
+				game.getRecords1P().addAll(p1);
+			}
+			List<Score> p2 = scoresP2.get(gameId);
+			if(p2!=null) {
+				game.getRecords2P().addAll(p2);
+			}
+			if(gameId.intValue() == 125) {
+				System.err.println(game);
+			}
+		}
+		return scoresP1.size() + scoresP2.size();
+	}
+	
+	private Map<Integer,List<Score>> loadScores(String sqlWhere, Connection conn, Map<Integer, User> users){
+		String sql = "select game_id, user_id, user2_id, score, finished, play_time from score where " + sqlWhere + " order by game_id asc, score desc";
+		Map<Integer, GameStats> stats = loadGameStats(sqlWhere, conn);
+		Map<Integer,List<Score>> map = new HashMap<>();
 		try(PreparedStatement stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
 				Integer lastGameId = -1, lastPosition = -1;
@@ -131,7 +137,6 @@ public class SqliteImporter implements Importer {
 						lastPosition=0;
 						lastGameId=gameId;
 					}
-					Game g = games.get(gameId);
 					GameStats stat = stats.get(gameId);
 					long score = rs.getLong("score");
 					Integer position = ++lastPosition;
@@ -143,15 +148,18 @@ public class SqliteImporter implements Importer {
 							rs.getInt("play_time"),
 							position,
 							users.get(rs.getObject("user_id")),
-							users.get(rs.getObject("user_id"))
+							users.get(rs.getObject("user2_id"))
 							);
-					List<Score> scores = map.getOrDefault(g.getId(), new ArrayList<>());
+					List<Score> scores = map.get(gameId);
+					if(scores==null) {
+						scores = new ArrayList<>();
+						map.put(gameId, scores);
+					}
 					scores.add(s);
-					map.put(g.getId(), scores);
 				}
 			}
 		} catch (SQLException e) {
-		 	Application.getLogger(this).log(Level.SEVERE,"Can not load scores",e);
+			Application.getLogger(this).log(Level.SEVERE,"Can not load scores",e);
 		}
 		return map;
 	}
@@ -168,9 +176,9 @@ public class SqliteImporter implements Importer {
 	
 	static record GameStats (int players, long topScore) {};
 	
-	private Map<Integer, GameStats> loadGameStats(Connection conn){
+	private Map<Integer, GameStats> loadGameStats(String sqlWhere, Connection conn){
 		Map<Integer, GameStats> map = new HashMap<>();
-		String sql = "select game_id, count(1) as players, max(score) as topScore from score group by game_id";
+		String sql = "select game_id, count(1) as players, max(score) as topScore from score where " + sqlWhere + " group by game_id";
 		try(PreparedStatement stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
 				while(rs.next()) {
