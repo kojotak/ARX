@@ -21,8 +21,8 @@ import cz.kojotak.arx.ui.column.PlayerCountColumn;
 import cz.kojotak.arx.ui.column.PlayerDiffColumn;
 import cz.kojotak.arx.ui.column.PointsColumn;
 import cz.kojotak.arx.ui.column.RelativePositionColumn;
-import cz.kojotak.arx.ui.column.ScoreStatisticsColumn;
-import cz.kojotak.arx.ui.column.StatisticsPositionWithIconColumn;
+import cz.kojotak.arx.ui.column.TopScoreColumn;
+import cz.kojotak.arx.ui.column.PositionWithIconColumn;
 
 /**
  * @date 24.1.2010
@@ -42,18 +42,20 @@ public class SinglePlayerMode extends Mode  {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<BaseColumn<Game,?>> getColumns() {
-		PlatformIconColumn platformIcon = new PlatformIconColumn();
+		var platformIcon = new PlatformIconColumn();
+		var topScore = new TopScoreColumn();
 		platformIcon.setVisible(false);
+		topScore.setVisible(false);
 		
 		List list = new ArrayList<BaseColumn<Game,?>>();
 		list.add(platformIcon);
-		list.add(new StatisticsPositionWithIconColumn());
+		list.add(new PositionWithIconColumn());
 		list.add(new PlayerCountColumn());
 		list.add(new RelativePositionColumn());
 		list.add(new GameNameColumn());
 		list.add(new CategoryColumn());
 		list.add(new BestPlayerColumn());
-		list.add(new ScoreStatisticsColumn());
+		list.add(topScore);
 		list.add(new AverageRatingsColumn());
 		list.add(new PointsColumn());
 		list.add(new ChanceColumn());
