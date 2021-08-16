@@ -11,15 +11,15 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.Platform;
+import cz.kojotak.arx.common.Identifiable;
+import cz.kojotak.arx.common.Named;
 import cz.kojotak.arx.ui.icon.EmptyIcon;
 
-public class CategoryListCellRenderer extends JLabel implements ListCellRenderer<Category> {
+public class NamedWithIdListCellRenderer<T extends Identifiable & Named> extends JLabel implements ListCellRenderer<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	public CategoryListCellRenderer() {
+	public NamedWithIdListCellRenderer() {
 		super();
 		setOpaque(true);
 		setHorizontalAlignment(LEFT);
@@ -27,8 +27,7 @@ public class CategoryListCellRenderer extends JLabel implements ListCellRenderer
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Category> list, Category value, int index,
-			boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected, boolean cellHasFocus) {
 		Application app = Application.getInstance();
 		if (value == null) {
 			return new JLabel();// avoid class cast exception

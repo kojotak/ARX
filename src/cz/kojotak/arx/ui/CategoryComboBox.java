@@ -5,9 +5,6 @@ package cz.kojotak.arx.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -21,12 +18,10 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
-import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.event.FilterModel;
-import cz.kojotak.arx.ui.renderer.CategoryListCellRenderer;
-import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
-import cz.kojotak.arx.util.GenericEnumComparator;
+import cz.kojotak.arx.ui.renderer.NamedWithIdListCellRenderer;
 
 /**
  * @date 21.4.2010
@@ -40,7 +35,7 @@ public class CategoryComboBox extends JComboBox<Category> {
 		super();
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(20);
-		this.setRenderer(new CategoryListCellRenderer());
+		this.setRenderer(new NamedWithIdListCellRenderer<Category>());
 		this.addActionListener(new ActionListener() {
 
 			@Override

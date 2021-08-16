@@ -17,11 +17,11 @@ import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.event.FilterModel;
-import cz.kojotak.arx.ui.renderer.PlatformListCellRenderer;
+import cz.kojotak.arx.ui.renderer.NamedWithIdListCellRenderer;
 
 /**
  * @date 2.6.2010
@@ -36,7 +36,7 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(LegacyPlatform.values().length);
 		//this.setRenderer(new GenericEnumListRenderer<Platform>(null, Platform.class));
-		this.setRenderer(new PlatformListCellRenderer());
+		this.setRenderer(new NamedWithIdListCellRenderer<Platform>());
 		this.addActionListener(new ActionListener() {
 
 			@Override
