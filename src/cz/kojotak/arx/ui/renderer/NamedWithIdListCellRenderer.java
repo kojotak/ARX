@@ -42,7 +42,7 @@ public class NamedWithIdListCellRenderer<T extends Identifiable & Named> extends
 		}
 
 		Icon icon = null;
-		String icoName = app.getIcons().getOptionalString("Category", ""+value.id());
+		String icoName = app.getIcons().getOptionalString(value.getClass().getSimpleName(), ""+value.id());
 		if (icoName != null) {
 			icon = app.getIconLoader().loadIcon(icoName);
 		} else {
