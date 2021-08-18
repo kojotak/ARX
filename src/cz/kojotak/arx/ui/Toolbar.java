@@ -54,7 +54,6 @@ public class Toolbar extends JPanel {
 		middlePart.add(new ChatButton(window));
 		middlePart.add(new SettingsButton());
 		middlePart.add(new HelpComboBox());
-		rightPart.add(new SearchPanel());
 
 		//add components
 		this.setLayout(new BorderLayout());
