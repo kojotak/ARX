@@ -63,7 +63,7 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 		ComboBoxModel<Platform> model = new DefaultComboBoxModel<Platform>(v);
 		this.setModel(model);
 		
-		Platform defaultPlatform = Application.getInstance().getImporter().getDefaultPlatform();
+		Platform defaultPlatform = Application.getInstance().getSqliteImporter().getDefaultPlatform();
 		for(Platform p: platforms) {
 			if(defaultPlatform.equals(p)) {
 				model.setSelectedItem(p);

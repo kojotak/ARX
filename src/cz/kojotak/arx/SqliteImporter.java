@@ -18,22 +18,23 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.User;
 
-public class SqliteImporter implements Importer {
+public class SqliteImporter implements RunnableWithProgress {
 
 	public final static String BACKUP_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/db.db?raw=true";
 	
 	public static void main(String[] args) {
-		SqliteImporter importer = new SqliteImporter("tmp/db.db");
-		importer.run();
+		SqliteImporter SqliteImporter = new SqliteImporter("tmp/db.db");
+		SqliteImporter.run();
 		
-//		for(Integer gameId : importer.games.keySet()) {
-//			System.out.println("Game: " + importer.games.get(gameId) + "\n\tscores: " + importer.scores.get(gameId));
+//		for(Integer gameId : SqliteImporter.games.keySet()) {
+//			System.out.println("Game: " + SqliteImporter.games.get(gameId) + "\n\tscores: " + SqliteImporter.scores.get(gameId));
 //		}
 	}
 	
@@ -42,12 +43,10 @@ public class SqliteImporter implements Importer {
 		this.url = "jdbc:sqlite:" + dbPath;
 	}
 
-	@Override
 	public Collection<User> getPlayers() {
 		return users.values();
 	}
 	
-	@Override
 	public Platform getDefaultPlatform() {
 		if(platforms!=null) {
 			for(Platform p : platforms.values()) {
@@ -59,29 +58,24 @@ public class SqliteImporter implements Importer {
 		return null;
 	}
 
-	@Override
 	public List<Game> getGames() {
 		return games.values().stream()
 				.sorted(Comparator.comparing(Game::getTitle))
 				.toList();
 	}
 	
-	@Override
 	public Date getLastUpdate() {
 		return lastUpdate;
 	}
 
-	@Override
 	public long max() {
 		return -1;
 	}
 
-	@Override
 	public long current() {
 		return -1;
 	}
 
-	@Override
 	public void run() {
 		Logger log = Application.getLogger(this);
 		try (Connection conn = DriverManager.getConnection(url)) {

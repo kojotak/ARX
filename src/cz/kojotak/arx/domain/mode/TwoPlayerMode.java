@@ -6,7 +6,7 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.kojotak.arx.Importer;
+import cz.kojotak.arx.SqliteImporter;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.ui.column.BaseColumn;
@@ -18,8 +18,8 @@ import cz.kojotak.arx.ui.column.GameNameColumn;
  */
 public class TwoPlayerMode extends Mode {
 
-	public TwoPlayerMode(Importer importer) {
-		super(importer.getGames());
+	public TwoPlayerMode(SqliteImporter SqliteImporter) {
+		super(SqliteImporter.getGames());
 	}
 	
 	@Override

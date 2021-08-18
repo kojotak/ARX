@@ -6,7 +6,7 @@ package cz.kojotak.arx.domain.mode;
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.kojotak.arx.Importer;
+import cz.kojotak.arx.SqliteImporter;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.ui.column.AverageRatingsColumn;
@@ -30,8 +30,8 @@ import cz.kojotak.arx.ui.column.PositionWithIconColumn;
  */
 public class SinglePlayerMode extends Mode  {
 
-	public SinglePlayerMode(Importer importer) {
-		super(importer.getGames());
+	public SinglePlayerMode(SqliteImporter SqliteImporter) {
+		super(SqliteImporter.getGames());
 	}
 	
 	@Override

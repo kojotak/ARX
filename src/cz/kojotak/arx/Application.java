@@ -44,7 +44,7 @@ public final class Application {
 	private Licence licence;
 	private Icons icons;
 	private final Downloader downloader = null;
-	private Importer importer;
+	private SqliteImporter importer;
 	private Language language;
 	private IconLoader iconLoader;
 	private SinglePlayerMode singlePlayerMode;
@@ -99,9 +99,9 @@ public final class Application {
 		localization = new Localization(language);
 		icons = new Icons(language);
 		licence = new Licence(language);
-//		downloader = new Downloader(LegacyImporter.RM_DB_URL);
-		//importer = new LegacyImporter(this::getDBInputStream); 
-//		importer = new LegacyImporter(downloader::getDBInputStream);
+//		downloader = new Downloader(LegacySqliteImporter.RM_DB_URL);
+		//SqliteImporter = new LegacySqliteImporter(this::getDBInputStream); 
+//		SqliteImporter = new LegacySqliteImporter(downloader::getDBInputStream);
 		importer = new SqliteImporter(rotax + File.separator + "-" + File.separator + "db.db");//TODO make it work
 	}
 
@@ -167,11 +167,11 @@ public final class Application {
 
 		Job downloaderJob = new DownloaderJob(downloader, 100,	getLocalization().getString(this, "DOWNLOAD_PROGRESS"));
 		
-		Job importerJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
+		Job SqliteImporterJob = new Job(importer, 100, getLocalization().getString(this, "SPLASHSCREEN_PROGRESS"));
 //		 list.add(new DummyJob(50));
 		list.add(downloaderJob);
 		//list.add(counterJob);
-		list.add(importerJob);
+		list.add(SqliteImporterJob);
 
 		return list;
 	}
@@ -251,7 +251,7 @@ public final class Application {
 		return licence;
 	}
 
-	public Importer getImporter() {
+	public SqliteImporter getSqliteImporter() {
 		return importer;
 	}
 

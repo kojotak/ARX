@@ -59,7 +59,7 @@ public class StatusBar extends JPanel {
 		String version = new StringBuilder(loc.getString(this, "VERSION_TITLE"))
 			.append(" ").append(readAppVersion()).toString();
 		
-		Date updated = app.getImporter().getLastUpdate();
+		Date updated = app.getSqliteImporter().getLastUpdate();
 		String dbversion = updated!=null?new StringBuilder(loc.getString(this, "DB_VERSION"))
 			.append(" ").append(DB_VERSION.format(updated)).toString():"?";
 		
