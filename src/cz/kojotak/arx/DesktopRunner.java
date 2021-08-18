@@ -4,6 +4,7 @@
 package cz.kojotak.arx;
 
 import java.awt.Image;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
@@ -26,6 +27,11 @@ public class DesktopRunner {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		//TODO remove this localhost workaround with proper UI in issue #47
+		Properties systemProps = System.getProperties();
+		systemProps.setProperty("rotax.dir", "D:\\Rotaxmame");
+		System.setProperties(systemProps);
+		
 		final Application app = Application.getInstance();
 		
 		//handle exceptions in EDT

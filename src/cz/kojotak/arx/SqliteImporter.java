@@ -26,11 +26,10 @@ import cz.kojotak.arx.domain.User;
 
 public class SqliteImporter implements Importer {
 
-	public final static String url = "jdbc:sqlite:tmp/db.db";
 	public final static String BACKUP_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/db.db?raw=true";
 	
 	public static void main(String[] args) {
-		SqliteImporter importer = new SqliteImporter();
+		SqliteImporter importer = new SqliteImporter("tmp/db.db");
 		importer.run();
 		
 //		for(Integer gameId : importer.games.keySet()) {
@@ -38,6 +37,11 @@ public class SqliteImporter implements Importer {
 //		}
 	}
 	
+	private final String url;
+	public SqliteImporter(String dbPath) {
+		this.url = "jdbc:sqlite:" + dbPath;
+	}
+
 	@Override
 	public Collection<User> getPlayers() {
 		return users.values();
@@ -81,7 +85,7 @@ public class SqliteImporter implements Importer {
 	public void run() {
 		Logger log = Application.getLogger(this);
 		try (Connection conn = DriverManager.getConnection(url)) {
-			log.info("Connection to SQLite has been established.");
+			log.info("connected to SQLite: " + url);
 			platforms = loadPlatforms(conn);
 			log.info("...imported " + platforms.size() + " platforms");
 			categories = loadCategories(conn);

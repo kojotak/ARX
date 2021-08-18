@@ -82,6 +82,7 @@ public final class Application {
 
 	private Application() {
 		currentDir = System.getProperty("user.dir");
+		String rotax = System.getProperty("rotax.dir");
 
 		try {
 			java.util.logging.LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
@@ -93,7 +94,7 @@ public final class Application {
 		log.info("logger ready");
 
 		language = Language.CZECH;
-		iconLoader = new IconLoader("icons/", "images/", this);
+		iconLoader = new IconLoader(rotax, this);
 		properties = new Properties(language);
 		localization = new Localization(language);
 		icons = new Icons(language);
@@ -101,11 +102,7 @@ public final class Application {
 //		downloader = new Downloader(LegacyImporter.RM_DB_URL);
 		//importer = new LegacyImporter(this::getDBInputStream); 
 //		importer = new LegacyImporter(downloader::getDBInputStream);
-		importer = new SqliteImporter();//TODO make it work
-	}
-
-	public String getTmpDir() {
-		return currentDir + File.separator + "tmp";
+		importer = new SqliteImporter(rotax + File.separator + "-" + File.separator + "db.db");//TODO make it work
 	}
 
 //	@EventSubscriber //chybi volani annotation processoru
@@ -163,10 +160,6 @@ public final class Application {
 			}
 		}
 		return string;
-	}
-
-	public InputStream getDBInputStream() {
-		return getClass().getClassLoader().getResourceAsStream("rotaxmame_databaze.gz");
 	}
 
 	public List<Job> getJobs() {

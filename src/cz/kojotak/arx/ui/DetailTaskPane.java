@@ -8,18 +8,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 
-import javax.swing.SwingWorker;
-
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.JXImagePanel;
-import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXImagePanel.Style;
+import org.jdesktop.swingx.JXTaskPane;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.domain.enums.ImageDetail;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
 /**
@@ -43,14 +40,14 @@ public class DetailTaskPane extends JXTaskPane{
 		ipanel = new JXImagePanel();
 		ipanel.setStyle(Style.SCALED_KEEP_ASPECT_RATIO);
 		link = new JXHyperlink();
-		setHyperlink();
 		this.add(link);
 		this.add(ipanel);
 	}
 	
-	private void setHyperlink(){
-		link.setText("MAWS");
-		link.setToolTipText("otevre MAWS pro danou hru");
+	private void setHyperlink(URI uri){
+		link.setURI(uri);
+		link.setText("RotaxMAME");
+		link.setToolTipText("otevre web pro danou hru");
 		link.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.EXTERNAL_LINK));
 	}
 	
@@ -63,66 +60,66 @@ public class DetailTaskPane extends JXTaskPane{
 	@EventSubscriber
 	public void valueChanged(Game game) {
 		final Application app = Application.getInstance();
-		final String file = game.getFile();
-		Image image = app.getIconLoader().loadImage(file);
-		ImageDownloader downloader = null;
-		if(image==null){
-			image = app.getIconLoader().loadImageFromIcon(ImageDetail.PENDING);
-			downloader = new ImageDownloader(app, file);
-		}
+		Image image = app.getIconLoader().loadGameScreenshot(game.getId());
+//		ImageDownloader downloader = null;
+//		if(image==null){
+//			image = app.getIconLoader().loadImageFromIcon(ImageDetail.PENDING);
+//			downloader = new ImageDownloader(app, file);
+//		}
 		setImage(image);
-		String uri = "http://maws.mameworld.info/maws/romset/"+file;
+		String uriStr = "https://www.rotaxmame.cz/game/"+game.getId();
 		try{
-			link.setURI(new URI(uri));
+			URI uri = new URI(uriStr);
+			setHyperlink(uri);
 		}catch(URISyntaxException ex){
-			Application.getLogger(this).log(Level.WARNING, "cannot set uri "+uri);
+			Application.getLogger(this).log(Level.WARNING, "cannot set uri "+uriStr);
 		}
-		setHyperlink();
+
 		
-		if(downloader!=null){
-			downloader.execute();
-		}
+//		if(downloader!=null){
+//			downloader.execute();
+//		}
 	}
 	
-	class ImageDownloader extends SwingWorker<Image,Void>{
-		private Application app;
-		private String name;
-		
-		ImageDownloader(Application app, String name) {
-			super();
-			this.app = app;
-			this.name = name;
-		}
-
-		@Override
-		protected Image doInBackground() throws Exception {
-			Application.getLogger(DetailTaskPane.this).fine("working...");
-			return app.getIconLoader().downloadAndLoadImage(name);
-		}
-
-		@Override
-		protected void done() {
-			Application.getLogger(DetailTaskPane.this).fine("done...");
-			Image downloaded = null;
-			try{
-				downloaded = get();
-			}catch (InterruptedException ignore) {}
-            catch (java.util.concurrent.ExecutionException e) {
-                String why = null;
-                Throwable cause = e.getCause();
-                if (cause != null) {
-                    why = cause.getMessage();
-                } else {
-                    why = e.getMessage();
-                }
-                Application.getLogger(DetailTaskPane.this).warning("Error retrieving "+name+ " because: " + why);
-            }
-            if(downloaded==null){
-            	downloaded = app.getIconLoader().loadImageFromIcon(ImageDetail.MISSING);
-            }
-            setImage(downloaded);
-		}
-					
-	};
+//	class ImageDownloader extends SwingWorker<Image,Void>{
+//		private Application app;
+//		private String name;
+//		
+//		ImageDownloader(Application app, String name) {
+//			super();
+//			this.app = app;
+//			this.name = name;
+//		}
+//
+//		@Override
+//		protected Image doInBackground() throws Exception {
+//			Application.getLogger(DetailTaskPane.this).fine("working...");
+//			return app.getIconLoader().downloadAndLoadImage(name);
+//		}
+//
+//		@Override
+//		protected void done() {
+//			Application.getLogger(DetailTaskPane.this).fine("done...");
+//			Image downloaded = null;
+//			try{
+//				downloaded = get();
+//			}catch (InterruptedException ignore) {}
+//            catch (java.util.concurrent.ExecutionException e) {
+//                String why = null;
+//                Throwable cause = e.getCause();
+//                if (cause != null) {
+//                    why = cause.getMessage();
+//                } else {
+//                    why = e.getMessage();
+//                }
+//                Application.getLogger(DetailTaskPane.this).warning("Error retrieving "+name+ " because: " + why);
+//            }
+//            if(downloaded==null){
+//            	downloaded = app.getIconLoader().loadImageFromIcon(ImageDetail.MISSING);
+//            }
+//            setImage(downloaded);
+//		}
+//					
+//	};
 
 }
