@@ -16,14 +16,14 @@ import javax.swing.JComboBox;
 import org.bushe.swing.event.EventBus;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.ui.renderer.PlayerListRenderer;
 
 /**
  * @date 19.4.2010
  * @author Kojotak
  */
-public class PlayerComboBox extends JComboBox<User> {
+public class PlayerComboBox extends JComboBox<Player> {
 
 	private static final long serialVersionUID = -8481423043530284950L;
 	public static final String ADD_NEW="_NEW";
@@ -33,22 +33,22 @@ public class PlayerComboBox extends JComboBox<User> {
 		this.setModel(createModel());
 		this.setEditable(false);
 		this.addActionListener(event->{
-			JComboBox<User> cb = (JComboBox) event.getSource();
-			User usrName = (User) cb.getSelectedItem();
-			Application.getInstance().setCurrentUser(usrName);
-			EventBus.publish(Application.getInstance().getCurrentUser());
+			JComboBox<Player> cb = (JComboBox) event.getSource();
+			Player usrName = (Player) cb.getSelectedItem();
+			Application.getInstance().setCurrentPlayer(usrName);
+			EventBus.publish(Application.getInstance().getCurrentPlayer());
 		});
 		this.setRenderer(new PlayerListRenderer());
 		this.setPreferredSize(new Dimension(this.getPreferredSize().width,28));
 	}
 
 
-	private ComboBoxModel<User> createModel() {
+	private ComboBoxModel<Player> createModel() {
 		Application app = Application.getInstance();
-		List<User> usrNames = app.getPlayers();
+		List<Player> usrNames = app.getPlayers();
 		//usrNames.add(ADD_NEW);
-		ComboBoxModel<User> model = new DefaultComboBoxModel<User>(new Vector<User>(usrNames));
-		model.setSelectedItem(app.getCurrentUser());
+		ComboBoxModel<Player> model = new DefaultComboBoxModel<Player>(new Vector<Player>(usrNames));
+		model.setSelectedItem(app.getCurrentPlayer());
 		return model;
 	}
 }

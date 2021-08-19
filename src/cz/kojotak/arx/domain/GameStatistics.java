@@ -6,7 +6,6 @@ package cz.kojotak.arx.domain;
 import java.util.List;
 
 import cz.kojotak.arx.domain.enums.FinishedStatus;
-import cz.kojotak.arx.domain.mode.Mode;
 
 public class GameStatistics {
 	
@@ -17,50 +16,50 @@ public class GameStatistics {
 	Float playerRelativePosition=null;
 	String playerSign=null;
 	
-	User bestPlayer=null;
+	Player bestPlayer=null;
 	int recordsCount=0;
 	int ratingsCount=0;
 	Boolean playerFinished=null;
 	Boolean somebodyFinished=false;
 	
 	Long highestScore=null;
-	Long userScore=null;
+	Long playerscore=null;
 	
 	Integer oponentDiff=null;
 	
 	Integer points=null;
-	final User oponent;
+	final Player oponent;
 		
-	public GameStatistics(List<Score> records, User user, User oponent) {
+	public GameStatistics(List<Score> records, Player player, Player oponent) {
 		super();
 		this.oponent=oponent;
 		if(records!=null && records.size()>0){
-			init(records,user,oponent);
+			init(records,player,oponent);
 		}
 	}
 
-	private void init(List<Score> records,User user,User oponent){
+	private void init(List<Score> records,Player player, Player oponent){
 		recordsCount=records.size();
 		Float ratingsSum=0F;
 		Long highest = 0L;
-		if(user==null) {
+		if(player==null) {
 			return;
 		}
-		playerSign = user.nick();
+		playerSign = player.nick();
 		Integer oponentPosition=null;
 		for(int i=0;i<records.size();i++){
 			Score record = records.get(i);
-			User  player = record.player();
+			Player p = record.player();
 			Long score=record.score();
-			if(player.id() == user.id()){
+			if(p.id() == player.id()){
 				playerPosition=i+1;
 				playerRating = record.rating();
 				playerFinished = record.finished();
-				userScore = score;
+				playerscore = score;
 			}
 			if(score>highest){
 				highest=score;
-				bestPlayer=player;
+				bestPlayer=p;
 			}
 			if(record.finished()){
 				somebodyFinished=true;
@@ -69,7 +68,7 @@ public class GameStatistics {
 				ratingsCount++;
 				ratingsSum+=record.rating();
 			}
-			if(oponent!=null && player.id() == oponent.id()){
+			if(oponent!=null && p.id() == oponent.id()){
 				oponentPosition=record.position();
 			}
 		}
@@ -85,7 +84,7 @@ public class GameStatistics {
 			if(oponentPosition!=null){
 				this.oponentDiff=oponentPosition-playerPosition;
 			}
-			points=(recordsCount-playerPosition)*10 + (int)((float)userScore*100/highestScore);
+			points=(recordsCount-playerPosition)*10 + (int)((float)playerscore*100/highestScore);
 		}
 	}
 
@@ -119,7 +118,7 @@ public class GameStatistics {
 		return playerSign;
 	}
 
-	public User getBestPlayer() {
+	public Player getBestPlayer() {
 		return bestPlayer;
 	}
 
@@ -143,15 +142,15 @@ public class GameStatistics {
 		return highestScore;
 	}
 
-	public Long getUserScore() {
-		return userScore;
+	public Long getplayerscore() {
+		return playerscore;
 	}
 
 	public Integer getOponentDiff() {
 		return oponentDiff;
 	}
 
-	public User getOponent() {
+	public Player getOponent() {
 		return oponent;
 	}
 

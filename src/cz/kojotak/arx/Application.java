@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import cz.kojotak.arx.common.RunnableWithProgress;
 import cz.kojotak.arx.domain.mode.Mode;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.domain.enums.Language;
 import cz.kojotak.arx.domain.mode.SinglePlayerMode;
 import cz.kojotak.arx.domain.mode.TwoPlayerMode;
@@ -52,8 +52,8 @@ public final class Application {
 	private Mode currentMode;
 	private MainWindow mainWindow;
 	private List<Mode> modes;
-	private final List<User> players = new ArrayList<User>();
-	User currentUser = null;
+	private final List<Player> players = new ArrayList<Player>();
+	Player currentPlayer = null;
 
 	private static Application app = new Application();
 
@@ -63,13 +63,13 @@ public final class Application {
 
 	public void finishInitialization() {
 		this.players.addAll(importer.getPlayers());
-		Collections.sort(players, Comparator.comparing(u->{
-			return u.nick();
+		Collections.sort(players, Comparator.comparing(p->{
+			return p.nick();
 		}));
-		for(User u : this.players) {
-			//TODO proper user selection
-			if("COY".equals(u.nick()) || u.nick().startsWith("Coy")){
-				setCurrentUser(u);
+		for(Player p : this.players) {
+			//TODO proper player selection
+			if("COY".equals(p.nick()) || p.nick().startsWith("Coy")){
+				setCurrentPlayer(p);
 			}
 		}
 		this.singlePlayerMode = new SinglePlayerMode(importer);
@@ -106,11 +106,11 @@ public final class Application {
 	}
 
 //	@EventSubscriber //chybi volani annotation processoru
-	public void setCurrentUser(User user) {
-		this.currentUser = user;
+	public void setCurrentPlayer(Player player) {
+		this.currentPlayer = player;
 	}
 
-	public List<User> getPlayers() {
+	public List<Player> getPlayers() {
 		return players;
 	}
 
@@ -231,8 +231,8 @@ public final class Application {
 		return currentMode;
 	}
 
-	public User getCurrentUser() {
-		return currentUser;
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
 	public Properties getProperties() {

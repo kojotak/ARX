@@ -23,7 +23,7 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Score;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 
 public class SqliteImporter implements RunnableWithProgress {
 
@@ -44,8 +44,8 @@ public class SqliteImporter implements RunnableWithProgress {
 		this.url = "jdbc:sqlite:" + dbPath;
 	}
 
-	public Collection<User> getPlayers() {
-		return users.values();
+	public Collection<Player> getPlayers() {
+		return players.values();
 	}
 	
 	public Platform getDefaultPlatform() {
@@ -84,11 +84,11 @@ public class SqliteImporter implements RunnableWithProgress {
 			logger.info("...imported " + platforms.size() + " platforms");
 			categories = loadCategories(conn);
 			logger.info("...imported " + categories.size() + " categories");
-			users = loadUsers(conn);
-			logger.info("...imported " + users.size() + " players");
+			players = loadplayers(conn);
+			logger.info("...imported " + players.size() + " players");
 			games = loadGames(conn, platforms, categories);
 			logger.info("...imported " + games.size() + " games");
-			Integer scores = loadScores(conn, games, users);
+			Integer scores = loadScores(conn, games, players);
 			logger.info("...imported " + scores + " scores");
 			lastUpdate = loadLastUpdated(conn);
 			logger.info("...imported " + lastUpdate + " as last update");
@@ -100,12 +100,12 @@ public class SqliteImporter implements RunnableWithProgress {
 	private Date lastUpdate;
 	private Map<Integer, Platform> platforms;
 	private Map<Integer, Category> categories;
-	private Map<Integer, User> users;
+	private Map<Integer, Player> players;
 	private Map<Integer, Game> games;
 	
-	private Integer loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, User> users) {
-		Map<Integer, List<Score>> scoresP1 = loadScores("user2_id == '' ", conn, users);
-		Map<Integer, List<Score>> scoresP2 = loadScores("user2_id != '' ", conn, users);
+	private Integer loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, Player> players) {
+		Map<Integer, List<Score>> scoresP1 = loadScores("user2_id == '' ", conn, players);
+		Map<Integer, List<Score>> scoresP2 = loadScores("user2_id != '' ", conn, players);
 		for(Integer gameId : games.keySet()) {
 			Game game = games.get(gameId);
 			List<Score> p1 = scoresP1.get(gameId);
@@ -116,14 +116,11 @@ public class SqliteImporter implements RunnableWithProgress {
 			if(p2!=null) {
 				game.getRecords2P().addAll(p2);
 			}
-			if(gameId.intValue() == 125) {
-				System.err.println(game);
-			}
 		}
 		return scoresP1.size() + scoresP2.size();
 	}
 	
-	private Map<Integer,List<Score>> loadScores(String sqlWhere, Connection conn, Map<Integer, User> users){
+	private Map<Integer,List<Score>> loadScores(String sqlWhere, Connection conn, Map<Integer, Player> players){
 		String sql = "select game_id, user_id, user2_id, score, finished, play_time from score where " + sqlWhere + " order by game_id asc, score desc";
 		Map<Integer, GameStats> stats = loadGameStats(sqlWhere, conn);
 		Map<Integer,List<Score>> map = new HashMap<>();
@@ -146,8 +143,8 @@ public class SqliteImporter implements RunnableWithProgress {
 							rs.getBoolean("finished"),
 							rs.getInt("play_time"),
 							position,
-							users.get(rs.getObject("user_id")),
-							users.get(rs.getObject("user2_id"))
+							players.get(rs.getObject("user_id")),
+							players.get(rs.getObject("user2_id"))
 							);
 					List<Score> scores = map.get(gameId);
 					if(scores==null) {
@@ -191,20 +188,20 @@ public class SqliteImporter implements RunnableWithProgress {
 		return map;
 	}
 
-	private Map<Integer, User> loadUsers(Connection conn) {
-		Map<Integer,User> map = new HashMap<>();
+	private Map<Integer, Player> loadplayers(Connection conn) {
+		Map<Integer,Player> map = new HashMap<>();
 		String sql = "select id, nick from user";
 		try(PreparedStatement  stm = conn.prepareStatement(sql)){
 			try(ResultSet rs = stm.executeQuery()){
 				while(rs.next()) {
-					User u = new User(
+					Player u = new Player(
 							rs.getInt("id"),
 							rs.getString("nick"));
 					map.put(u.id(), u);
 				}
 			}
 		} catch (SQLException e) {
-			logger.log(Level.SEVERE,"Can not load users",e);
+			logger.log(Level.SEVERE,"Can not load players",e);
 		}
 		return map;
 	}

@@ -11,7 +11,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.ui.icon.EmptyIcon;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 
@@ -19,7 +19,7 @@ import cz.kojotak.arx.ui.icon.GUIIcons;
  * @date 19.4.2010
  * @author Kojotak 
  */
-public class PlayerListRenderer extends JLabel implements ListCellRenderer<User> {
+public class PlayerListRenderer extends JLabel implements ListCellRenderer<Player> {
 
 	private static final long serialVersionUID = -8067946040669163322L;
 	transient private Application app;
@@ -33,7 +33,7 @@ public class PlayerListRenderer extends JLabel implements ListCellRenderer<User>
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends User> list, User string,
+	public Component getListCellRendererComponent(JList<? extends Player> list, Player string,
 			int index, boolean isSelected, boolean cellHasFocus) {
 		Icon icon = null;
 		if (isSelected) {

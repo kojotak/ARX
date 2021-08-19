@@ -25,7 +25,7 @@ import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
 import cz.kojotak.arx.domain.Platform;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
 import cz.kojotak.arx.domain.mode.Mode;
@@ -52,7 +52,7 @@ public class GameTable extends JXTable {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.getSelectionModel().setSelectionInterval(0, 0);
 		this.setColumnControlVisible(true);
-		this.user=Application.getInstance().getCurrentUser();
+		this.player=Application.getInstance().getCurrentPlayer();
 		this.mode=Application.getInstance().getCurrentMode();
 		this.recalculate();		
 	}
@@ -125,8 +125,8 @@ public class GameTable extends JXTable {
 	}
 
 	private Mode mode=null;
-	private User user=null;
-	private User opponent=null;
+	private Player player=null;
+	private Player opponent=null;
 	
 	@EventSubscriber
 	public void updateMode(Mode mode){
@@ -145,9 +145,9 @@ public class GameTable extends JXTable {
 	}
 	
 	@EventSubscriber
-	public void updateUser(User user){
-		this.user=user;
-		logger.info("setting new user: "+this.user);
+	public void updatePlayer(Player player){
+		this.player=player;
+		logger.info("setting new player: "+this.player);
 		recalculate();
 	}
 	
@@ -155,13 +155,13 @@ public class GameTable extends JXTable {
 	 * helper method to set new table model
 	 */
 	private void recalculate() {
-		logger.fine("setting new game table model for " + user + " and " + mode);
+		logger.fine("setting new game table model for " + player + " and " + mode);
 
 		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
 		logger.fine("new model has rows: " + model.getRowCount());
-		logger.fine("calculating statistics for user " + user + " in mode "+ mode);
+		logger.fine("calculating statistics for player " + player + " in mode "+ mode);
 		for (Game game : mode.getGames()) {
-			GameStatistics stats = new GameStatistics(mode.getScores(game), user, opponent);
+			GameStatistics stats = new GameStatistics(mode.getScores(game), player, opponent);
 			game.setStatistics(stats);
 		}
 		this.setModel(model);

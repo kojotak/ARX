@@ -3,7 +3,7 @@
  */
 package cz.kojotak.arx.ui.column;
 
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.domain.WithStatistics;
 
 /**
@@ -16,7 +16,7 @@ public class BestPlayerColumn extends BaseColumn<WithStatistics,String> {
 
 	@Override
 	public String getValue(WithStatistics source) {
-		User player = source.getStatistics().getBestPlayer();
+		Player player = source.getStatistics().getBestPlayer();
 		return player!=null ? player.nick() : "";
 	}
 

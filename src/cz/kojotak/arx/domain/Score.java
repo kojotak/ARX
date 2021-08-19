@@ -10,7 +10,7 @@ public record Score (
 		boolean finished,
 		Integer duration,
 		Integer position,
-		User player,
-		User secondPlayer
+		Player player,
+		Player secondPlayer
 		){
 }

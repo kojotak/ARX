@@ -12,7 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import cz.kojotak.arx.Application;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.icon.GUIIcons;
 import cz.kojotak.arx.ui.listener.ModeChangeListener;
@@ -22,7 +22,7 @@ public class Toolbar extends JPanel {
 
 	private static final long serialVersionUID = -1150251988753412200L;
 	private JComboBox<String> vyberModu;
-	private JComboBox<User> vyberHrace;
+	private JComboBox<Player> vyberHrace;
 
 	public Toolbar(final MainWindow window,final CategoryComboBox combo) {
 		super();

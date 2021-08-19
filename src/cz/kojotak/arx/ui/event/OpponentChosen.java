@@ -3,8 +3,8 @@
  */
 package cz.kojotak.arx.ui.event;
 
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 
-public record OpponentChosen(User opponent) {
+public record OpponentChosen(Player opponent) {
 	
 }

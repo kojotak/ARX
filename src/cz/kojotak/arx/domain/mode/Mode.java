@@ -14,7 +14,7 @@ import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.Score;
 import cz.kojotak.arx.domain.Searchable;
-import cz.kojotak.arx.domain.User;
+import cz.kojotak.arx.domain.Player;
 import cz.kojotak.arx.properties.Localization;
 import cz.kojotak.arx.ui.column.BaseColumn;
 import cz.kojotak.arx.ui.event.FilterModel;
@@ -32,20 +32,18 @@ public abstract class Mode implements Searchable {
 	protected FilterModel filter;
 	
 	public Mode(List<Game> games) {
-		Set<User> users = new HashSet<>(); 
+		Set<Player> players = new HashSet<>(); 
 		this.games=games;
 		this.games.forEach(g->{
 			cats.add(g.getCategory());
 			platforms.add(g.getPlatform());
 			scores += g.getRecords1P().size();
-			users.addAll(g.getRecords1P().stream().flatMap(s -> Stream.of(s.player(), s.secondPlayer())).toList());
+			players.addAll(g.getRecords1P().stream().flatMap(s -> Stream.of(s.player(), s.secondPlayer())).toList());
 		});
 		Localization loc = Application.getInstance().getLocalization();
 		this.desc = loc.getString(this, "DESC");
 		this.name = loc.getString(this, "NAME");
 		this.filter = new FilterModel();
-		players = users.size();
-		System.err.println(getClass().getSimpleName() + " games: " + games.size()+", scores: " + scores + ", users: "+players);
 	}
 	
 	public abstract List<BaseColumn<Game,?>> getColumns();

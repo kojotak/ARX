@@ -4,6 +4,6 @@
 package cz.kojotak.arx.domain;
 
 
-public record User(int id, String nick) {
+public record Player(int id, String nick) {
 	
 }
