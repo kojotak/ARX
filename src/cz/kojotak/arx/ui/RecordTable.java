@@ -6,6 +6,7 @@ package cz.kojotak.arx.ui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -42,8 +43,9 @@ import cz.kojotak.arx.ui.model.GenericTableModel;
  * @author Kojotak
  */
 public class RecordTable extends JXTable {
-	private static final long serialVersionUID = 6894398339660146006L;
-		
+
+	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger(RecordTable.class.getName());	
 	
 	private List<BaseColumn<?,?>> cols;
 	@SuppressWarnings("unchecked")
@@ -94,7 +96,7 @@ public class RecordTable extends JXTable {
 	@EventSubscriber
 	public void onGameChange(Game game){
 		List<Score> records = Application.getInstance().getCurrentMode().getScores(game);
-		Application.getLogger(this).info("onGameChange: " + game + ", scores: " + records.size()+", mode: "+Application.getInstance().getCurrentMode());
+		logger.info("onGameChange: " + game + ", scores: " + records.size()+", mode: "+Application.getInstance().getCurrentMode());
 		@SuppressWarnings("unchecked")GenericTableModel<?> tableModel = new GenericTableModel(records,cols);
 		this.setModel(tableModel);
 		//tableModel.fireTableDataChanged();

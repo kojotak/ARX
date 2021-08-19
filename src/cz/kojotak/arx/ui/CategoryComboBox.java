@@ -3,10 +3,9 @@
  */
 package cz.kojotak.arx.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -29,25 +28,21 @@ import cz.kojotak.arx.ui.renderer.NamedWithIdListCellRenderer;
  */
 public class CategoryComboBox extends JComboBox<Category> {
 
-	private static final long serialVersionUID = 8070450403361850796L;
+	private static final long serialVersionUID = 1L;
+	private final Logger logger = Logger.getLogger(getClass().getName());
 
 	public CategoryComboBox() {
 		super();
 		AnnotationProcessor.process(this);
 		this.setMaximumRowCount(20);
 		this.setRenderer(new NamedWithIdListCellRenderer<Category>());
-		this.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		this.addActionListener(e-> {
 				CategoryComboBox box = (CategoryComboBox) e.getSource();
 				Category selected = (Category) box.getSelectedItem();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setCategory(selected);
-				Application.getLogger(CategoryComboBox.this).info("filtering by " + selected);
+				logger.info("filtering by " + selected);
 				EventBus.publish(filterModel);
-			}
-
 		});
 		updateCategoryListModel(Application.getInstance().getCurrentMode());//XXX delete this and fire mode changed after GUI initialization
 	}

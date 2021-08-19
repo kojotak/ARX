@@ -3,6 +3,8 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.util.logging.Logger;
+
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +36,8 @@ public class FilterTaskPane extends JXTaskPane {
 	JLabel avaLab;
 	JLabel platLab;
 	JLabel searchLab;
+	
+	private static final Logger logger = Logger.getLogger(FilterTaskPane.class.getName());
 
 	public FilterTaskPane() {
 		super();
@@ -73,7 +77,7 @@ public class FilterTaskPane extends JXTaskPane {
 				String str = FilterTaskPane.this.searchInput.getText();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setSearch(str);
-				Application.getLogger(this).info("filtering by search string: " + str);
+				logger.info("filtering by search string: " + str);
 				EventBus.publish(filterModel);
 			}
 

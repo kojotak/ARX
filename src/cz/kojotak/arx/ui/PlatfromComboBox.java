@@ -29,7 +29,7 @@ import cz.kojotak.arx.ui.renderer.NamedWithIdListCellRenderer;
  */
 public class PlatfromComboBox extends JComboBox<Platform> {
 
-	private static final long serialVersionUID = 4089373502308114318L;
+	private static final long serialVersionUID = 1L;
 
 	public PlatfromComboBox() {
 		super();
@@ -45,7 +45,6 @@ public class PlatfromComboBox extends JComboBox<Platform> {
 				Platform selected = (Platform) box.getSelectedItem();
 				FilterModel filterModel = new FilterModel();
 				filterModel.setPlatform(selected);
-				Application.getLogger(PlatfromComboBox.this).info("filtering by " + selected);
 				EventBus.publish(filterModel);
 			}
 

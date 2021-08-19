@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +35,7 @@ import cz.kojotak.arx.ui.icon.ResizeIcon;
  */
 public class StatusBar extends JPanel {
 
+	private static final Logger logger = Logger.getLogger(StatusBar.class.getName());
 	private static final long serialVersionUID = 1L;
 	protected JPanel contentPanel;
 	SimpleDateFormat DB_VERSION = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -81,7 +83,7 @@ public class StatusBar extends JPanel {
 	
 	@EventSubscriber
 	public void updateLabels(Mode mode) {
-		Application.getLogger(this).fine("updating labels for " + mode);
+		logger.fine("updating labels for " + mode);
 		Localization loc = Application.getInstance().getLocalization();
 		String games = loc.getString(this, "GAMES") + " " + mode.getGameCount();
 		String players = loc.getString(this, "PLAYERS") + " " + mode.getPlayerCount();
@@ -103,9 +105,9 @@ public class StatusBar extends JPanel {
 		        		return vs;
 		        	}
 		        }
-		        Application.getLogger(this).log(Level.WARNING, "Application version not found in manifest");
+		        logger.log(Level.WARNING, "Application version not found in manifest");
 		      } catch (IOException e) {
-		        Application.getLogger(this).log(Level.WARNING, "Failed to read manifest", e);
+		        logger.log(Level.WARNING, "Failed to read manifest", e);
 		      }
 		}
 		return "DEVEL";

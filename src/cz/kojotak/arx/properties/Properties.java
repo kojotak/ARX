@@ -5,6 +5,7 @@ package cz.kojotak.arx.properties;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.enums.Language;
@@ -42,7 +43,7 @@ public class Properties{
 		try{
 			return bundle.getString(key);
 		}catch(MissingResourceException ex){
-			Application.getLogger(this).severe("missing value for key "+key);
+			Logger.getLogger(getClass().getName()).severe("missing value for key "+key);
 			return "";
 		}
 	}

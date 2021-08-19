@@ -4,10 +4,10 @@
 package cz.kojotak.arx.ui.model;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.table.AbstractTableModel;
 
-import cz.kojotak.arx.Application;
 import cz.kojotak.arx.ui.column.BaseColumn;
 
 
@@ -22,6 +22,7 @@ public class GenericTableModel<T> extends AbstractTableModel {
 
 	protected List<T> items;
 	protected List<BaseColumn<? super T,?>> columns;
+	private final Logger logger = Logger.getLogger(getClass().getName());
 		
 	public GenericTableModel(List<T> items,List<BaseColumn<? super T,?>> columns) {
 		super();
@@ -48,7 +49,7 @@ public class GenericTableModel<T> extends AbstractTableModel {
 		try{
 			game = items.get(rowIndex);
 		}catch(IndexOutOfBoundsException ex){
-			Application.getLogger(this).severe("cannot return "+rowIndex+" from "+columns);
+			logger.severe("cannot return "+rowIndex+" from "+columns);
 			return null;
 		}
 		return columns.get(columnIndex).getValue(game);

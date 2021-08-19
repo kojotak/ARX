@@ -36,7 +36,7 @@ public class Downloader implements RunnableWithProgress {
 
 	public Downloader(String source) {
 		this.source = source;
-		this.log = Application.getLogger(Downloader.class);
+		this.log = Logger.getLogger(getClass().getName());
 	}
 
 	@Override

@@ -38,6 +38,7 @@ public class SqliteImporter implements RunnableWithProgress {
 //		}
 	}
 	
+	private final Logger logger = Logger.getLogger(getClass().getName());
 	private final String url;
 	public SqliteImporter(String dbPath) {
 		this.url = "jdbc:sqlite:" + dbPath;
@@ -77,21 +78,20 @@ public class SqliteImporter implements RunnableWithProgress {
 	}
 
 	public void run() {
-		Logger log = Application.getLogger(this);
 		try (Connection conn = DriverManager.getConnection(url)) {
-			log.info("connected to SQLite: " + url);
+			logger.info("connected to SQLite: " + url);
 			platforms = loadPlatforms(conn);
-			log.info("...imported " + platforms.size() + " platforms");
+			logger.info("...imported " + platforms.size() + " platforms");
 			categories = loadCategories(conn);
-			log.info("...imported " + categories.size() + " categories");
+			logger.info("...imported " + categories.size() + " categories");
 			users = loadUsers(conn);
-			log.info("...imported " + users.size() + " players");
+			logger.info("...imported " + users.size() + " players");
 			games = loadGames(conn, platforms, categories);
-			log.info("...imported " + games.size() + " games");
+			logger.info("...imported " + games.size() + " games");
 			Integer scores = loadScores(conn, games, users);
-			log.info("...imported " + scores + " scores");
+			logger.info("...imported " + scores + " scores");
 			lastUpdate = loadLastUpdated(conn);
-			log.info("...imported " + lastUpdate + " as last update");
+			logger.info("...imported " + lastUpdate + " as last update");
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to import DB from " + url);
 		}
@@ -158,7 +158,7 @@ public class SqliteImporter implements RunnableWithProgress {
 				}
 			}
 		} catch (SQLException e) {
-			Application.getLogger(this).log(Level.SEVERE,"Can not load scores",e);
+			logger.log(Level.SEVERE,"Can not load scores",e);
 		}
 		return map;
 	}
@@ -186,7 +186,7 @@ public class SqliteImporter implements RunnableWithProgress {
 				}
 			}
 		} catch (SQLException e) {
-		 	Application.getLogger(this).log(Level.SEVERE,"Can not load players per game",e);
+		 	logger.log(Level.SEVERE,"Can not load players per game",e);
 		}
 		return map;
 	}
@@ -204,7 +204,7 @@ public class SqliteImporter implements RunnableWithProgress {
 				}
 			}
 		} catch (SQLException e) {
-			Application.getLogger(this).log(Level.SEVERE,"Can not load users",e);
+			logger.log(Level.SEVERE,"Can not load users",e);
 		}
 		return map;
 	}
@@ -235,7 +235,7 @@ public class SqliteImporter implements RunnableWithProgress {
 				}
 			}
 		} catch (SQLException e) {
-			Application.getLogger(this).log(Level.SEVERE,"Can not load games",e);
+			logger.log(Level.SEVERE,"Can not load games",e);
 		}
 		return map;
 	}
@@ -255,7 +255,7 @@ public class SqliteImporter implements RunnableWithProgress {
 				}
 			}
 		} catch (SQLException e) {
-			Application.getLogger(this).log(Level.SEVERE,"Can not load platforms",e);
+			logger.log(Level.SEVERE,"Can not load platforms",e);
 		}
 		return map;
 	}
@@ -273,7 +273,7 @@ public class SqliteImporter implements RunnableWithProgress {
 				}
 			}
 		} catch (SQLException e) {
-			Application.getLogger(this).log(Level.SEVERE,"Can not load categories",e);
+			logger.log(Level.SEVERE,"Can not load categories",e);
 		}
 		return map;
 	}
@@ -288,12 +288,12 @@ public class SqliteImporter implements RunnableWithProgress {
 					try {
 						return df.parse(str);
 					} catch (ParseException e) {
-						Application.getLogger(this).log(Level.SEVERE,"Can not parse last update time: " +str,e);
+						logger.log(Level.SEVERE,"Can not parse last update time: " +str,e);
 					}
 				}
 			} 
 		} catch (SQLException e) {
-			Application.getLogger(this).log(Level.SEVERE,"Can not load last update time",e);
+			logger.log(Level.SEVERE,"Can not load last update time",e);
 		} 
 		return null;
 	}

@@ -24,12 +24,11 @@ import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
-import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.domain.Platform;
 import cz.kojotak.arx.domain.User;
-import cz.kojotak.arx.domain.WithStatistics;
 import cz.kojotak.arx.domain.enums.LegacyCategory;
 import cz.kojotak.arx.domain.enums.LegacyPlatform;
+import cz.kojotak.arx.domain.mode.Mode;
 import cz.kojotak.arx.ui.column.CustomColumnControlButton;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.event.OpponentChosen;
@@ -48,7 +47,7 @@ public class GameTable extends JXTable {
 	public GameTable(GenericTableModel<?> dm, TableColumnModel cm) {
 		super(dm, cm);
 		AnnotationProcessor.process(this);
-		logger =Application.getLogger(this);
+		logger = Logger.getLogger(getClass().getName());
 		setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.getSelectionModel().setSelectionInterval(0, 0);
@@ -156,11 +155,11 @@ public class GameTable extends JXTable {
 	 * helper method to set new table model
 	 */
 	private void recalculate() {
-		Application.getLogger(this).fine("setting new game table model for " + user + " and " + mode);
+		logger.fine("setting new game table model for " + user + " and " + mode);
 
 		GenericTableModel<?> model = new GenericTableModel(mode.getGames(),	mode.getColumns());
-		Application.getLogger(this).fine("new model has rows: " + model.getRowCount());
-		Application.getLogger(this).fine("calculating statistics for user " + user + " in mode "+ mode);
+		logger.fine("new model has rows: " + model.getRowCount());
+		logger.fine("calculating statistics for user " + user + " in mode "+ mode);
 		for (Game game : mode.getGames()) {
 			GameStatistics stats = new GameStatistics(mode.getScores(game), user, opponent);
 			game.setStatistics(stats);
@@ -195,7 +194,7 @@ public class GameTable extends JXTable {
 			Game game = (Game)ggtm.getItem(convertRowIndexToModel(idx));
 			EventBus.publish(game);
 		}catch(Exception ex){//dirty and ugly
-			Application.getLogger(this).log(Level.WARNING, "invalid row index in game table model",ex);
+			logger.log(Level.WARNING, "invalid row index in game table model",ex);
 		}
 		
 	}

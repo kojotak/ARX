@@ -5,6 +5,7 @@ package cz.kojotak.arx.ui.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 
@@ -22,6 +23,7 @@ import cz.kojotak.arx.ui.MainWindow;
 public class ModeChangeListener implements ActionListener {
 
 	private MainWindow window;
+	private static final Logger logger = Logger.getLogger(ModeChangeListener.class.getName());
 	
 	public ModeChangeListener(MainWindow window) {
 		super();
@@ -45,7 +47,7 @@ public class ModeChangeListener implements ActionListener {
 		filter.arrangeFilter();
 		//window.switchRecordPanel();
 		EventBus.publish(mode);
-		Application.getLogger(this).info("selected mode " + name);
+		logger.info("selected mode " + name);
 	}
 
 }

@@ -90,7 +90,7 @@ public final class Application {
 			log.log(Level.SEVERE, "cannot reconfigure java.util.LogManager", ex);
 		}
 		
-		log = getLogger(Application.class);
+		log = Logger.getLogger(getClass().getName());
 		log.info("logger ready");
 
 		language = Language.CZECH;
@@ -112,14 +112,6 @@ public final class Application {
 
 	public List<User> getPlayers() {
 		return players;
-	}
-
-	public static Logger getLogger(Object whoCalls) {
-		return getLogger(whoCalls.getClass());
-	}
-
-	public static Logger getLogger(Class<?> whoCalls) {
-		return Logger.getLogger(whoCalls.getName());
 	}
 
 	public Mode resolveMode(String str) {

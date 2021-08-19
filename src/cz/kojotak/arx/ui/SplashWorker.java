@@ -9,12 +9,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 import javax.swing.SwingWorker;
 
-import java.util.logging.Logger;
-
-import cz.kojotak.arx.Application;
 import cz.kojotak.arx.Application.Job;
 import cz.kojotak.arx.common.Holder;
 import cz.kojotak.arx.common.RunnableWithProgress;
@@ -40,7 +38,7 @@ public class SplashWorker extends SwingWorker<Void, Progress> {
 			totalWeight += job.getWeight();
 		}
 		scheduler = Executors.newScheduledThreadPool(1);
-		log = Application.getLogger(this);
+		log = Logger.getLogger(getClass().getName());
 	}
 
 	@Override

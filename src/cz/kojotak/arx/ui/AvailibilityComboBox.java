@@ -3,16 +3,14 @@
  */
 package cz.kojotak.arx.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import org.bushe.swing.event.EventBus;
 
-import cz.kojotak.arx.Application;
 import cz.kojotak.arx.domain.enums.Availibility;
 import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.renderer.GenericEnumListRenderer;
@@ -24,7 +22,9 @@ import cz.kojotak.arx.util.AvailibilityComparator;
  */
 public class AvailibilityComboBox extends JComboBox<Availibility> {
 
-	private static final long serialVersionUID = 9214892993791504736L;
+	private static final long serialVersionUID = 1L;
+	
+	private final Logger logger = Logger.getLogger(getClass().getName());
 
 	public AvailibilityComboBox() {
 		super();
@@ -33,19 +33,14 @@ public class AvailibilityComboBox extends JComboBox<Availibility> {
 		this.setModel(new DefaultComboBoxModel<Availibility>(values));
 		this.setMaximumRowCount(values.length);
 		this.setRenderer(new GenericEnumListRenderer<Availibility>(null,Availibility.class));
-		this.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AvailibilityComboBox box = (AvailibilityComboBox) e.getSource();
-				Availibility av = (Availibility) box.getSelectedItem();
-				FilterModel filterModel = new FilterModel();
-				filterModel.setAvailibility(av);
-				Application.getLogger(AvailibilityComboBox.this)
-						.info("availibility set to " + av);
-				EventBus.publish(filterModel);				
-			}
-
+		this.addActionListener(e->{
+			AvailibilityComboBox box = (AvailibilityComboBox) e.getSource();
+			Availibility av = (Availibility) box.getSelectedItem();
+			FilterModel filterModel = new FilterModel();
+			filterModel.setAvailibility(av);
+			logger.info("availibility set to: " + av);
+			EventBus.publish(filterModel);
 		});
+		}
 	}
-}
+

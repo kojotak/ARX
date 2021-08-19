@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -30,6 +31,7 @@ public class IconLoader {
 	private final String screenPrefix;
 	private Application app;
 	final static String IMAGE_EXTENSION = ".png";
+	private final Logger logger = Logger.getLogger(getClass().getName());
 
 	public IconLoader(String rotaxPath, Application app) {
 		super();
@@ -87,7 +89,7 @@ public class IconLoader {
 		try{
 			img = ImageIO.read(url(filename));
 		}catch(Exception ex){
-			Application.getLogger(this).warning("cannot load image "+filename+" because: "+ex);
+			logger.warning("cannot load image "+filename+" because: "+ex);
 		}
 		return img;
 	}
@@ -106,7 +108,7 @@ public class IconLoader {
 		try{
 			return ImageIO.read(new File(filename));
 		}catch(Exception ex){
-			Application.getLogger(this).warning("cannot load image "+filename+" because: "+ex);
+			logger.warning("cannot load image "+filename+" because: "+ex);
 			return null;
 		}
 	}
@@ -172,7 +174,7 @@ public class IconLoader {
 		try{
 			URL url = url(path);
 			if(url==null){
-				Application.getLogger(this).severe("Cannot create url for icon "+path);
+				logger.severe("Cannot create url for icon "+path);
 				return null;
 			}
 			bufims=ICODecoder.read(url.openStream());
@@ -180,7 +182,7 @@ public class IconLoader {
 				return bufims.get(0);
 			}
 		}catch(IOException ex){
-			Application.getLogger(this).log(Level.SEVERE, "Cannot load icon "+path,ex);
+			logger.log(Level.SEVERE, "Cannot load icon "+path,ex);
 		}
 		return null;
 	}

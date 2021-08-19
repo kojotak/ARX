@@ -37,7 +37,6 @@ public class PlayerComboBox extends JComboBox<User> {
 			User usrName = (User) cb.getSelectedItem();
 			Application.getInstance().setCurrentUser(usrName);
 			EventBus.publish(Application.getInstance().getCurrentUser());
-			Application.getLogger(this).info("selected user " + usrName);
 		});
 		this.setRenderer(new PlayerListRenderer());
 		this.setPreferredSize(new Dimension(this.getPreferredSize().width,28));

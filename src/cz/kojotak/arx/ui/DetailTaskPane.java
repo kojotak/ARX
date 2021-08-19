@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import org.bushe.swing.event.annotation.EventSubscriber;
@@ -30,6 +31,7 @@ public class DetailTaskPane extends JXTaskPane{
 	private JXImagePanel ipanel;
 	private JXHyperlink link;
 	private Application app;
+	private final Logger logger = Logger.getLogger(getClass().getName());
 	public DetailTaskPane() {
 		super();
 		AnnotationProcessor.process(this);
@@ -72,7 +74,7 @@ public class DetailTaskPane extends JXTaskPane{
 			URI uri = new URI(uriStr);
 			setHyperlink(uri);
 		}catch(URISyntaxException ex){
-			Application.getLogger(this).log(Level.WARNING, "cannot set uri "+uriStr);
+			logger.log(Level.WARNING, "cannot set uri "+uriStr);
 		}
 
 		
