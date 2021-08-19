@@ -10,10 +10,10 @@ package cz.kojotak.arx.util;
 public enum StorageUnit {
 	BYTE(1L, "B"), 
 	KILOBYTE(1L << 10, "KB"), 
-//	MEGABYTE(1L << 20, "MB"), 
-//	GIGABYTE(1L << 30, "GB"),
-//	TERABYTE(1L << 40, "TB"), 
-//	PETABYTE(1L << 50, "PB")
+	MEGABYTE(1L << 20, "MB"), 
+	GIGABYTE(1L << 30, "GB"),
+	TERABYTE(1L << 40, "TB"), 
+	PETABYTE(1L << 50, "PB")
 	;
 
 	private long divider;
@@ -42,13 +42,4 @@ public enum StorageUnit {
 		return whole+unit.name;
 	}
 
-	public static void main(String... args){
-		for(StorageUnit unit:StorageUnit.values()){
-			System.out.println(unit.name+" "+unit.divider);
-		}
-		
-		for(long l:new long[]{0L,1L,5L,1023L,1024L,1025L,1048575L,1048576L,1048577L}){
-			System.out.println(""+l+" "+of(l).name+" "+toString(l));			
-		}
-	}
 }
