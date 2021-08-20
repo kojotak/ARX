@@ -14,7 +14,7 @@ public class GameStatistics {
 	
 	Float averageRating=null;
 	Float playerRelativePosition=null;
-	String playerSign=null;
+	Player player=null;
 	
 	Player bestPlayer=null;
 	int recordsCount=0;
@@ -45,7 +45,7 @@ public class GameStatistics {
 		if(player==null) {
 			return;
 		}
-		playerSign = player.nick();
+		this.player = player;
 		Integer oponentPosition=null;
 		for(int i=0;i<records.size();i++){
 			Score record = records.get(i);
@@ -114,8 +114,8 @@ public class GameStatistics {
 		return playerRelativePosition;
 	}
 
-	public String getPlayerSign() {
-		return playerSign;
+	public Player getPlayer() {
+		return player;
 	}
 
 	public Player getBestPlayer() {

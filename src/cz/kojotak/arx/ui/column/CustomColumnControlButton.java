@@ -20,8 +20,7 @@ public class CustomColumnControlButton extends ColumnControlButton {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected ColumnVisibilityAction createColumnVisibilityAction(
-			TableColumn column) {
+	protected ColumnVisibilityAction createColumnVisibilityAction(TableColumn column) {
 		ColumnVisibilityAction action = super.createColumnVisibilityAction(column);
 		if(column instanceof TableColumnExt){
 			TableColumnExt ext = TableColumnExt.class.cast(column);
