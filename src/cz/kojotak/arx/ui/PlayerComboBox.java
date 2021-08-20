@@ -4,8 +4,6 @@
 package cz.kojotak.arx.ui;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -25,8 +23,7 @@ import cz.kojotak.arx.ui.renderer.PlayerListRenderer;
  */
 public class PlayerComboBox extends JComboBox<Player> {
 
-	private static final long serialVersionUID = -8481423043530284950L;
-	public static final String ADD_NEW="_NEW";
+	private static final long serialVersionUID = 1L;
 
 	public PlayerComboBox() {
 		super();
@@ -34,8 +31,8 @@ public class PlayerComboBox extends JComboBox<Player> {
 		this.setEditable(false);
 		this.addActionListener(event->{
 			JComboBox<Player> cb = (JComboBox) event.getSource();
-			Player usrName = (Player) cb.getSelectedItem();
-			Application.getInstance().setCurrentPlayer(usrName);
+			Player player = (Player) cb.getSelectedItem();
+			Application.getInstance().setCurrentPlayer(player);
 			EventBus.publish(Application.getInstance().getCurrentPlayer());
 		});
 		this.setRenderer(new PlayerListRenderer());

@@ -41,8 +41,9 @@ import cz.kojotak.arx.ui.model.GenericTableModel;
  */
 public class GameTable extends JXTable {
 
-	private static final long serialVersionUID = -4069244471240497960L;
+	private static final long serialVersionUID = 1L;
 	private final Logger logger;
+	private FilterModel filterModel = new FilterModel();
 	
 	public GameTable(GenericTableModel<?> dm, TableColumnModel cm) {
 		super(dm, cm);
@@ -54,30 +55,26 @@ public class GameTable extends JXTable {
 		this.setColumnControlVisible(true);
 		this.player=Application.getInstance().getCurrentPlayer();
 		this.mode=Application.getInstance().getCurrentMode();
-		this.recalculate();		
+		FilterModel filter = new FilterModel();
+		filterModel.setPlatform(LegacyPlatform.MAME.toPlatform());
+		this.updateGameFilter(filter);
+		this.recalculate();	
 	}
 
-	/**
-	 * @return {@link GenericTableModel} of this table or throw an
-	 *         {@link IllegalStateException}
-	 */
 	public GenericTableModel<?> getGenericTableModel() {
 		TableModel tm = this.getModel();
 		if (tm instanceof GenericTableModel<?>) {
 			return GenericTableModel.class.cast(tm);
 		} else {
-			throw new IllegalStateException(
-					"Game table has uknown table model!");
+			throw new IllegalStateException("Game table has uknown table model!");
 		}
 	}
-
-	private FilterModel filterModel = new FilterModel();
 
 	@EventSubscriber
 	public void updateGameFilter(FilterModel update) {
 		this.filterModel = FilterModel.updateWith(this.filterModel, update);
 
-		logger.fine("setting game table filter");
+		logger.fine("setting game table filter " + update);
 		GenericTableModel<?> model = this.getGenericTableModel();
 		RowFilter<GenericTableModel<?>, Integer> categoryFilter = new RowFilter<GenericTableModel<?>, Integer>() {
 
@@ -165,9 +162,6 @@ public class GameTable extends JXTable {
 			game.setStatistics(stats);
 		}
 		this.setModel(model);
-		FilterModel filter = new FilterModel();
-		filterModel.setPlatform(LegacyPlatform.MAME.toPlatform());
-		this.updateGameFilter(filter);
 	}
 
 	@Override

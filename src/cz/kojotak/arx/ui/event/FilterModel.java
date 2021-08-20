@@ -89,5 +89,11 @@ public class FilterModel {
 		return availibility == other.availibility && category == other.category && platform == other.platform
 				&& Objects.equals(search, other.search);
 	}
+
+	@Override
+	public String toString() {
+		return "FilterModel [category=" + category + ", platform=" + platform + ", availibility=" + availibility
+				+ ", search=" + search + "]";
+	}
 	
 }
