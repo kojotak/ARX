@@ -24,15 +24,7 @@ import cz.kojotak.arx.ui.SplashWorker;
  */
 public class DesktopRunner {
 	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		//TODO remove this localhost workaround with proper UI in issue #47
-		Properties systemProps = System.getProperties();
-		systemProps.setProperty("rotax.dir", "D:\\Rotaxmame");
-		System.setProperties(systemProps);
-		
 		final Application app = Application.getInstance();
 		Logger logger = Logger.getLogger(DesktopRunner.class.getName());
 		
