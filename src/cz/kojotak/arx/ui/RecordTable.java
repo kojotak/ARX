@@ -48,9 +48,9 @@ public class RecordTable extends JXTable {
 	private static final Logger logger = Logger.getLogger(RecordTable.class.getName());	
 	
 	private List<BaseColumn<?,?>> cols;
-	@SuppressWarnings("unchecked")
+
 	private RecordTable(List<BaseColumn<?,?>> cols) {
-		super(new GenericTableModel(Collections.emptyList(),cols), new GenericTableColumnModel(cols));
+		super(createTableModel(cols), createColumnModel(cols));
 		this.cols = cols;
 		AnnotationProcessor.process(this);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -58,41 +58,48 @@ public class RecordTable extends JXTable {
 	}
 	
 	public static RecordTable createRecordTable(Mode mode){
-		List<BaseColumn<?,?>> cols = getColumns(mode);
+		List<BaseColumn<?,?>> cols = createColumns(mode);
 		RecordTable rt = new RecordTable(cols);
 		return rt;
 	}
 	
-	private static List<BaseColumn<?,?>> getColumns(Mode mode){
+	private static List<BaseColumn<?,?>> createColumns(Mode mode){
+		var scorePointsColumn = new ScorePointsColumn();
+		var secondPlayerColumn = new CoplayerColumn();
+		
+		scorePointsColumn.setVisible(false);
+		secondPlayerColumn.setVisible(mode instanceof TwoPlayerMode);
+		
 		List<BaseColumn<?,?>> cols = new ArrayList<BaseColumn<?,?>>();
 		cols.add(new PositionColumn());
 		cols.add(new RecordPlayerColumn());
-		if(mode instanceof TwoPlayerMode){
-			cols.add(new CoplayerColumn());
-		}
-		var scorePointsColumn = new ScorePointsColumn();
+		cols.add(secondPlayerColumn);
 		cols.add(new ScoreRecordColumn());
 		cols.add(scorePointsColumn);
 		cols.add(new RecordDurationColumn());
 		cols.add(new FinishedRecordColumn());
 		return cols;
 	}
+	
+	private static TableModel createTableModel(List<BaseColumn<?,?>> cols) {
+		return new GenericTableModel(Collections.emptyList(),cols);
+	}
+	
+	private static GenericTableColumnModel createColumnModel(List<BaseColumn<?,?>> cols) {
+		return new GenericTableColumnModel(cols); 
+	}
 
 	@EventSubscriber
 	public void onModeChange(Mode mode){
-		List<BaseColumn<?,?>> cols = getColumns(mode);
-		this.cols=cols;
-		@SuppressWarnings("unchecked")TableModel tm = new GenericTableModel(Collections.emptyList(),cols);
-		TableColumnModel tcm = new GenericTableColumnModel(cols);
-		this.setModel(tm);
-		this.setColumnModel(tcm);
+		for(BaseColumn<?, ?> col: cols) {
+			if(col instanceof CoplayerColumn) {
+				col.setVisible(mode instanceof TwoPlayerMode);
+			}
+		}
+		
 		EventBus.publish(new ResizeRecordPanel());
 	}
 	
-	/**
-	 * updates record table
-	 * @param event
-	 */
 	@EventSubscriber
 	public void onGameChange(Game game){
 		List<Score> records = Application.getInstance().getCurrentMode().getScores(game);
