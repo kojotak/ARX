@@ -3,11 +3,24 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionEvent;
@@ -21,6 +34,7 @@ import org.bushe.swing.event.annotation.EventSubscriber;
 import org.jdesktop.swingx.JXTable;
 
 import cz.kojotak.arx.Application;
+import cz.kojotak.arx.common.StreamGobbler;
 import cz.kojotak.arx.domain.Category;
 import cz.kojotak.arx.domain.Game;
 import cz.kojotak.arx.domain.GameStatistics;
@@ -34,7 +48,7 @@ import cz.kojotak.arx.ui.event.FilterModel;
 import cz.kojotak.arx.ui.event.OpponentChosen;
 import cz.kojotak.arx.ui.model.GenericTableColumnModel;
 import cz.kojotak.arx.ui.model.GenericTableModel;
-
+import java.util.concurrent.Executors;
 /**
  * @date 28.3.2010
  * @author Kojotak
@@ -53,6 +67,39 @@ public class GameTable extends JXTable {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.getSelectionModel().setSelectionInterval(0, 0);
 		this.setColumnControlVisible(true);
+
+		final String run = "run";
+		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, run);
+		getActionMap().put(run, new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String dir = Application.getInstance().getRotaxDir();
+				if(dir==null || dir.isEmpty()) {
+					return;
+				}
+				GameTable gt = (GameTable)e.getSource();
+				int sr = gt.getSelectedRow();
+				Game game = (Game)gt.getGenericTableModel().getItem(convertRowIndexToModel(sr));
+				logger.info("going to run in rotaxmame: " + game);
+				ProcessBuilder builder = new ProcessBuilder();
+				builder.command("cmd.exe", "/c", "Rotaxmame.exe "+game.getId());
+				builder.directory(new File(dir));
+				try {
+					Process process = builder.start();
+					StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), out-> logger.log(Level.FINE, out));
+					Executors.newSingleThreadExecutor().submit(streamGobbler);
+					int exitCode = process.waitFor();
+					logger.info("rotaxmame finished with exit code " + exitCode);
+				} catch (IOException | InterruptedException ex) {
+					logger.log(Level.SEVERE, "Failed to run rotaxmame", ex);
+				}
+			}
+		});
+
 		this.player=Application.getInstance().getCurrentPlayer();
 		this.mode=Application.getInstance().getCurrentMode();
 		FilterModel filter = new FilterModel();
@@ -60,7 +107,7 @@ public class GameTable extends JXTable {
 		this.updateGameFilter(filter);
 		this.recalculate();	
 	}
-
+	
 	public GenericTableModel<?> getGenericTableModel() {
 		TableModel tm = this.getModel();
 		if (tm instanceof GenericTableModel<?>) {
@@ -98,13 +145,10 @@ public class GameTable extends JXTable {
 				boolean platformOk = true;
 				boolean catOk = true;
 				if (o != null) {
-					platformOk = platform == null ? true : platform.equals(o
-							.getPlatform());
-					catOk = filterCat == null ? true : filterCat.equals(o
-							.getCategory());
+					platformOk = platform == null ? true : platform.equals(o.getPlatform());
+					catOk = filterCat == null ? true : filterCat.equals(o.getCategory());
 					String title = o.getTitle();
-					if (title != null && searchStr != null
-							&& searchStr.length() > 0) {
+					if (title != null && searchStr != null && searchStr.length() > 0) {
 						String titleIC = title.toLowerCase();
 						String filterIC = searchStr.toLowerCase();
 						nameOk = titleIC.contains(filterIC);
@@ -115,8 +159,7 @@ public class GameTable extends JXTable {
 			}
 
 		};
-		TableRowSorter<GenericTableModel<?>> sorter = new TableRowSorter<GenericTableModel<?>>(
-				model);
+		TableRowSorter<GenericTableModel<?>> sorter = new TableRowSorter<GenericTableModel<?>>(model);
 		sorter.setRowFilter(categoryFilter);
 		this.setRowSorter(sorter);
 	}
@@ -192,5 +235,7 @@ public class GameTable extends JXTable {
 		}
 		
 	}
+	
+	
 
 }

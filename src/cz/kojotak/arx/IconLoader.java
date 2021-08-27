@@ -84,14 +84,13 @@ public class IconLoader {
 		if(prefix==null) {
 			return null;
 		}
-		Image img=null;		
 		String filename = prefix+path;
 		try{
-			img = ImageIO.read(url(filename));
+			return ImageIO.read(url(filename));
 		}catch(Exception ex){
 			logger.warning("cannot load image "+filename+" because: "+ex);
 		}
-		return img;
+		return null;
 	}
 	
 	public Image loadImageFromIcon(Enum<?> e){

@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -36,6 +35,7 @@ import cz.kojotak.arx.util.StorageUnit;
 public final class Application {
 
 	private String currentDir;
+	private String rotaxDir;
 
 	protected Logger log;
 
@@ -82,7 +82,7 @@ public final class Application {
 
 	private Application() {
 		currentDir = System.getProperty("user.dir");
-		String rotax = System.getProperty("rotax.dir");
+		rotaxDir = System.getProperty("rotax.dir");
 
 		try {
 			java.util.logging.LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
@@ -94,7 +94,7 @@ public final class Application {
 		log.info("logger ready");
 
 		language = Language.CZECH;
-		iconLoader = new IconLoader(rotax, this);
+		iconLoader = new IconLoader(rotaxDir, this);
 		properties = new Properties(language);
 		localization = new Localization(language);
 		icons = new Icons(language);
@@ -102,7 +102,7 @@ public final class Application {
 //		downloader = new Downloader(LegacySqliteImporter.RM_DB_URL);
 		//SqliteImporter = new LegacySqliteImporter(this::getDBInputStream); 
 //		SqliteImporter = new LegacySqliteImporter(downloader::getDBInputStream);
-		importer = new SqliteImporter(rotax + File.separator + "-" + File.separator + "db.db");//TODO make it work
+		importer = new SqliteImporter(rotaxDir + File.separator + "-" + File.separator + "db.db");//TODO make it work
 	}
 
 //	@EventSubscriber //chybi volani annotation processoru
@@ -266,5 +266,8 @@ public final class Application {
 	public void setMainWindow(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
 	}
-	
+
+	public String getRotaxDir() {
+		return rotaxDir;
+	}
 }
