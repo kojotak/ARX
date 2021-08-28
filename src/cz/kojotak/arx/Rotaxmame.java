@@ -8,38 +8,49 @@ import java.util.logging.Logger;
 
 import cz.kojotak.arx.common.StreamGobbler;
 import cz.kojotak.arx.domain.Game;
-import cz.kojotak.arx.ui.GameTable;
 
 public class Rotaxmame {
 
+	private static final String EXECUTABLE = "Rotaxmame.exe";
 	private final String rotaxDir;
 	private final Logger logger;
 
 	public Rotaxmame() {
 		logger = Logger.getLogger(getClass().getName());
-		rotaxDir = System.getProperty("rotax.dir");
+		String configured = System.getProperty("rotax.dir");
 		
-		//TODO validate using Rotaxmame.exe
-		
-		//TODO log validation result
+		File file = new File(configured, EXECUTABLE);
+		if(file.exists()) {
+			rotaxDir = configured;
+			logger.info("rotaxmame found in: " + rotaxDir);
+		}else {
+			rotaxDir = null;
+			logger.warning("rotaxmame not found in: " + rotaxDir);
+		}
 	}
 	
-	public String getRotaxDir() {
-		return rotaxDir;
-	}
-	
-	public String getRotaxDBPath() {
+	public String getDatabasePath() {
+		if(rotaxDir==null) {
+			return null;
+		}
 		return rotaxDir + File.separator + "-" + File.separator + "db.db";
 	}
 	
-	public String getRotaxScreenshotPath() {
+	public String getScreenshotPath() {
+		if(rotaxDir==null) {
+			return null;
+		}
 		return rotaxDir + File.separator + "-" + File.separator + "screenshot" + File.separator;
 	}
 	
 	public void run(Game game){
+		if(rotaxDir==null) {
+			logger.info("rotaxmame directory not known to start: " + game);
+			return;
+		}
 		logger.info("going to run : " + game);
 		ProcessBuilder builder = new ProcessBuilder();
-		builder.command("cmd.exe", "/c", "Rotaxmame.exe "+game.getId());
+		builder.command("cmd.exe", "/c", EXECUTABLE + " " + game.getId());
 		builder.directory(new File(rotaxDir));
 		try {
 			Process process = builder.start();

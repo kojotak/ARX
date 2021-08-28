@@ -35,7 +35,7 @@ public class IconLoader {
 
 	public IconLoader(Application app) {
 		super();
-		this.screenPrefix = app.getRotaxmame().getRotaxScreenshotPath();
+		this.screenPrefix = app.getRotaxmame().getScreenshotPath();
 		this.imgPrefix = "images/";
 		this.icoPrefix = "icons/";
 		this.app = app;

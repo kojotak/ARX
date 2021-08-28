@@ -102,7 +102,7 @@ public final class Application {
 //		downloader = new Downloader(LegacySqliteImporter.RM_DB_URL);
 		//SqliteImporter = new LegacySqliteImporter(this::getDBInputStream); 
 //		SqliteImporter = new LegacySqliteImporter(downloader::getDBInputStream);
-		importer = new SqliteImporter(rotax.getRotaxDBPath());
+		importer = new SqliteImporter(rotax.getDatabasePath());
 	}
 
 //	@EventSubscriber //chybi volani annotation processoru
