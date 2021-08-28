@@ -35,7 +35,6 @@ import cz.kojotak.arx.util.StorageUnit;
 public final class Application {
 
 	private String currentDir;
-	private String rotaxDir;
 
 	protected Logger log;
 
@@ -46,11 +45,12 @@ public final class Application {
 	private final Downloader downloader = null;
 	private SqliteImporter importer;
 	private Language language;
-	private IconLoader iconLoader;
+	private final IconLoader iconLoader;
 	private SinglePlayerMode singlePlayerMode;
 	private TwoPlayerMode arcadeTwoPlayerMode;
 	private Mode currentMode;
 	private MainWindow mainWindow;
+	private final Rotaxmame rotax;
 	private List<Mode> modes;
 	private final List<Player> players = new ArrayList<Player>();
 	Player currentPlayer = null;
@@ -82,7 +82,7 @@ public final class Application {
 
 	private Application() {
 		currentDir = System.getProperty("user.dir");
-		rotaxDir = System.getProperty("rotax.dir");
+		this.rotax = new Rotaxmame();
 
 		try {
 			java.util.logging.LogManager.getLogManager().readConfiguration(getClass().getClassLoader().getResourceAsStream("logging.properties"));
@@ -94,7 +94,7 @@ public final class Application {
 		log.info("logger ready");
 
 		language = Language.CZECH;
-		iconLoader = new IconLoader(rotaxDir, this);
+		iconLoader = new IconLoader(this);
 		properties = new Properties(language);
 		localization = new Localization(language);
 		icons = new Icons(language);
@@ -102,7 +102,7 @@ public final class Application {
 //		downloader = new Downloader(LegacySqliteImporter.RM_DB_URL);
 		//SqliteImporter = new LegacySqliteImporter(this::getDBInputStream); 
 //		SqliteImporter = new LegacySqliteImporter(downloader::getDBInputStream);
-		importer = new SqliteImporter(rotaxDir + File.separator + "-" + File.separator + "db.db");//TODO make it work
+		importer = new SqliteImporter(rotax.getRotaxDBPath());
 	}
 
 //	@EventSubscriber //chybi volani annotation processoru
@@ -267,7 +267,8 @@ public final class Application {
 		this.mainWindow = mainWindow;
 	}
 
-	public String getRotaxDir() {
-		return rotaxDir;
+	public Rotaxmame getRotaxmame() {
+		return rotax;
 	}
+
 }

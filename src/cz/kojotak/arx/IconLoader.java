@@ -33,13 +33,9 @@ public class IconLoader {
 	final static String IMAGE_EXTENSION = ".png";
 	private final Logger logger = Logger.getLogger(getClass().getName());
 
-	public IconLoader(String rotaxPath, Application app) {
+	public IconLoader(Application app) {
 		super();
-		if(rotaxPath!=null) {
-			this.screenPrefix = rotaxPath + File.separator + "-" + File.separator + "screenshot" + File.separator;
-		}else {
-			this.screenPrefix = null;
-		}
+		this.screenPrefix = app.getRotaxmame().getRotaxScreenshotPath();
 		this.imgPrefix = "images/";
 		this.icoPrefix = "icons/";
 		this.app = app;

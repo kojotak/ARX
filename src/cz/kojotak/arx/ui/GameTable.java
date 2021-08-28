@@ -77,26 +77,10 @@ public class GameTable extends JXTable {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String dir = Application.getInstance().getRotaxDir();
-				if(dir==null || dir.isEmpty()) {
-					return;
-				}
 				GameTable gt = (GameTable)e.getSource();
 				int sr = gt.getSelectedRow();
 				Game game = (Game)gt.getGenericTableModel().getItem(convertRowIndexToModel(sr));
-				logger.info("going to run in rotaxmame: " + game);
-				ProcessBuilder builder = new ProcessBuilder();
-				builder.command("cmd.exe", "/c", "Rotaxmame.exe "+game.getId());
-				builder.directory(new File(dir));
-				try {
-					Process process = builder.start();
-					StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), out-> logger.log(Level.FINE, out));
-					Executors.newSingleThreadExecutor().submit(streamGobbler);
-					int exitCode = process.waitFor();
-					logger.info("rotaxmame finished with exit code " + exitCode);
-				} catch (IOException | InterruptedException ex) {
-					logger.log(Level.SEVERE, "Failed to run rotaxmame", ex);
-				}
+				Application.getInstance().getRotaxmame().run(game);
 			}
 		});
 

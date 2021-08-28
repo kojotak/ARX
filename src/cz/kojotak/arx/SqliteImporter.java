@@ -30,16 +30,19 @@ public class SqliteImporter implements RunnableWithProgress {
 	public final static String BACKUP_URL = "https://github.com/kojotak/ARX/blob/reloaded/tmp/db.db?raw=true";
 	
 	public static void main(String[] args) {
-		SqliteImporter SqliteImporter = new SqliteImporter("tmp/db.db");
-		SqliteImporter.run();
-		
-//		for(Integer gameId : SqliteImporter.games.keySet()) {
-//			System.out.println("Game: " + SqliteImporter.games.get(gameId) + "\n\tscores: " + SqliteImporter.scores.get(gameId));
-//		}
+		SqliteImporter sqliteImporter = new SqliteImporter("tmp/db.db");
+		sqliteImporter.run();
 	}
 	
 	private final Logger logger = Logger.getLogger(getClass().getName());
 	private final String url;
+	
+	private Date lastUpdate;
+	private Map<Integer, Platform> platforms;
+	private Map<Integer, Category> categories;
+	private Map<Integer, Player> players;
+	private Map<Integer, Game> games;
+	
 	public SqliteImporter(String dbPath) {
 		this.url = "jdbc:sqlite:" + dbPath;
 	}
@@ -96,12 +99,6 @@ public class SqliteImporter implements RunnableWithProgress {
 			throw new RuntimeException("Failed to import DB from " + url);
 		}
 	}
-
-	private Date lastUpdate;
-	private Map<Integer, Platform> platforms;
-	private Map<Integer, Category> categories;
-	private Map<Integer, Player> players;
-	private Map<Integer, Game> games;
 	
 	private Integer loadScores(Connection conn, Map<Integer, Game> games, Map<Integer, Player> players) {
 		Map<Integer, List<Score>> scoresP1 = loadScores("user2_id == '' ", conn, players);
