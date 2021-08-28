@@ -3,6 +3,7 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -19,10 +20,12 @@ import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -78,9 +81,15 @@ public class GameTable extends JXTable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameTable gt = (GameTable)e.getSource();
-				int sr = gt.getSelectedRow();
-				Game game = (Game)gt.getGenericTableModel().getItem(convertRowIndexToModel(sr));
-				Application.getInstance().getRotaxmame().run(game);
+				Game game = (Game)gt.getGenericTableModel().getItem(convertRowIndexToModel(gt.getSelectedRow()));
+				SwingUtilities.invokeLater(()->{
+					try {
+						blockUI();
+						Application.getInstance().getRotaxmame().run(game);
+					}finally {
+						unblockUI();
+					}
+				});
 			}
 		});
 
@@ -92,6 +101,16 @@ public class GameTable extends JXTable {
 		this.recalculate();	
 	}
 	
+	protected void unblockUI() {
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		frame.setCursor(Cursor.getDefaultCursor());
+	}
+
+	protected void blockUI() {
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
+	}
+
 	public GenericTableModel<?> getGenericTableModel() {
 		TableModel tm = this.getModel();
 		if (tm instanceof GenericTableModel<?>) {
