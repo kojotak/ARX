@@ -3,6 +3,7 @@
  */
 package cz.kojotak.arx.ui;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,7 +41,11 @@ public class DetailTaskPane extends JXTaskPane{
 		this.setTitle(label);
 		this.setIcon(app.getIconLoader().tryLoadIcon(GUIIcons.DETAIL));
 		ipanel = new JXImagePanel();
+		var dim = new Dimension(200,400);
 		ipanel.setStyle(Style.SCALED_KEEP_ASPECT_RATIO);
+		ipanel.setMaximumSize(dim);
+		ipanel.setMinimumSize(dim);
+		ipanel.setPreferredSize(dim);
 		link = new JXHyperlink();
 		this.add(link);
 		this.add(ipanel);
