@@ -44,6 +44,7 @@ public abstract class Mode implements Searchable {
 		this.desc = loc.getString(this, "DESC");
 		this.name = loc.getString(this, "NAME");
 		this.filter = new FilterModel();
+		this.players = players.size();
 	}
 	
 	public abstract List<BaseColumn<Game,?>> getColumns();
