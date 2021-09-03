@@ -9,7 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,6 +34,7 @@ public class IconLoader {
 	private Application app;
 	final static String IMAGE_EXTENSION = ".png";
 	private final Logger logger = Logger.getLogger(getClass().getName());
+	private final Map<String, Icon> iconCache = new HashMap<>();
 
 	public IconLoader(Application app) {
 		super();
@@ -53,22 +56,23 @@ public class IconLoader {
 		}
 	}
 
-	public ImageIcon loadIcon(String path){
+	public Icon loadIcon(String path){
 		if(path==null){
 			return null;
 		}
-		ImageIcon i =null;
-
 		String iconPath = icoPrefix+path;
+		Icon i = iconCache.get(iconPath);
+		if(i!=null) {
+			return i;
+		}
 		if(iconPath.endsWith(".ico")){
-
-				Image im = loadIcoAsImage(path);
-				im = im.getScaledInstance(16, 16, Image.SCALE_FAST);
-				i = new ImageIcon(im);
-
+			Image im = loadIcoAsImage(path);
+			im = im.getScaledInstance(16, 16, Image.SCALE_FAST);
+			i = new ImageIcon(im);
 		}else if(iconPath.endsWith(".png")){
 			i = new ImageIcon(url(iconPath));
 		}
+		iconCache.put(iconPath, i);
 		return i;
 	}
 	
@@ -107,55 +111,6 @@ public class IconLoader {
 			return null;
 		}
 	}
-	
-	//FIXME this ugly code!!!
-//	private Image downloadAndLoadImageInt(String path) throws Exception{
-//		
-//		Application.getLogger(this).info("downloading "+path+" ... ");
-//		URL u = new URL("http://rotaxmame.cz/hry/"+path+IMAGE_EXTENSION);
-//	    URLConnection uc = u.openConnection();
-//	    int contentLength = uc.getContentLength();
-//	    InputStream raw = uc.getInputStream();
-//	    InputStream in = new BufferedInputStream(raw);
-//	    byte[] data = new byte[contentLength];
-//	    int bytesRead = 0;
-//	    int offset = 0;
-//	    while (offset < contentLength) {
-//	      bytesRead = in.read(data, offset, data.length - offset);
-//	      if (bytesRead == -1)
-//	        break;
-//	      offset += bytesRead;
-//	    }
-//	    in.close();
-//
-//	    if (offset != contentLength) {
-//	      Application.getLogger(this).warning("Only read " + offset + " bytes; Expected " + contentLength + " bytes");
-//	      return null;
-//	    }
-//
-//	    if(screenshotPrefix!=null){
-//	    	String filename = imgPrefix + path+IMAGE_EXTENSION;
-//	  		Application.getLogger(this).fine("saving as "+filename+" ... ");
-//	  	    FileOutputStream out = new FileOutputStream(filename);
-//	  	    out.write(data);
-//	  	    out.flush();
-//	  	    out.close();
-//	  		return loadImage(path);
-//	    }else{
-//	    	BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
-//	    	return img;
-//	    }
-//	  
-//	}
-//	public Image downloadAndLoadImage(String path){
-//		Image img = null;
-//		try{
-//			img = downloadAndLoadImageInt(path);
-//		}catch(Exception ex){
-//			Application.getLogger(this).log(Level.SEVERE, "cannot download image "+path,ex);
-//		}
-//		return img;
-//	}
 
 	public Image loadIcoAsImage(String name){
 		if(name==null){
